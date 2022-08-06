@@ -1,6 +1,4 @@
-import logo from '~/logo.svg';
-
-const Hello = () => {
+const New = () => {
   return (
     <div
       style={{
@@ -12,7 +10,6 @@ const Hello = () => {
         paddingTop: '50px',
       }}
     >
-      <img src={logo} alt='Logo' style={{ height: '150px' }} />
       <ul
         style={{
           padding: 0,
@@ -24,8 +21,6 @@ const Hello = () => {
         }}
       >
         <li>📖 TypeScript</li>
-        <li>🔨 Eslint</li>
-        <li>💅 Prettier</li>
       </ul>
       <div>
         <a
@@ -41,4 +36,4 @@ const Hello = () => {
   );
 };
 
-export default Hello;
+export default New;
