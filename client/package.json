@@ -20,7 +20,8 @@
     "redux": "^4.2.0",
     "styled-components": "^5.3.5",
     "styled-jsx": "^5.0.2",
-    "use-interval": "^1.4.0"
+    "use-interval": "^1.4.0",
+    "vite-plugin-live-reload": "^3.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.9",

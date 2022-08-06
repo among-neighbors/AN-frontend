@@ -20,7 +20,7 @@ const New = () => {
           gap: '14px',
         }}
       >
-        <li>📖 TypeScriptttt</li>
+        <li>📖 TypeScripttt</li>
       </ul>
       <div>
         <a

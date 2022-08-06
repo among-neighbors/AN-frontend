@@ -1,8 +1,8 @@
 import Hello from './components/Hello';
-import New from './pages/new';
+import New from './pages/New';
 
 function App() {
-  return <Hello />;
+  return <New />;
 }
 
 export default App;
