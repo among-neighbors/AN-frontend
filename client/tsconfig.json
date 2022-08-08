@@ -15,7 +15,7 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noEmit": true,

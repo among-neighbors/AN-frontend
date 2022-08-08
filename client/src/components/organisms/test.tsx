@@ -1,6 +1,4 @@
-import logo from '~/logo.svg';
-
-const Hello = () => {
+const New = () => {
   return (
     <div
       style={{
@@ -12,7 +10,6 @@ const Hello = () => {
         paddingTop: '50px',
       }}
     >
-      <img src={logo} alt='Logo' style={{ height: '150px' }} />
       <ul
         style={{
           padding: 0,
@@ -23,13 +20,8 @@ const Hello = () => {
           gap: '14px',
         }}
       >
-        <li>🚀 Vite</li>
-        <li>🔥 React</li>
-        <li>📖 TypeScript</li>
-        <li>🔨 Eslint</li>
-        <li>💅 Prettier</li>
+        <li>📖 TypeScripttt</li>
       </ul>
-      <p>Don&apos;t forgot to install Eslint and Prettier in your VSCode</p>
       <div>
         <a
           style={{ color: '#F24C4C' }}
@@ -44,4 +36,4 @@ const Hello = () => {
   );
 };
 
-export default Hello;
+export default New;
