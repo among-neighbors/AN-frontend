@@ -1,7 +1,7 @@
 import New from './pages/New';
 
 function App() {
-  return <New />;
+  return <New name='홍길동' />;
 }
 
 export default App;

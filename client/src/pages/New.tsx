@@ -6,7 +6,7 @@ type NewProps = {
 const New = ({ name, optional }: NewProps) => {
   return (
     <>
-      <div>
+      <div className='hi'>
         <ul>
           <li>📖 TypeScripttttttt</li>
           <li>{name}</li>
@@ -17,8 +17,9 @@ const New = ({ name, optional }: NewProps) => {
         </div>
       </div>
       <style jsx>{`
-        div {
+        .hi {
           background: #ddd;
+          height: 200vh;
         }
       `}</style>
     </>
