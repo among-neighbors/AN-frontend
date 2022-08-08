@@ -16,12 +16,6 @@ const New = ({ name, optional }: NewProps) => {
           <a>Github</a>
         </div>
       </div>
-      <style jsx>{`
-        .hi {
-          background: #ddd;
-          height: 200vh;
-        }
-      `}</style>
     </>
   );
 };

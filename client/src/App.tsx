@@ -1,7 +1,7 @@
-import New from './pages/New';
+import SignPage from './pages/SignPage';
 
 function App() {
-  return <New name='홍길동' />;
+  return <SignPage />;
 }
 
 export default App;

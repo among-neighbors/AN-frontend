@@ -36,7 +36,7 @@ const UserHeader = () => {
   };
 
   return (
-    <AppBar position='fixed' color='default'>
+    <AppBar position='fixed'>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
