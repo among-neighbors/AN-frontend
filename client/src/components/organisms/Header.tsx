@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+import SquareImg from '../atoms/Img';
 
 const pages = ['공지', '민원', '커뮤니티'];
 const settings = ['내 정보', '로그아웃'];
@@ -39,7 +39,6 @@ const UserHeader = () => {
     <AppBar position='fixed'>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant='h6'
             noWrap
@@ -53,8 +52,10 @@ const UserHeader = () => {
               letterSpacing: '.1rem',
               color: 'inherit',
               textDecoration: 'none',
+              alignItems: 'center',
             }}
           >
+            <SquareImg src='img/iconWhite.png' />
             이웃사이
           </Typography>
 
@@ -94,7 +95,8 @@ const UserHeader = () => {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
+
           <Typography
             variant='h5'
             noWrap
@@ -109,8 +111,10 @@ const UserHeader = () => {
               letterSpacing: '.1rem',
               color: 'inherit',
               textDecoration: 'none',
+              alignItems: 'center',
             }}
           >
+            <SquareImg src='img/iconWhite.png' />
             이웃사이
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -128,7 +132,7 @@ const UserHeader = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+                <Avatar alt='최윤석' src='/static/images/avatar/2.jpg' />
               </IconButton>
             </Tooltip>
             <Menu
