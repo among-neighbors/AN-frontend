@@ -6,6 +6,7 @@ import UserHeader from './components/organisms/Header';
 import './index.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignPage from './pages/SignPage';
+import HomePage from './pages/HomePage';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -13,7 +14,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <UserHeader />
         <Routes>
-          <Route path='/*' element={<SignPage />} />
+          <Route path='/' element={<HomePage />} />
+          <Route path='/sign' element={<SignPage />} />
+          <Route path='/notice' element={<SignPage />} />
+          <Route path='/complaint' element={<SignPage />} />
+          <Route path='/community' element={<SignPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
