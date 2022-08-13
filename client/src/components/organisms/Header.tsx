@@ -12,17 +12,35 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import SquareImg from '../atoms/Img';
+import { Link } from 'react-router-dom';
 
-const pages = ['공지', '민원', '커뮤니티'];
-const settings = ['내 정보', '로그아웃'];
+const pages: {
+  name: string;
+  link: string;
+}[] = [
+  {
+    name: '공지',
+    link: '/notice',
+  },
+  {
+    name: '민원',
+    link: 'complaint',
+  },
+  {
+    name: '커뮤니티',
+    link: 'community',
+  },
+];
+const settings = ['로그아웃'];
 
-const UserHeader = () => {
+const Header = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -42,8 +60,8 @@ const UserHeader = () => {
           <Typography
             variant='h6'
             noWrap
-            component='a'
-            href='/'
+            component={Link}
+            to='/'
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -55,7 +73,7 @@ const UserHeader = () => {
               alignItems: 'center',
             }}
           >
-            <SquareImg src='img/iconWhite.png' />
+            <SquareImg src='../../../public/img/iconWhite.png' />
             이웃사이
           </Typography>
 
@@ -89,19 +107,23 @@ const UserHeader = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign='center'>{page}</Typography>
+                <MenuItem
+                  key={page.name}
+                  onClick={handleCloseNavMenu}
+                  component={Link}
+                  to={page.link}
+                >
+                  <Typography textAlign='center'>{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
 
           <Typography
             variant='h5'
             noWrap
-            component='a'
-            href=''
+            component={Link}
+            to='/'
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -114,25 +136,27 @@ const UserHeader = () => {
               alignItems: 'center',
             }}
           >
-            <SquareImg src='img/iconWhite.png' />
+            <SquareImg src='../../../public/img/iconWhite.png' />
             이웃사이
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.name}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
+                component={Link}
+                to={page.link}
               >
-                {page}
+                {page.name}
               </Button>
             ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='최윤석' src='/static/images/avatar/2.jpg' />
+              <IconButton onClick={handleCloseUserMenu} component={Link} to='/sign' sx={{ p: 0 }}>
+                <Avatar alt='x' src='/static/images/avatar/2.jpg' />
               </IconButton>
             </Tooltip>
             <Menu
@@ -164,4 +188,4 @@ const UserHeader = () => {
   );
 };
 
-export default UserHeader;
+export default Header;
