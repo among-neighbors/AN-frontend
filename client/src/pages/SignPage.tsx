@@ -6,7 +6,7 @@ const SignPage = () => {
       <div className='signPage'>
         <SignIn />
       </div>
-      <style jsx='true'>{`
+      <style jsx>{`
         .signPage {
           display: flex;
           align-items: center;

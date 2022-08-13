@@ -1,20 +1,27 @@
 import { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { weAreSignIn } from '~/others/store';
+import PageHeader from '~/components/organisms/PageHeader';
+import StickyHeadTable from '~/components/organisms/Table';
 
-const NoticePage = (props: any) => {
+const NoticePage = () => {
   useEffect(() => {
-    weAreSignIn();
-
-    console.log('notice', props);
+    // API로 공지사항 데이터 싹다 끌고와
   }, []);
-  return <></>;
+
+  return (
+    <>
+      <div className='noticePage'>
+        <PageHeader type='notice' />
+        <StickyHeadTable />
+      </div>
+      <style jsx>{`
+        .noticePage {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+      `}</style>
+    </>
+  );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    state,
-  };
-};
-
-export default connect(mapStateToProps)(NoticePage);
+export default NoticePage;

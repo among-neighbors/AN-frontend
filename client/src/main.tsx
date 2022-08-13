@@ -28,7 +28,16 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </BrowserRouter>
       </Provider>
     </ThemeProvider>
-    <style jsx='true' global>{`
+    <style jsx global>{`
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+          'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
       html,
       body,
       #root,
@@ -38,6 +47,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       }
       #root {
         display: flex;
+        padding-top: 70px;
       }
     `}</style>
   </React.StrictMode>,
