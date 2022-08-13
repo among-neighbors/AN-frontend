@@ -11,6 +11,7 @@ import signInStore from './others/store';
 import NoticePage from './pages/NoticePage';
 import ComplaintPage from './pages/ComplaintPage';
 import CommunityPage from './pages/CommunityPage';
+import NoticeViewPage from './pages/NoticeViewPage';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -22,6 +23,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path='/' element={<HomePage />} />
             <Route path='/sign' element={<SignPage />} />
             <Route path='/notice' element={<NoticePage />} />
+            <Route path='/notice'>
+              <Route path=':id' element={<NoticeViewPage />} />
+            </Route>
             <Route path='/complaint' element={<ComplaintPage />} />
             <Route path='/community' element={<CommunityPage />} />
           </Routes>
