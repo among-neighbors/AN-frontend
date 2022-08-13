@@ -33,7 +33,7 @@ const pages: {
 ];
 const settings = ['로그아웃'];
 
-const UserHeader = () => {
+const Header = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -155,7 +155,7 @@ const UserHeader = () => {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={handleCloseUserMenu} component={Link} to='/sign' sx={{ p: 0 }}>
                 <Avatar alt='x' src='/static/images/avatar/2.jpg' />
               </IconButton>
             </Tooltip>
@@ -188,4 +188,4 @@ const UserHeader = () => {
   );
 };
 
-export default UserHeader;
+export default Header;
