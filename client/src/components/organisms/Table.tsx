@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { Link } from 'react-router-dom';
 
 interface Column {
   id: 'ID' | 'title' | 'type' | 'writer' | 'date';
@@ -73,7 +74,7 @@ const StickyHeadTable = ({ labels, rows }: TableProps) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  //display: { md: 'block', sm: 'none', xs: 'none' },
+
   return (
     <Paper
       sx={{
@@ -81,7 +82,7 @@ const StickyHeadTable = ({ labels, rows }: TableProps) => {
         overflow: 'hidden',
       }}
     >
-      <TableContainer sx={{ maxHeight: 600 }}>
+      <TableContainer sx={{ maxHeight: 400 }}>
         <Table stickyHeader aria-label='sticky table'>
           <TableHead>
             <TableRow>
@@ -99,7 +100,14 @@ const StickyHeadTable = ({ labels, rows }: TableProps) => {
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
               return (
-                <TableRow hover role='checkbox' tabIndex={-1} key={index}>
+                <TableRow
+                  component={Link}
+                  to={`${row.ID}`}
+                  style={{ textDecoration: 'none' }}
+                  hover
+                  tabIndex={-1}
+                  key={index}
+                >
                   {columns(labels).map((column) => {
                     const value = row[column.id];
                     return (
