@@ -7,20 +7,25 @@ import './index.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignPage from './pages/SignPage';
 import HomePage from './pages/HomePage';
+import { Provider } from 'react-redux';
+import signInStore from './others/store';
+import NoticePage from './pages/NoticePage';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <UserHeader />
-        <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/sign' element={<SignPage />} />
-          <Route path='/notice' element={<SignPage />} />
-          <Route path='/complaint' element={<SignPage />} />
-          <Route path='/community' element={<SignPage />} />
-        </Routes>
-      </BrowserRouter>
+      <Provider store={signInStore}>
+        <BrowserRouter>
+          <UserHeader />
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/sign' element={<SignPage />} />
+            <Route path='/notice' element={<NoticePage />} />
+            <Route path='/complaint' element={<SignPage />} />
+            <Route path='/community' element={<SignPage />} />
+          </Routes>
+        </BrowserRouter>
+      </Provider>
     </ThemeProvider>
   </React.StrictMode>,
 );
