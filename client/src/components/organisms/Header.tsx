@@ -73,7 +73,7 @@ const Header = () => {
               alignItems: 'center',
             }}
           >
-            <SquareImg src='img/iconWhite.png' />
+            <SquareImg src='../../../public/img/iconWhite.png' />
             이웃사이
           </Typography>
 
@@ -136,7 +136,7 @@ const Header = () => {
               alignItems: 'center',
             }}
           >
-            <SquareImg src='img/iconWhite.png' />
+            <SquareImg src='../../../public/img/iconWhite.png' />
             이웃사이
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>

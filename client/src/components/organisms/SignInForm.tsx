@@ -51,7 +51,7 @@ const SignIn = () => {
           }}
           color='primary'
         >
-          <SquareImg src='img/icon.png' length='50px' />
+          <SquareImg src='../../../public/img/icon.png' length='50px' />
           이웃사이
         </Typography>
         <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
