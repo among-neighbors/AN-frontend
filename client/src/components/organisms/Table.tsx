@@ -140,21 +140,6 @@ const StickyHeadTable = ({ labels, rows }: TableProps) => {
                     }}
                   >
                     <TableRowForMobile row={row} />
-                    {/* {columns(labels).map((column) => {
-                      const value = row[column.id];
-                      console.log(column, value);
-                      return (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          style={{ whiteSpace: 'nowrap' }}
-                        >
-                          {column.format && typeof value === 'boolean'
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })} */}
                   </TableRow>
                 </>
               );

@@ -24,7 +24,8 @@ const TableRowForMobile = ({ row }: TableRowForMobileProps) => {
           width: 100%;
           height: 70px;
           padding-left: 10px;
-          border-top: solid 1px #eee;
+          border-top: solid 0.5px #eee;
+          border-bottom: solid 0.5px #eee;
         }
         .tableRow > div {
           display: flex;
