@@ -15,7 +15,7 @@ function createData(ID: string, title: string, type: boolean, writer: string, da
 }
 
 const rows = [
-  createData('0', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
+  createData('0', '해윙', true, '홍길동', '2022.08.14'),
   createData('1', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
   createData('2', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
   createData('3', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),

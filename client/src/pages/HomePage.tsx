@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
+import TableRowForMobile from '../components/molecules/TableRowForMobile';
 
 const HomePage = (props: any) => {
   useEffect(() => {

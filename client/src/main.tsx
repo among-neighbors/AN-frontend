@@ -46,7 +46,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       body,
       #root,
       #root > div {
-        height: 100%;
         width: 100%;
       }
       #root {
