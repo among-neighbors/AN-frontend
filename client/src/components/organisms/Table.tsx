@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Link } from 'react-router-dom';
+import TableRowForMobile from '../molecules/TableRowForMobile';
 
 interface Column {
   id: 'ID' | 'title' | 'type' | 'writer' | 'date';
@@ -80,17 +81,19 @@ const StickyHeadTable = ({ labels, rows }: TableProps) => {
       sx={{
         width: '100%',
         overflow: 'hidden',
+        marginBottom: '40px',
+        maxWidth: '1500px',
       }}
     >
-      <TableContainer sx={{ maxHeight: 400 }}>
+      <TableContainer>
         <Table stickyHeader aria-label='sticky table'>
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ display: { xs: 'none', sm: 'none', md: 'table-row' } }}>
               {columns(labels).map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{ minWidth: column.minWidth, whiteSpace: 'nowrap' }}
                 >
                   {column.label}
                 </TableCell>
@@ -100,23 +103,60 @@ const StickyHeadTable = ({ labels, rows }: TableProps) => {
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
               return (
-                <TableRow
-                  component={Link}
-                  to={`${row.ID}`}
-                  style={{ textDecoration: 'none' }}
-                  hover
-                  tabIndex={-1}
-                  key={index}
-                >
-                  {columns(labels).map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'boolean' ? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
+                <>
+                  <TableRow
+                    component={Link}
+                    to={`${row.ID}`}
+                    style={{ textDecoration: 'none' }}
+                    hover
+                    tabIndex={-1}
+                    key={index}
+                    sx={{ display: { xs: 'none', sm: 'none', md: 'table-row' } }}
+                  >
+                    {columns(labels).map((column) => {
+                      const value = row[column.id];
+                      console.log(column, value);
+                      return (
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={{ whiteSpace: 'nowrap' }}
+                        >
+                          {column.format && typeof value === 'boolean'
+                            ? column.format(value)
+                            : value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                  <TableRow
+                    component={Link}
+                    to={`${row.ID}`}
+                    style={{ textDecoration: 'none' }}
+                    hover
+                    tabIndex={-1}
+                    sx={{
+                      display: { xs: 'table-row', sm: 'table-row', md: 'none' },
+                    }}
+                  >
+                    <TableRowForMobile row={row} />
+                    {/* {columns(labels).map((column) => {
+                      const value = row[column.id];
+                      console.log(column, value);
+                      return (
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={{ whiteSpace: 'nowrap' }}
+                        >
+                          {column.format && typeof value === 'boolean'
+                            ? column.format(value)
+                            : value}
+                        </TableCell>
+                      );
+                    })} */}
+                  </TableRow>
+                </>
               );
             })}
           </TableBody>
