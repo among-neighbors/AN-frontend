@@ -1,3 +1,5 @@
+import BoardNav from '../molecules/BoardNav';
+
 interface Data {
   ID: string;
   title: string;
@@ -23,8 +25,8 @@ const Board = ({ row }: BoardProps) => {
           </div>
         </div>
         <pre>반갑습니다.</pre>
+        <BoardNav />
       </div>
-      {/* <BoardNav /> */}
       <style jsx>{`
         .board {
           max-width: 1500px;
@@ -35,6 +37,7 @@ const Board = ({ row }: BoardProps) => {
           min-height: 350px;
           border-width: 1.5px 0;
           padding: 30px 10px 50px 10px;
+          margin-bottom: 5px;
         }
         .boardHeader {
           display: flex;
