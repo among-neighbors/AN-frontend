@@ -14,7 +14,7 @@ const SignIn = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    //credentials: 'include',
+    //credentials: 'include', login API
     // const res = await fetch('http://34.64.212.250:8181/api/v1/auth/account/sign-in', {
     //   method: 'POST',
     //   headers: {
