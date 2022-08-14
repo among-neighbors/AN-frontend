@@ -3,6 +3,7 @@ import BoardNav from '../molecules/BoardNav';
 interface Data {
   ID: string;
   title: string;
+  body: string;
   type: boolean;
   writer: string;
   date: string;
@@ -17,19 +18,19 @@ const Board = ({ row }: BoardProps) => {
     <>
       <div className='board'>
         <div className='boardHeader'>
-          <h2>공지입니다.</h2>
+          <h2>{row?.title}</h2>
           <div>
-            <p>공지 유형</p>
-            <p>공지 유형</p>
-            <p>공지 유형</p>
+            <p>{`유형 : ${row?.type ? '라인' : '단지'}`}</p>
+            <p>{`작성자 : ${row?.writer}`}</p>
+            <p>{`등록일 : ${row?.date}`}</p>
           </div>
         </div>
-        <pre>반갑습니다.</pre>
+        <pre>{row?.body}</pre>
         <BoardNav />
       </div>
       <style jsx>{`
         .board {
-          max-width: 1500px;
+          max-width: 1200px;
           width: 100%;
         }
         .board > pre {
@@ -54,7 +55,7 @@ const Board = ({ row }: BoardProps) => {
           display: flex;
           width: 100%;
           max-width: 600px;
-          padding-left: 12px;
+          padding: 0 12px;
           justify-content: space-between;
         }
         .boardHeader > div > p {

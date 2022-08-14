@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Link } from 'react-router-dom';
-import TableRowForMobile from '../molecules/TableRowForMobile';
+import { TableRowForMobile } from '../molecules/TableRow';
 
 interface Column {
   id: 'ID' | 'title' | 'type' | 'writer' | 'date';
