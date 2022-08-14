@@ -10,9 +10,35 @@ import SquareImg from '../atoms/Img';
 import { shadowCssForMUI } from '~/others/cssLibrary';
 
 const SignIn = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+
+    //credentials: 'include',
+    // const res = await fetch('http://34.64.212.250:8181/api/v1/auth/account/sign-in', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     credentials: 'include',
+    //   },
+    //   body: JSON.stringify({
+    //     lineName: '103',
+    //     houseName: '101',
+    //     username: 'yoon',
+    //     email: 'yoon',
+    //     passwd: 'root',
+    //   }),
+    // });
+    // console.log(res);
+
+    // const res = await fetch('34.64.212.250:8181' + '/api/v1/profile', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
+    // const r = await res.json();
+
     console.log({
       username: data.get('username'),
       password: data.get('password'),
