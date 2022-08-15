@@ -14,12 +14,10 @@ const SignIn = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    //credentials: 'include',
-    // const res = await fetch('http://34.64.212.250:8181/api/v1/auth/account/sign-in', {
+    // const res = await fetch('http://34.64.212.250:8181/api/v1/auth/account/new', {
     //   method: 'POST',
     //   headers: {
     //     'Content-Type': 'application/json',
-    //     credentials: 'include',
     //   },
     //   body: JSON.stringify({
     //     lineName: '103',
@@ -31,33 +29,33 @@ const SignIn = () => {
     // });
     // console.log(res);
 
-    const res = await fetch('http://34.64.212.250:8181/api/v1/auth/account/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        credentials: 'include',
-      },
-      body: JSON.stringify({
-        username: 'yoon',
-        passwd: 'root',
-      }),
-    });
-    console.log(res);
-
-    // const ress = await fetch('http://34.64.212.250:8181/api/v1/auth/profile/add', {
+    // const res = await fetch('http://34.64.212.250:8181/api/v1/auth/account/login', {
     //   method: 'POST',
     //   headers: {
     //     'Content-Type': 'application/json',
     //     credentials: 'include',
     //   },
     //   body: JSON.stringify({
-    //     name: 'test',
-    //     age: 10,
-    //     pin: '0123',
-    //     gender: 'MALE',
+    //     username: 'yoon',
+    //     passwd: 'root',
     //   }),
     // });
-    // console.log(ress);
+    // console.log(res);
+
+    const ress = await fetch('http://34.64.212.250:8181/api/v1/auth/profile/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        credentials: 'include',
+      },
+      body: JSON.stringify({
+        name: 'test',
+        age: 10,
+        pin: '0123',
+        gender: 'MALE',
+      }),
+    });
+    console.log(ress);
 
     // const res = await fetch('34.64.212.250:8181' + '/api/v1/profile', {
     //   method: 'GET',
