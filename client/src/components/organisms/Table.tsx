@@ -63,7 +63,7 @@ interface TableProps {
   rows: Data[];
 }
 
-const StickyHeadTable = ({ labels, rows }: TableProps) => {
+const BoardTable = ({ labels, rows }: TableProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -160,4 +160,4 @@ const StickyHeadTable = ({ labels, rows }: TableProps) => {
   );
 };
 
-export default StickyHeadTable;
+export default BoardTable;

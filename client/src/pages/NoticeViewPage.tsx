@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import PageHeader from '~/components/organisms/PageHeader';
 import Board from '~/components/organisms/Board';
 import Comment from '~/components/organisms/Comment';
+import TableNav from '~/components/molecules/TableNav';
 
 interface Data {
   ID: string;

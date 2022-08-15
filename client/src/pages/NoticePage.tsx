@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
+import TableNav from '~/components/molecules/TableNav';
 import PageHeader from '~/components/organisms/PageHeader';
-import StickyHeadTable from '~/components/organisms/Table';
+import BoardTable from '~/components/organisms/Table';
 
 interface Data {
   ID: string;
@@ -42,10 +43,9 @@ const NoticePage = () => {
     <>
       <div className='noticePage'>
         <PageHeader type='notice' />
-        <StickyHeadTable
-          labels={['공지 ID', '제목', '공지 유형', '작성자', '등록일']}
-          rows={rows}
-        />
+        <TableNav />
+
+        <BoardTable labels={['공지 ID', '제목', '공지 유형', '작성자', '등록일']} rows={rows} />
       </div>
       <style jsx>{`
         .noticePage {
