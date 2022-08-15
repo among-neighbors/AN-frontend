@@ -14,6 +14,7 @@ const tableList = [
 ];
 
 interface TableNavState {
+  [key: string]: number;
   notice: number;
   community: number;
 }
@@ -23,8 +24,23 @@ interface TableNavProps {
   state: TableNavState;
 }
 
-const defaultTableNav = {
-  borderColor: '#BDBDBD',
+const defaultStyleOfTableNavButton = {
+  whiteSpace: 'nowrap',
+  height: '40px',
+  width: '105px',
+  borderRadius: '0',
+};
+
+const clickedStyleOfTableNavButton = {
+  ...defaultStyleOfTableNavButton,
+  fontWeight: 700,
+  outline: 'solid 1px #f6be9a',
+  zIndex: 1,
+};
+
+const nonClickedStyleOfTableNavButton = {
+  ...defaultStyleOfTableNavButton,
+  outline: 'solid 1px #BDBDBD',
   color: '#808080',
 };
 
@@ -35,37 +51,17 @@ const TableNav = ({ type, state }: TableNavProps) => {
     <>
       <div className='tableNav'>
         {tableNav.navList.map((kind, index) => {
-          if (state[type] === index)
-            return (
-              <Button
-                onClick={() => {
-                  handleTableNav(tableNav.type === 'notice' ? true : false, index);
-                }}
-                sx={{
-                  whiteSpace: 'nowrap',
-                  height: '40px',
-                  width: '105px',
-                  borderRadius: '0',
-                }}
-                variant='contained'
-                key={index}
-              >
-                {kind}
-              </Button>
-            );
           return (
             <Button
               onClick={() => {
                 handleTableNav(tableNav.type === 'notice' ? true : false, index);
               }}
-              sx={{
-                whiteSpace: 'nowrap',
-                height: '40px',
-                width: '105px',
-                borderRadius: '0',
-                ...defaultTableNav,
-              }}
-              variant='outlined'
+              sx={
+                state[type] === index
+                  ? clickedStyleOfTableNavButton
+                  : nonClickedStyleOfTableNavButton
+              }
+              variant='text'
               key={index}
             >
               {kind}
@@ -77,6 +73,7 @@ const TableNav = ({ type, state }: TableNavProps) => {
         .tableNav {
           display: flex;
           margin: 10px 0 55px 0;
+          gap: 1px;
         }
       `}</style>
     </>
