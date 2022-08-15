@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignPage from './pages/SignPage';
 import HomePage from './pages/HomePage';
 import { Provider } from 'react-redux';
-import signInStore from './others/store';
+import { tableNavStore } from './others/store';
 import NoticePage from './pages/NoticePage';
 import ComplaintPage from './pages/ComplaintPage';
 import CommunityPage from './pages/CommunityPage';
@@ -16,7 +16,7 @@ import NoticeViewPage from './pages/NoticeViewPage';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <Provider store={signInStore}>
+      <Provider store={tableNavStore}>
         <BrowserRouter>
           <Header />
           <Routes>

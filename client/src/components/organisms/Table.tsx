@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Link } from 'react-router-dom';
-import TableRowForMobile from '../molecules/TableRowForMobile';
+import { TableRowForMobile } from '../molecules/TableRow';
 
 interface Column {
   id: 'ID' | 'title' | 'type' | 'writer' | 'date';
@@ -63,7 +63,7 @@ interface TableProps {
   rows: Data[];
 }
 
-const StickyHeadTable = ({ labels, rows }: TableProps) => {
+const BoardTable = ({ labels, rows }: TableProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -115,7 +115,6 @@ const StickyHeadTable = ({ labels, rows }: TableProps) => {
                   >
                     {columns(labels).map((column) => {
                       const value = row[column.id];
-                      console.log(column, value);
                       return (
                         <TableCell
                           key={column.id}
@@ -140,21 +139,6 @@ const StickyHeadTable = ({ labels, rows }: TableProps) => {
                     }}
                   >
                     <TableRowForMobile row={row} />
-                    {/* {columns(labels).map((column) => {
-                      const value = row[column.id];
-                      console.log(column, value);
-                      return (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          style={{ whiteSpace: 'nowrap' }}
-                        >
-                          {column.format && typeof value === 'boolean'
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })} */}
                   </TableRow>
                 </>
               );
@@ -175,4 +159,4 @@ const StickyHeadTable = ({ labels, rows }: TableProps) => {
   );
 };
 
-export default StickyHeadTable;
+export default BoardTable;
