@@ -115,7 +115,6 @@ const BoardTable = ({ labels, rows }: TableProps) => {
                   >
                     {columns(labels).map((column) => {
                       const value = row[column.id];
-                      console.log(column, value);
                       return (
                         <TableCell
                           key={column.id}

@@ -1,5 +1,3 @@
-import { Fragment } from 'react';
-
 interface PageHeaderProps {
   type: string;
 }
@@ -24,12 +22,12 @@ const texts = [
 
 const PageHeader = ({ type }: PageHeaderProps) => {
   const pageText = texts.find((text) => text.type === type);
-
+  if (pageText === undefined) return <></>;
   return (
     <>
       <div className='pageHeader'>
-        <h1>{pageText?.title}</h1>
-        <p>{pageText?.sub}</p>
+        <h1>{pageText.title}</h1>
+        <p>{pageText.sub}</p>
       </div>
       <style jsx>{`
         .pageHeader {
