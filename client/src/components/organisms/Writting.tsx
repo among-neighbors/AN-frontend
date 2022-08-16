@@ -54,6 +54,7 @@ const Writting = () => {
     event.preventDefault();
     console.log(writingData);
   };
+
   return (
     <>
       <Box
