@@ -47,6 +47,7 @@ const NoticeViewPage = () => {
     <>
       <div className='noticeViewPage'>
         <PageHeader type='notice' />
+        <TableNav type='notice' />
         <Board row={row} />
         <Comment />
       </div>
