@@ -14,22 +14,50 @@ const SignIn = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    //credentials: 'include', login API
-    // const res = await fetch('http://34.64.212.250:8181/api/v1/auth/account/sign-in', {
+    const res = await fetch('https://34.64.212.250:8181/api/v1/auth/account/new', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        lineName: '103',
+        houseName: '101',
+        username: 'yoon',
+        email: 'yoon',
+        passwd: 'root',
+      }),
+    });
+    const ddd = await res.json();
+    console.log(ddd);
+
+    const ress = await fetch('https://34.64.212.250:8181/api/v1/auth/account/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        username: 'yoon',
+        passwd: 'root',
+      }),
+    });
+    const dd = await ress.json();
+    console.log(dd);
+
+    // const ress = await fetch('http://34.64.212.250:8181/api/v1/auth/profile/add', {
     //   method: 'POST',
     //   headers: {
     //     'Content-Type': 'application/json',
-    //     credentials: 'include',
     //   },
+    //   credentials: 'include',
     //   body: JSON.stringify({
-    //     lineName: '103',
-    //     houseName: '101',
-    //     username: 'yoon',
-    //     email: 'yoon',
-    //     passwd: 'root',
+    //     name: 'test',
+    //     age: 10,
+    //     pin: '0123',
+    //     gender: 'MALE',
     //   }),
     // });
-    // console.log(res);
+    // console.log(ress);
 
     // const res = await fetch('34.64.212.250:8181' + '/api/v1/profile', {
     //   method: 'GET',
@@ -39,10 +67,10 @@ const SignIn = () => {
     // });
     // const r = await res.json();
 
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
+    // console.log({
+    //   username: data.get('username'),
+    //   password: data.get('password'),
+    // });
   };
 
   return (
