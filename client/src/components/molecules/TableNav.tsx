@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
 import { Button } from '@mui/material';
 import { handleTableNav } from '~/others/store';
+import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const tableList = [
   {
@@ -46,27 +48,48 @@ const nonClickedStyleOfTableNavButton = {
 
 const TableNav = ({ type, state }: TableNavProps) => {
   const tableNav = tableList.find((table) => table.type === type);
+  const param = useParams();
   if (tableNav === undefined) return <></>;
   return (
     <>
       <div className='tableNav'>
         {tableNav.navList.map((kind, index) => {
-          return (
-            <Button
-              onClick={() => {
-                handleTableNav(tableNav.type === 'notice' ? true : false, index);
-              }}
-              sx={
-                state[type] === index
-                  ? clickedStyleOfTableNavButton
-                  : nonClickedStyleOfTableNavButton
-              }
-              variant='text'
-              key={index}
-            >
-              {kind}
-            </Button>
-          );
+          if (param?.id)
+            return (
+              <Button
+                onClick={() => {
+                  handleTableNav(tableNav.type === 'notice' ? true : false, index);
+                }}
+                component={Link}
+                to={`/${type}`}
+                sx={
+                  state[type] === index
+                    ? clickedStyleOfTableNavButton
+                    : nonClickedStyleOfTableNavButton
+                }
+                variant='text'
+                key={index}
+              >
+                {kind}
+              </Button>
+            );
+          else
+            return (
+              <Button
+                onClick={() => {
+                  handleTableNav(tableNav.type === 'notice' ? true : false, index);
+                }}
+                sx={
+                  state[type] === index
+                    ? clickedStyleOfTableNavButton
+                    : nonClickedStyleOfTableNavButton
+                }
+                variant='text'
+                key={index}
+              >
+                {kind}
+              </Button>
+            );
         })}
       </div>
       <style jsx>{`
