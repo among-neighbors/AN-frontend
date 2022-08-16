@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build"
+    "build": "tsc && vite build",
+    "cert": "rm -rf .cert && mkdir -p .cert && mkcert -key-file ./.cert/key.pem -cert-file ./.cert/cert.pem 'localhost'"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -22,6 +23,7 @@
     "use-interval": "^1.4.0"
   },
   "devDependencies": {
+    "@types/node": "^18.7.5",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.5",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
@@ -37,9 +39,8 @@
     "eslint-plugin-react-hooks": "^4.5.0",
     "prettier": "^2.6.2",
     "typescript": "^4.6.3",
-    "vite": "^3.0.4",
+    "vite": "^2.9.0",
     "vite-plugin-live-reload": "^3.0.0",
-    "vite-plugin-mkcert": "^1.9.0",
     "vite-tsconfig-paths": "^3.5.0"
   }
 }

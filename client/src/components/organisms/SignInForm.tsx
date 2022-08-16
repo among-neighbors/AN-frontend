@@ -14,7 +14,7 @@ const SignIn = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    const res = await fetch('http://34.64.212.250:8181/api/v1/auth/account/new', {
+    const res = await fetch('https://34.64.212.250:8181/api/v1/auth/account/new', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ const SignIn = () => {
     const ddd = await res.json();
     console.log(ddd);
 
-    const ress = await fetch('http://34.64.212.250:8181/api/v1/auth/account/login', {
+    const ress = await fetch('https://34.64.212.250:8181/api/v1/auth/account/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
