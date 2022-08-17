@@ -204,7 +204,7 @@ const Header = () => {
             </Box>
           </Toolbar>
         </Container>
-        <HelpSideBar></HelpSideBar>
+        {/* <HelpSideBar></HelpSideBar> */}
       </AppBar>
     </>
   );

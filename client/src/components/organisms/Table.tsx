@@ -147,7 +147,7 @@ const BoardTable = ({ labels, rows }: TableProps) => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[10]}
         component='div'
         count={rows.length}
         rowsPerPage={rowsPerPage}
