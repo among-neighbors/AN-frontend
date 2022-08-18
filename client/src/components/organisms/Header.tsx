@@ -14,6 +14,9 @@ import MenuItem from '@mui/material/MenuItem';
 import SquareImg from '~/components/atoms/Img';
 import { Link } from 'react-router-dom';
 import HelpSideBar from '~/components/organisms/HelpSideBar';
+import { shadowCssForMUI } from '~/others/cssLibrary';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import ArrowForward from '@mui/icons-material/ArrowForward';
 
 const pages: {
   name: string;
@@ -32,11 +35,11 @@ const pages: {
     link: 'community',
   },
 ];
-const settings = ['도움 요청', '도움 리스트', '로그아웃'];
 
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElHelpCall, setAnchorElHelpCall] = React.useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -46,6 +49,10 @@ const Header = () => {
     setAnchorElUser(event.currentTarget);
   };
 
+  const handleOpenHelpCallModal = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElHelpCall(event.currentTarget);
+  };
+
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
@@ -53,6 +60,14 @@ const Header = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleCloseHelpCallModal = () => {
+    setAnchorElHelpCall(null);
+  };
+
+  const handleHelpList = () => {};
+
+  const handleLogOutAndRedirect = () => {};
 
   return (
     <>
@@ -173,22 +188,29 @@ const Header = () => {
               ))}
             </Box>
 
-            <Box sx={{ display: 'flex', position: 'relative' }}>
+            <Box
+              sx={{
+                display: {
+                  xs: 'none',
+                  sm: 'flex',
+                },
+                '& .helpCallBtn:hover': {
+                  background: '#fff',
+                },
+                '& .helpListBtn:hover': {
+                  background: '#ff1000',
+                  zIndex: 2,
+                },
+              }}
+            >
               <IconButton
-                onClick={handleOpenUserMenu}
+                onClick={handleOpenHelpCallModal}
+                className='helpCallBtn'
                 sx={{
+                  zIndex: 1,
                   background: '#fff',
                   width: '40px',
                   height: '40px',
-                  '&:hover': {
-                    background: '#f11000',
-                    '& .nonHover': {
-                      display: 'none',
-                    },
-                    '& .hover': {
-                      display: 'flex',
-                    },
-                  },
                 }}
               >
                 <Avatar
@@ -210,41 +232,66 @@ const Header = () => {
                 />
               </IconButton>
               <IconButton
-                onClick={handleOpenUserMenu}
+                onClick={handleHelpList}
+                className='helpListBtn'
                 sx={{
-                  background: '#fff',
+                  position: 'relative',
+                  left: '-15px',
+                  background: '#f11000',
+                  color: '#fff',
                   width: '40px',
                   height: '40px',
-                  '&:hover': {
-                    background: '#f11000',
-                    '& .nonHover': {
-                      display: 'none',
-                    },
-                    '& .hover': {
-                      display: 'flex',
-                    },
-                  },
                 }}
               >
-                <Avatar
-                  className='nonHover'
-                  sx={{
-                    width: '28px',
-                    height: '28px',
-                  }}
-                  src='../../../public/img/sirenRed.png'
-                />
-                <Avatar
-                  className='hover'
-                  sx={{
-                    width: '28px',
-                    height: '28px',
-                    display: 'none',
-                  }}
-                  src='../../../public/img/sirenWhite.png'
-                />
+                +3
               </IconButton>
             </Box>
+
+            <Menu
+              anchorEl={anchorElHelpCall}
+              open={Boolean(anchorElHelpCall)}
+              onClose={handleCloseHelpCallModal}
+              sx={{
+                mt: '10px',
+                '& ul': {
+                  padding: 0,
+                },
+              }}
+            >
+              <Box sx={{ width: '320px', height: '130px', ...shadowCssForMUI }}>
+                <Typography
+                  sx={{
+                    display: 'flex',
+                    fontSize: '15px',
+                    lineHeight: '28px',
+                    height: '85px',
+                    alignItems: 'center',
+                    paddingLeft: '20px',
+                  }}
+                >
+                  도움 요청 시 라인 내 입주민에게
+                  <br /> 도움 요청을 알립니다.
+                </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+                  <Button
+                    variant='outlined'
+                    color='inherit'
+                    sx={{ height: '32px' }}
+                    startIcon={<ArrowBack />}
+                  >
+                    돌아가기
+                  </Button>
+                  <Button
+                    variant='contained'
+                    color='error'
+                    sx={{ height: '32px' }}
+                    endIcon={<ArrowForward />}
+                  >
+                    동의 후 도움 요청
+                  </Button>
+                </Box>
+              </Box>
+            </Menu>
 
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title='Open settings'>
@@ -268,11 +315,15 @@ const Header = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign='center'>{setting}</Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem onClick={handleOpenHelpCallModal}>
+                  <Typography textAlign='center'>도움 요청</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleHelpList}>
+                  <Typography textAlign='center'>도움 리스트</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleLogOutAndRedirect}>
+                  <Typography textAlign='center'>로그아웃</Typography>
+                </MenuItem>
               </Menu>
             </Box>
           </Toolbar>
