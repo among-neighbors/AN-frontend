@@ -173,6 +173,79 @@ const Header = () => {
               ))}
             </Box>
 
+            <Box sx={{ display: 'flex', position: 'relative' }}>
+              <IconButton
+                onClick={handleOpenUserMenu}
+                sx={{
+                  background: '#fff',
+                  width: '40px',
+                  height: '40px',
+                  '&:hover': {
+                    background: '#f11000',
+                    '& .nonHover': {
+                      display: 'none',
+                    },
+                    '& .hover': {
+                      display: 'flex',
+                    },
+                  },
+                }}
+              >
+                <Avatar
+                  className='nonHover'
+                  sx={{
+                    width: '28px',
+                    height: '28px',
+                  }}
+                  src='../../../public/img/sirenRed.png'
+                />
+                <Avatar
+                  className='hover'
+                  sx={{
+                    width: '28px',
+                    height: '28px',
+                    display: 'none',
+                  }}
+                  src='../../../public/img/sirenWhite.png'
+                />
+              </IconButton>
+              <IconButton
+                onClick={handleOpenUserMenu}
+                sx={{
+                  background: '#fff',
+                  width: '40px',
+                  height: '40px',
+                  '&:hover': {
+                    background: '#f11000',
+                    '& .nonHover': {
+                      display: 'none',
+                    },
+                    '& .hover': {
+                      display: 'flex',
+                    },
+                  },
+                }}
+              >
+                <Avatar
+                  className='nonHover'
+                  sx={{
+                    width: '28px',
+                    height: '28px',
+                  }}
+                  src='../../../public/img/sirenRed.png'
+                />
+                <Avatar
+                  className='hover'
+                  sx={{
+                    width: '28px',
+                    height: '28px',
+                    display: 'none',
+                  }}
+                  src='../../../public/img/sirenWhite.png'
+                />
+              </IconButton>
+            </Box>
+
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title='Open settings'>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

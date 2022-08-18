@@ -12,10 +12,10 @@ const HelpSideBar = () => {
       <style jsx>{`
         .helpSideBar {
           position: absolute;
-          top: 0;
+          top: 70px;
           right: 0;
           width: 300px;
-          height: 100vh;
+          height: calc(100vh - 70px);
           background: #fff;
         }
       `}</style>
