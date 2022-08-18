@@ -1,7 +1,10 @@
-import { createStore } from 'redux';
+import { combineReducers, createStore } from 'redux';
 
 const ACTION_FROM_NOTICE = 'actionToNotice';
 const ACTION_FROM_COMMUNITY = 'actionToCommunity';
+
+const ACTION_TO_CLOSE_HELP_SIDE_BAR = 'actionToCloseHelpSideBar';
+const ACTION_TO_OPEN_HELP_SIDE_BAR = 'actionToOpenHelpSideBar';
 
 interface TableNavState {
   notice: number;
@@ -31,37 +34,41 @@ const tableNavReducer = (
   }
 };
 
-const tableNavStore = createStore(tableNavReducer);
+const helpSideBarReducer = (state: boolean = false, action: any) => {
+  switch (action.type) {
+    case ACTION_TO_OPEN_HELP_SIDE_BAR:
+      return true;
+    case ACTION_TO_CLOSE_HELP_SIDE_BAR:
+      return false;
+    default:
+      return state;
+  }
+};
+
+const rootReducer = combineReducers({
+  tableNavReducer,
+  helpSideBarReducer,
+});
+
+const store = createStore(rootReducer);
 
 const handleTableNav = (isNotice: boolean, idx: number) => {
-  tableNavStore.dispatch({
+  store.dispatch({
     type: isNotice ? ACTION_FROM_NOTICE : ACTION_FROM_COMMUNITY,
     idx,
   });
 };
 
-export { tableNavStore, handleTableNav };
+const closeHelpSideBar = () => {
+  store.dispatch({
+    type: ACTION_TO_CLOSE_HELP_SIDE_BAR,
+  });
+};
 
-// const SUCCESS_TO_SIGN_IN = 'succesToSignIn';
-// const FAIL_TO_SIGN_IN = 'failToSignIn';
+const openHelpSideBar = () => {
+  store.dispatch({
+    type: ACTION_TO_OPEN_HELP_SIDE_BAR,
+  });
+};
 
-// const reducer = (state: boolean = false, action: any) => {
-//   switch (action.type) {
-//     case SUCCESS_TO_SIGN_IN:
-//       return true;
-//     case FAIL_TO_SIGN_IN:
-//       return false;
-//     default:
-//       return state;
-//   }
-// };
-
-// const signInStore = createStore(reducer);
-
-// export const weAreSignIn = () => {
-//   signInStore.dispatch({
-//     type: SUCCESS_TO_SIGN_IN,
-//   });
-// };
-
-// export default signInStore;
+export { store, handleTableNav };

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import TableNav from '~/components/molecules/TableNav';
+import HelpSideBar from '~/components/organisms/HelpSideBar';
 import PageHeader from '~/components/organisms/PageHeader';
 import BoardTable from '~/components/organisms/Table';
 import Writting from '~/components/organisms/Writting';
@@ -74,6 +75,7 @@ const NoticePage = () => {
 
         <BoardTable labels={['공지 ID', '제목', '공지 유형', '작성자', '등록일']} rows={rows} />
       </div>
+      {/* <HelpSideBar /> */}
       <style jsx>{`
         .noticePage {
           display: flex;
