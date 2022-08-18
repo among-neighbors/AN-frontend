@@ -8,6 +8,9 @@ const HelpSideBar = () => {
         <HelpCallBox />
         <HelpCallBox />
         <HelpFinBox />
+        <HelpFinBox />
+        <HelpFinBox />
+        <HelpFinBox />
       </div>
       <style jsx>{`
         .helpSideBar {
@@ -17,6 +20,7 @@ const HelpSideBar = () => {
           width: 300px;
           height: calc(100vh - 70px);
           background: #fff;
+          border-left: solid 1px #ddd;
         }
       `}</style>
     </>
