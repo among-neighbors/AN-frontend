@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@mui/material';
-import theme from './others/colorTheme';
+import theme from './others/myTheme';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Header from './components/organisms/Header';
@@ -7,16 +7,17 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignPage from './pages/SignPage';
 import HomePage from './pages/HomePage';
 import { Provider } from 'react-redux';
-import { tableNavStore } from './others/store';
+import { store } from './others/store';
 import NoticePage from './pages/NoticePage';
 import ComplaintPage from './pages/ComplaintPage';
 import CommunityPage from './pages/CommunityPage';
 import NoticeViewPage from './pages/NoticeViewPage';
+import HelpSideBar from './components/organisms/HelpSideBar';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <Provider store={tableNavStore}>
+    <Provider store={store}>
+      <ThemeProvider theme={theme(store.getState().helpSideBarReducer)}>
         <BrowserRouter>
           <Header />
           <Routes>
@@ -29,9 +30,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path='/complaint' element={<ComplaintPage />} />
             <Route path='/community' element={<CommunityPage />} />
           </Routes>
+          <HelpSideBar />
         </BrowserRouter>
-      </Provider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </Provider>
     <style jsx global>{`
       * {
         margin: 0;
