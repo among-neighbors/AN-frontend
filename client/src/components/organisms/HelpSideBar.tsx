@@ -1,6 +1,7 @@
+import { connect } from 'react-redux';
 import { HelpCallBox, HelpFinBox } from '../molecules/HelpCallBox';
 
-const HelpSideBar = () => {
+const HelpSideBar = (props: any) => {
   return (
     <>
       <div className='block'></div>
@@ -24,6 +25,15 @@ const HelpSideBar = () => {
           border-left: solid 1px #ddd;
         } */
         }
+
+        ${props.state.helpSideBarReducer
+          ? ``
+          : `
+        .block, .helpSideBar{
+          display: none;
+        }
+        }
+        `}
         .block {
           width: 300px !important;
           min-width: 300px;
@@ -45,4 +55,8 @@ const HelpSideBar = () => {
   );
 };
 
-export default HelpSideBar;
+const mapStateToProps = (state: any) => {
+  return { state };
+};
+
+export default connect(mapStateToProps)(HelpSideBar);

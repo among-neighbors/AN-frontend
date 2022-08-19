@@ -3,8 +3,8 @@ import { combineReducers, createStore } from 'redux';
 const ACTION_FROM_NOTICE = 'actionToNotice';
 const ACTION_FROM_COMMUNITY = 'actionToCommunity';
 
+const ACTION_TO_HANDLE_HELP_SIDE_BAR = 'actionToHandleHelpSideBar';
 const ACTION_TO_CLOSE_HELP_SIDE_BAR = 'actionToCloseHelpSideBar';
-const ACTION_TO_OPEN_HELP_SIDE_BAR = 'actionToOpenHelpSideBar';
 
 interface TableNavState {
   notice: number;
@@ -36,8 +36,8 @@ const tableNavReducer = (
 
 const helpSideBarReducer = (state: boolean = false, action: any) => {
   switch (action.type) {
-    case ACTION_TO_OPEN_HELP_SIDE_BAR:
-      return true;
+    case ACTION_TO_HANDLE_HELP_SIDE_BAR:
+      return !state;
     case ACTION_TO_CLOSE_HELP_SIDE_BAR:
       return false;
     default:
@@ -59,16 +59,16 @@ const handleTableNav = (isNotice: boolean, idx: number) => {
   });
 };
 
+const handleHelpSideBar = () => {
+  store.dispatch({
+    type: ACTION_TO_HANDLE_HELP_SIDE_BAR,
+  });
+};
+
 const closeHelpSideBar = () => {
   store.dispatch({
     type: ACTION_TO_CLOSE_HELP_SIDE_BAR,
   });
 };
 
-const openHelpSideBar = () => {
-  store.dispatch({
-    type: ACTION_TO_OPEN_HELP_SIDE_BAR,
-  });
-};
-
-export { store, handleTableNav };
+export { store, handleTableNav, handleHelpSideBar, closeHelpSideBar };

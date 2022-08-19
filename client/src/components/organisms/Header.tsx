@@ -13,10 +13,10 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import SquareImg from '~/components/atoms/Img';
 import { Link } from 'react-router-dom';
-import HelpSideBar from '~/components/organisms/HelpSideBar';
 import { shadowCssForMUI } from '~/others/cssLibrary';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
+import { handleHelpSideBar } from '~/others/store';
 
 const pages: {
   name: string;
@@ -64,8 +64,6 @@ const Header = () => {
   const handleCloseHelpCallModal = () => {
     setAnchorElHelpCall(null);
   };
-
-  const handleHelpList = () => {};
 
   const handleLogOutAndRedirect = () => {};
 
@@ -232,7 +230,7 @@ const Header = () => {
                 />
               </IconButton>
               <IconButton
-                onClick={handleHelpList}
+                onClick={handleHelpSideBar}
                 className='helpListBtn'
                 sx={{
                   position: 'relative',
@@ -318,7 +316,7 @@ const Header = () => {
                 <MenuItem onClick={handleOpenHelpCallModal}>
                   <Typography textAlign='center'>도움 요청</Typography>
                 </MenuItem>
-                <MenuItem onClick={handleHelpList}>
+                <MenuItem onClick={handleHelpSideBar}>
                   <Typography textAlign='center'>도움 리스트</Typography>
                 </MenuItem>
                 <MenuItem onClick={handleLogOutAndRedirect}>
@@ -328,7 +326,6 @@ const Header = () => {
             </Box>
           </Toolbar>
         </Container>
-        {/* <HelpSideBar></HelpSideBar> */}
       </AppBar>
     </>
   );
