@@ -9,7 +9,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
       <Router />
     </Provider>
-    <style jsx global>{`
+    <style jsx global='true'>{`
       * {
         margin: 0;
         padding: 0;

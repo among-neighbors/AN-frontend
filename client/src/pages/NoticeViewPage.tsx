@@ -51,12 +51,12 @@ const NoticeViewPage = () => {
         <Board row={row} />
         <Comment />
       </div>
-      <style>{`
-      .noticeViewPage{
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-      }
+      <style jsx>{`
+        .noticeViewPage {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
       `}</style>
     </>
   );
