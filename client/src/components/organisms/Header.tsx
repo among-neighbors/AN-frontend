@@ -316,7 +316,12 @@ const Header = () => {
                 <MenuItem onClick={handleOpenHelpCallModal}>
                   <Typography textAlign='center'>도움 요청</Typography>
                 </MenuItem>
-                <MenuItem onClick={handleHelpSideBar}>
+                <MenuItem
+                  onClick={() => {
+                    handleHelpSideBar();
+                    handleCloseUserMenu();
+                  }}
+                >
                   <Typography textAlign='center'>도움 리스트</Typography>
                 </MenuItem>
                 <MenuItem onClick={handleLogOutAndRedirect}>
