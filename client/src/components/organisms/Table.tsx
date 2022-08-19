@@ -103,14 +103,13 @@ const BoardTable = ({ labels, rows }: TableProps) => {
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
               return (
-                <>
+                <React.Fragment key={index}>
                   <TableRow
                     component={Link}
                     to={`${row.ID}`}
                     style={{ textDecoration: 'none' }}
                     hover
                     tabIndex={-1}
-                    key={index}
                     sx={{ display: { xs: 'none', sm: 'none', md: 'table-row' } }}
                   >
                     {columns(labels).map((column) => {
@@ -140,7 +139,7 @@ const BoardTable = ({ labels, rows }: TableProps) => {
                   >
                     <TableRowForMobile row={row} />
                   </TableRow>
-                </>
+                </React.Fragment>
               );
             })}
           </TableBody>
