@@ -34,8 +34,8 @@ const Router = ({ state }: RouterProps) => {
             <Route path='/complaint' element={<ComplaintPage />} />
             <Route path='/community' element={<CommunityPage />} />
           </Routes>
+          <HelpSideBar />
         </ThemeProvider>
-        <HelpSideBar />
       </BrowserRouter>
     </>
   );
