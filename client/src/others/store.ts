@@ -7,8 +7,14 @@ const ACTION_TO_HANDLE_HELP_SIDE_BAR = 'actionToHandleHelpSideBar';
 const ACTION_TO_CLOSE_HELP_SIDE_BAR = 'actionToCloseHelpSideBar';
 
 interface TableNavState {
+  [key: string]: number;
   notice: number;
   community: number;
+}
+
+interface RootState {
+  helpSideBarReducer: boolean;
+  tableNavReducer: TableNavState;
 }
 
 const tableNavReducer = (
@@ -71,4 +77,4 @@ const closeHelpSideBar = () => {
   });
 };
 
-export { store, handleTableNav, handleHelpSideBar, closeHelpSideBar };
+export { store, handleTableNav, handleHelpSideBar, closeHelpSideBar, RootState };

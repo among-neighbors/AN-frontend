@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { Button } from '@mui/material';
-import { handleTableNav } from '~/others/store';
+import { handleTableNav, RootState } from '~/others/store';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -15,15 +15,9 @@ const tableList = [
   },
 ];
 
-interface TableNavState {
-  [key: string]: number;
-  notice: number;
-  community: number;
-}
-
 interface TableNavProps {
   type: string;
-  state: TableNavState;
+  state: RootState;
 }
 
 const defaultStyleOfTableNavButton = {
@@ -63,7 +57,7 @@ const TableNav = ({ type, state }: TableNavProps) => {
                 component={Link}
                 to={`/${type}`}
                 sx={
-                  state[type] === index
+                  state.tableNavReducer[type] === index
                     ? clickedStyleOfTableNavButton
                     : nonClickedStyleOfTableNavButton
                 }
@@ -80,7 +74,7 @@ const TableNav = ({ type, state }: TableNavProps) => {
                   handleTableNav(tableNav.type === 'notice' ? true : false, index);
                 }}
                 sx={
-                  state[type] === index
+                  state.tableNavReducer[type] === index
                     ? clickedStyleOfTableNavButton
                     : nonClickedStyleOfTableNavButton
                 }
@@ -103,7 +97,7 @@ const TableNav = ({ type, state }: TableNavProps) => {
   );
 };
 
-const mapStateToProps = (state: TableNavState) => {
+const mapStateToProps = (state: RootState) => {
   return {
     state,
   };
