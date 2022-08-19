@@ -10,15 +10,20 @@ import CommunityPage from './pages/CommunityPage';
 import NoticeViewPage from './pages/NoticeViewPage';
 import HelpSideBar from './components/organisms/HelpSideBar';
 import { connect } from 'react-redux';
+import { RootState } from './others/store';
 
-const Router = (props: any) => {
+interface RouterProps {
+  state: RootState;
+}
+
+const Router = ({ state }: RouterProps) => {
   return (
     <>
       <BrowserRouter>
         <ThemeProvider theme={theme(false)}>
           <Header />
         </ThemeProvider>
-        <ThemeProvider theme={theme(props.state.helpSideBarReducer)}>
+        <ThemeProvider theme={theme(state.helpSideBarReducer)}>
           <Routes>
             <Route path='/' element={<HomePage />} />
             <Route path='/sign' element={<SignPage />} />
@@ -36,7 +41,7 @@ const Router = (props: any) => {
   );
 };
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: RootState) => {
   return { state };
 };
 

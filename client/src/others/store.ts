@@ -22,7 +22,10 @@ const tableNavReducer = (
     notice: 0,
     community: 0,
   },
-  action: any,
+  action: {
+    type: string;
+    idx: number;
+  },
 ) => {
   switch (action.type) {
     case ACTION_FROM_COMMUNITY:
@@ -40,7 +43,7 @@ const tableNavReducer = (
   }
 };
 
-const helpSideBarReducer = (state: boolean = false, action: any) => {
+const helpSideBarReducer = (state: boolean = false, action: { type: string }) => {
   switch (action.type) {
     case ACTION_TO_HANDLE_HELP_SIDE_BAR:
       return !state;

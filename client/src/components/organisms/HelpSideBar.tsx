@@ -1,7 +1,12 @@
 import { connect } from 'react-redux';
+import { RootState } from '~/others/store';
 import { HelpCallBox, HelpFinBox } from '../molecules/HelpCallBox';
 
-const HelpSideBar = (props: any) => {
+interface HelpSideBarProps {
+  state: RootState;
+}
+
+const HelpSideBar = ({ state }: HelpSideBarProps) => {
   return (
     <>
       <div className='block'></div>
@@ -26,7 +31,7 @@ const HelpSideBar = (props: any) => {
         } */
         }
 
-        ${props.state.helpSideBarReducer
+        ${state.helpSideBarReducer
           ? ``
           : `
         .block, .helpSideBar{
@@ -55,7 +60,7 @@ const HelpSideBar = (props: any) => {
   );
 };
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: RootState) => {
   return { state };
 };
 
