@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import TableNav from '~/components/molecules/TableNav';
-import HelpSideBar from '~/components/organisms/HelpSideBar';
 import PageHeader from '~/components/organisms/PageHeader';
 import BoardTable from '~/components/organisms/Table';
 import Writting from '~/components/organisms/Writting';

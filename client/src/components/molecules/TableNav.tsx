@@ -42,48 +42,31 @@ const nonClickedStyleOfTableNavButton = {
 
 const TableNav = ({ type, state }: TableNavProps) => {
   const tableNav = tableList.find((table) => table.type === type);
-  const param = useParams();
+  const params = useParams();
+
   if (tableNav === undefined) return <></>;
   return (
     <>
       <div className='tableNav'>
         {tableNav.navList.map((kind, index) => {
-          if (param?.id)
-            return (
-              <Button
-                onClick={() => {
-                  handleTableNav(tableNav.type === 'notice' ? true : false, index);
-                }}
-                component={Link}
-                to={`/${type}`}
-                sx={
-                  state.tableNavReducer[type] === index
-                    ? clickedStyleOfTableNavButton
-                    : nonClickedStyleOfTableNavButton
-                }
-                variant='text'
-                key={index}
-              >
-                {kind}
-              </Button>
-            );
-          else
-            return (
-              <Button
-                onClick={() => {
-                  handleTableNav(tableNav.type === 'notice' ? true : false, index);
-                }}
-                sx={
-                  state.tableNavReducer[type] === index
-                    ? clickedStyleOfTableNavButton
-                    : nonClickedStyleOfTableNavButton
-                }
-                variant='text'
-                key={index}
-              >
-                {kind}
-              </Button>
-            );
+          return (
+            <Button
+              onClick={() => {
+                handleTableNav(tableNav.type === 'notice' ? true : false, index);
+              }}
+              component={Link}
+              to={params.id ? `/${type}` : ``}
+              sx={
+                state.tableNavReducer[type] === index
+                  ? clickedStyleOfTableNavButton
+                  : nonClickedStyleOfTableNavButton
+              }
+              variant='text'
+              key={index}
+            >
+              {kind}
+            </Button>
+          );
         })}
       </div>
       <style jsx>{`
