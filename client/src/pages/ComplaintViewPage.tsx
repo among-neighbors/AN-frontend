@@ -15,6 +15,7 @@ interface Data {
 
 const ComplaintViewPage = () => {
   const [row, setRow] = useState<Data | null>(null);
+  const type = 'complaint';
   useEffect(() => {
     function createData(
       ID: string,
@@ -39,8 +40,8 @@ const ComplaintViewPage = () => {
   }, []);
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <PageHeader type='complaint' />
-      <Board row={row} />
+      <PageHeader type={type} />
+      <Board type={type} row={row} />
       <Comment />
     </Box>
   );

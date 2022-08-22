@@ -11,9 +11,10 @@ interface Data {
 
 interface BoardProps {
   row: Data | null;
+  type: String;
 }
 
-const Board = ({ row }: BoardProps) => {
+const Board = ({ row, type }: BoardProps) => {
   return (
     <>
       <div className='board'>
@@ -26,7 +27,7 @@ const Board = ({ row }: BoardProps) => {
           </div>
         </div>
         <pre>{row?.body}</pre>
-        <BoardNav />
+        <BoardNav type={type} />
       </div>
       <style jsx>{`
         .board {

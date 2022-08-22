@@ -41,7 +41,7 @@ const CommunityViewPage = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <PageHeader type='complaint' />
-      <Board row={row} />
+      <Board type='complaint' row={row} />
       <Comment />
     </Box>
   );

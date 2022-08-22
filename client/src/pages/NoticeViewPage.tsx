@@ -15,6 +15,7 @@ interface Data {
 
 const NoticeViewPage = () => {
   const [row, setRow] = useState<Data | null>(null);
+  const type = 'notice';
   const params = useParams();
 
   useEffect(() => {
@@ -45,9 +46,9 @@ const NoticeViewPage = () => {
   return (
     <>
       <div className='noticeViewPage'>
-        <PageHeader type='notice' />
-        <TableNav type='notice' />
-        <Board row={row} />
+        <PageHeader type={type} />
+        <TableNav type={type} />
+        <Board type={type} row={row} />
       </div>
       <style jsx>{`
         .noticeViewPage {
