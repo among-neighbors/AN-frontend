@@ -9,40 +9,65 @@ import Container from '@mui/material/Container';
 import SquareImg from '../atoms/Img';
 import { shadowCssForMUI } from '~/others/cssLibrary';
 
+//XU2Z
 const SignIn = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    const res = await fetch('https://34.64.212.250:8181/api/v1/auth/account/new', {
+    // const resss = await fetch(
+    //   'https://neighbor42.com:8181/api/v1/mail/re-code?email=cdt9473@gmail.com',
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   },
+    // );
+    // const dddd = await resss.json();
+    // console.log(dddd);
+
+    // const res = await fetch(
+    //   'https://neighbor42.com:8181/api/v1/auth/verify-code?email=cdt9473@gmail.com&code=BJ6Y',
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   },
+    // );
+    // const ddd = await res.json();
+    // console.log(ddd);
+
+    const res = await fetch('https://neighbor42.com:8181/api/v1/auth/account/new', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        lineName: '103',
+        lineName: '101',
         houseName: '101',
         username: 'yoon',
-        email: 'yoon',
+        email: 'cdt9473@gmail.com',
         passwd: 'root',
       }),
     });
     const ddd = await res.json();
     console.log(ddd);
 
-    const ress = await fetch('https://34.64.212.250:8181/api/v1/auth/account/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        username: 'yoon',
-        passwd: 'root',
-      }),
-    });
-    const dd = await ress.json();
-    console.log(dd);
+    // const ress = await fetch('https://34.64.212.250:8181/api/v1/auth/account/login', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   credentials: 'include',
+    //   body: JSON.stringify({
+    //     username: 'yoon',
+    //     passwd: 'root',
+    //   }),
+    // });
+    // const dd = await ress.json();
+    // console.log(dd);
 
     // const ress = await fetch('http://34.64.212.250:8181/api/v1/auth/profile/add', {
     //   method: 'POST',
