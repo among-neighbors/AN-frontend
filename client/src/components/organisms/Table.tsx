@@ -59,11 +59,21 @@ interface Data {
 }
 
 interface TableProps {
-  labels: string[];
+  type: string;
   rows: Data[];
 }
 
-const BoardTable = ({ labels, rows }: TableProps) => {
+interface LabelObj {
+  [key: string]: string[];
+}
+
+const labelsOfTypes: LabelObj = {
+  notice: ['공지 ID', '제목', '공지 유형', '작성자', '등록일'],
+  community: ['게시글 ID', '제목', '게시글 유형', '작성자', '등록일'],
+  complaint: ['민원 ID', '제목', '민원 유형', '작성자', '등록일'],
+};
+
+const BoardTable = ({ type, rows }: TableProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -81,7 +91,6 @@ const BoardTable = ({ labels, rows }: TableProps) => {
       sx={{
         width: '100%',
         overflow: 'hidden',
-        marginBottom: '40px',
         maxWidth: '1500px',
       }}
     >
@@ -89,7 +98,7 @@ const BoardTable = ({ labels, rows }: TableProps) => {
         <Table stickyHeader aria-label='sticky table'>
           <TableHead>
             <TableRow sx={{ display: { xs: 'none', sm: 'none', md: 'table-row' } }}>
-              {columns(labels).map((column) => (
+              {columns(labelsOfTypes[type]).map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
@@ -112,7 +121,7 @@ const BoardTable = ({ labels, rows }: TableProps) => {
                     tabIndex={-1}
                     sx={{ display: { xs: 'none', sm: 'none', md: 'table-row' } }}
                   >
-                    {columns(labels).map((column) => {
+                    {columns(labelsOfTypes[type]).map((column) => {
                       const value = row[column.id];
                       return (
                         <TableCell

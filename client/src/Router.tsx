@@ -4,13 +4,12 @@ import Header from './components/organisms/Header';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignPage from './pages/SignPage';
 import HomePage from './pages/HomePage';
-import NoticePage from './pages/NoticePage';
-import ComplaintPage from './pages/ComplaintPage';
-import CommunityPage from './pages/CommunityPage';
-import NoticeViewPage from './pages/NoticeViewPage';
+import ListPage from './pages/ListPage';
 import HelpSideBar from './components/organisms/HelpSideBar';
 import { connect } from 'react-redux';
 import { RootState } from './others/store';
+import ViewPage from './pages/ViewPage';
+import WrittingPage from './pages/WrittingPage';
 
 interface RouterProps {
   state: RootState;
@@ -27,12 +26,20 @@ const Router = ({ state }: RouterProps) => {
           <Routes>
             <Route path='/' element={<HomePage />} />
             <Route path='/sign' element={<SignPage />} />
-            <Route path='/notice' element={<NoticePage />} />
+            <Route path='/notice' element={<ListPage type='notice' />} />
             <Route path='/notice'>
-              <Route path=':id' element={<NoticeViewPage />} />
+              <Route path=':id' element={<ViewPage type='notice' />} />
             </Route>
-            <Route path='/complaint' element={<ComplaintPage />} />
-            <Route path='/community' element={<CommunityPage />} />
+            <Route path='/complaint' element={<ListPage type='complaint' />} />
+            <Route path='/complaint/writting' element={<WrittingPage type='complaint' />} />
+            <Route path='/complaint'>
+              <Route path=':id' element={<ViewPage type='complaint' />} />
+            </Route>
+            <Route path='/community' element={<ListPage type='community' />} />
+            <Route path='/community/writting' element={<WrittingPage type='community' />} />
+            <Route path='/community'>
+              <Route path=':id' element={<ViewPage type='community' />} />
+            </Route>
           </Routes>
           <HelpSideBar />
         </ThemeProvider>
