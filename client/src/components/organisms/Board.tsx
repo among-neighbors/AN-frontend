@@ -61,9 +61,10 @@ const Board = ({ row, type }: BoardProps) => {
           marginBottom: '5px',
         }}
       >
-        {row.body.split('\n').map((str) => {
+        {row.body.split('\n').map((str, index) => {
           return (
             <Typography
+              key={index}
               sx={{
                 lineHeight: '24px',
                 marginBottom: '9px',
