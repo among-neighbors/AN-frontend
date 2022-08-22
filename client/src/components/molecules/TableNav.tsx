@@ -72,7 +72,7 @@ const TableNav = ({ type, state }: TableNavProps) => {
       <style jsx>{`
         .tableNav {
           display: flex;
-          margin: 10px 0 55px 0;
+          margin: 10px 0 25px 0;
           gap: 1px;
         }
       `}</style>
