@@ -1,3 +1,4 @@
+import { Box } from '@mui/system';
 import BoardNav from '../molecules/BoardNav';
 
 interface Data {
@@ -15,32 +16,35 @@ interface BoardProps {
 }
 
 const Board = ({ row, type }: BoardProps) => {
+  if (!row) return <></>;
   return (
     <>
-      <div className='board'>
+      <Box sx={{ maxWidth: '1200px', width: '100%' }}>
         <div className='boardHeader'>
-          <h2>{row?.title}</h2>
+          <h2>{row.title}</h2>
           <div>
-            <p>{`유형 : ${row?.type ? '라인' : '단지'}`}</p>
-            <p>{`작성자 : ${row?.writer}`}</p>
-            <p>{`등록일 : ${row?.date}`}</p>
+            <p>{`유형 : ${row.type ? '라인' : '단지'}`}</p>
+            <p>{`작성자 : ${row.writer}`}</p>
+            <p>{`등록일 : ${row.date}`}</p>
           </div>
         </div>
-        <pre>{row?.body}</pre>
+        <Box
+          className='textBox'
+          sx={{
+            border: 'solid #d9d9d9',
+            minHeight: '350px',
+            borderWidth: '1.5px 0',
+            padding: '30px 10px 50px 10px',
+            marginBottom: '5px',
+          }}
+        >
+          {row.body.split('\n').map((str) => {
+            return <pre>{str}</pre>;
+          })}
+        </Box>
         <BoardNav type={type} />
-      </div>
+      </Box>
       <style jsx>{`
-        .board {
-          max-width: 1200px;
-          width: 100%;
-        }
-        .board > pre {
-          border: solid #d9d9d9;
-          min-height: 350px;
-          border-width: 1.5px 0;
-          padding: 30px 10px 50px 10px;
-          margin-bottom: 5px;
-        }
         .boardHeader {
           display: flex;
           flex-direction: column;
@@ -51,6 +55,11 @@ const Board = ({ row, type }: BoardProps) => {
         .boardHeader > h2 {
           padding: 15px 10px;
           height: 50px;
+        }
+        .textBox > pre {
+          line-height: 24px;
+          margin-bottom: 9px;
+          white-space: pre-wrap;
         }
         .boardHeader > div {
           display: flex;
