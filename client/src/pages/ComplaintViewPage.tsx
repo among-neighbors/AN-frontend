@@ -1,8 +1,8 @@
+import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import PageHeader from '~/components/organisms/PageHeader';
 import Board from '~/components/organisms/Board';
-import TableNav from '~/components/molecules/TableNav';
+import Comment from '~/components/organisms/Comment';
+import PageHeader from '~/components/organisms/PageHeader';
 
 interface Data {
   ID: string;
@@ -13,13 +13,9 @@ interface Data {
   date: string;
 }
 
-const NoticeViewPage = () => {
+const ComplaintViewPage = () => {
   const [row, setRow] = useState<Data | null>(null);
-  const params = useParams();
-
   useEffect(() => {
-    // console.log(window.location.href);
-    // params를 통해서 그 id에 맞는 데이터를 가져와야함.
     function createData(
       ID: string,
       title: string,
@@ -41,23 +37,13 @@ const NoticeViewPage = () => {
     );
     setRow(row);
   }, []);
-
   return (
-    <>
-      <div className='noticeViewPage'>
-        <PageHeader type='notice' />
-        <TableNav type='notice' />
-        <Board row={row} />
-      </div>
-      <style jsx>{`
-        .noticeViewPage {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-      `}</style>
-    </>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <PageHeader type='complaint' />
+      <Board row={row} />
+      <Comment />
+    </Box>
   );
 };
 
-export default NoticeViewPage;
+export default ComplaintViewPage;

@@ -11,6 +11,10 @@ import NoticeViewPage from './pages/NoticeViewPage';
 import HelpSideBar from './components/organisms/HelpSideBar';
 import { connect } from 'react-redux';
 import { RootState } from './others/store';
+import ComplaintViewPage from './pages/ComplaintViewPage';
+import ComplaintWrittingPage from './pages/ComplaintWrittingPage';
+import CommunityViewPage from './pages/CommunityViewPage';
+import CommunityWrittingPage from './pages/CommunityWrittingPage';
 
 interface RouterProps {
   state: RootState;
@@ -32,7 +36,15 @@ const Router = ({ state }: RouterProps) => {
               <Route path=':id' element={<NoticeViewPage />} />
             </Route>
             <Route path='/complaint' element={<ComplaintPage />} />
+            <Route path='/complaint/writting' element={<ComplaintWrittingPage />} />
+            <Route path='/complaint'>
+              <Route path=':id' element={<ComplaintViewPage />} />
+            </Route>
             <Route path='/community' element={<CommunityPage />} />
+            <Route path='/community/writting' element={<CommunityWrittingPage />} />
+            <Route path='/community'>
+              <Route path=':id' element={<CommunityViewPage />} />
+            </Route>
           </Routes>
           <HelpSideBar />
         </ThemeProvider>
