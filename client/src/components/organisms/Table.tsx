@@ -91,7 +91,6 @@ const BoardTable = ({ type, rows }: TableProps) => {
       sx={{
         width: '100%',
         overflow: 'hidden',
-        marginBottom: '40px',
         maxWidth: '1500px',
       }}
     >

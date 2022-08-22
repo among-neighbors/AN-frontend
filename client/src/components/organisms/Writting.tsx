@@ -14,7 +14,20 @@ interface WritingData {
   body: string;
 }
 
-const Writting = () => {
+interface SubmitTextByTypes {
+  [key: string]: string;
+}
+
+interface WrittingProps {
+  type: string;
+}
+
+const submitTextByTypes: SubmitTextByTypes = {
+  community: '글 작성',
+  complaint: '민원 작성',
+};
+
+const Writting = ({ type }: WrittingProps) => {
   const [writingData, setWritingData] = useState<WritingData>({
     title: '',
     boundary: 'complex',
@@ -111,7 +124,7 @@ const Writting = () => {
 
         <Box sx={{ justifyContent: 'right', display: 'flex' }}>
           <Button sx={{ whiteSpace: 'nowrap', height: '40px' }} type='submit' variant='contained'>
-            글 작성
+            {submitTextByTypes[type]}
           </Button>
         </Box>
       </Box>

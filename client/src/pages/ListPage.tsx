@@ -1,5 +1,7 @@
+import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import TableNav from '~/components/molecules/TableNav';
 import PageHeader from '~/components/organisms/PageHeader';
 import BoardTable from '~/components/organisms/Table';
@@ -15,6 +17,15 @@ interface Data {
 interface ListPageProps {
   type: string;
 }
+
+interface stringObj {
+  [key: string]: string;
+}
+
+const buttonTextByType: stringObj = {
+  complaint: '민원 작성',
+  community: '글쓰기',
+};
 
 function createData(ID: string, title: string, type: boolean, writer: string, date: string): Data {
   return { ID, title, type, writer, date };
@@ -70,9 +81,20 @@ const ListPage = ({ type }: ListPageProps) => {
 
   return (
     <>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
         <PageHeader type={type} />
         {type === 'notice' || type === 'community' ? <TableNav type={type} /> : <></>}
+        {type === 'complaint' || type === 'community' ? (
+          <Box
+            sx={{ width: '100%', display: 'flex', justifyContent: 'right', paddingRight: '20px' }}
+          >
+            <Button component={Link} to={'writtng'} variant='contained'>
+              {buttonTextByType[type]}
+            </Button>
+          </Box>
+        ) : (
+          <></>
+        )}
         <BoardTable type={type} rows={rows} />
       </Box>
     </>

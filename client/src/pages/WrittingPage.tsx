@@ -12,7 +12,7 @@ const WrittingPage = ({ type }: WrittingPageProps) => {
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <PageHeader type={type} />
       {type === 'community' ? <TableNav type={type} /> : <></>}
-      <Writting />
+      <Writting type={type} />
     </Box>
   );
 };
