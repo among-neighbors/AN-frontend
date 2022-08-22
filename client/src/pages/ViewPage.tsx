@@ -1,5 +1,6 @@
 import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
+import TableNav from '~/components/molecules/TableNav';
 import Board from '~/components/organisms/Board';
 import Comment from '~/components/organisms/Comment';
 import PageHeader from '~/components/organisms/PageHeader';
@@ -13,7 +14,11 @@ interface Data {
   date: string;
 }
 
-const CommunityViewPage = () => {
+interface ViewPageProps {
+  type: string;
+}
+
+const ViewPage = ({ type }: ViewPageProps) => {
   const [row, setRow] = useState<Data | null>(null);
   useEffect(() => {
     function createData(
@@ -40,11 +45,12 @@ const CommunityViewPage = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <PageHeader type='complaint' />
-      <Board type='complaint' row={row} />
-      <Comment />
+      <PageHeader type={type} />
+      {type === 'community' || type === 'notice' ? <TableNav type={type} /> : <></>}
+      <Board type={type} row={row} />
+      {type === 'community' || type === 'complaint' ? <Comment /> : <></>}
     </Box>
   );
 };
 
-export default CommunityViewPage;
+export default ViewPage;
