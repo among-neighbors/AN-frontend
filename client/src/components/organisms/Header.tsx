@@ -158,8 +158,9 @@ const Header = () => {
               component={Link}
               to='/'
               sx={{
-                mr: 2,
                 display: { xs: 'flex', md: 'none' },
+                position: 'absolute',
+                left: 'calc(50% - 65px)',
                 flexGrow: 1,
                 fontFamily: 'monospace',
                 fontWeight: 700,
@@ -172,6 +173,7 @@ const Header = () => {
               <SquareImg src='../../../public/img/iconWhite.png' />
               이웃사이
             </Typography>
+
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page) => (
                 <Button
