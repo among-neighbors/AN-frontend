@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { Button } from '@mui/material';
 import { handleTableNav, RootState } from '~/others/store';
-import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
+import { Box } from '@mui/system';
 
 const tableList = [
   {
@@ -18,6 +18,7 @@ const tableList = [
 interface TableNavProps {
   type: string;
   state: RootState;
+  isPageMove?: boolean;
 }
 
 const defaultStyleOfTableNavButton = {
@@ -40,43 +41,33 @@ const nonClickedStyleOfTableNavButton = {
   color: '#808080',
 };
 
-const TableNav = ({ type, state }: TableNavProps) => {
+const TableNav = ({ type, state, isPageMove = true }: TableNavProps) => {
   const tableNav = tableList.find((table) => table.type === type);
-  const params = useParams();
 
   if (tableNav === undefined) return <></>;
   return (
-    <>
-      <div className='tableNav'>
-        {tableNav.navList.map((kind, index) => {
-          return (
-            <Button
-              onClick={() => {
-                handleTableNav(tableNav.type === 'notice' ? true : false, index);
-              }}
-              component={Link}
-              to={params.id ? `/${type}` : ``}
-              sx={
-                state.tableNavReducer[type] === index
-                  ? clickedStyleOfTableNavButton
-                  : nonClickedStyleOfTableNavButton
-              }
-              variant='text'
-              key={index}
-            >
-              {kind}
-            </Button>
-          );
-        })}
-      </div>
-      <style jsx>{`
-        .tableNav {
-          display: flex;
-          margin: 10px 0 25px 0;
-          gap: 1px;
-        }
-      `}</style>
-    </>
+    <Box sx={{ display: 'flex', margin: '10px 0 25px 0', gap: '1px' }}>
+      {tableNav.navList.map((kind, index) => {
+        return (
+          <Button
+            onClick={() => {
+              handleTableNav(tableNav.type === 'notice' ? true : false, index);
+            }}
+            component={Link}
+            to={isPageMove ? `/${type}` : ``}
+            sx={
+              state.tableNavReducer[type] === index
+                ? clickedStyleOfTableNavButton
+                : nonClickedStyleOfTableNavButton
+            }
+            variant='text'
+            key={index}
+          >
+            {kind}
+          </Button>
+        );
+      })}
+    </Box>
   );
 };
 

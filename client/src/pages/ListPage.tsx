@@ -83,12 +83,16 @@ const ListPage = ({ type }: ListPageProps) => {
     <>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
         <PageHeader type={type} />
-        {type === 'notice' || type === 'community' ? <TableNav type={type} /> : <></>}
+        {type === 'notice' || type === 'community' ? (
+          <TableNav type={type} isPageMove={false} />
+        ) : (
+          <></>
+        )}
         {type === 'complaint' || type === 'community' ? (
           <Box
             sx={{ width: '100%', display: 'flex', justifyContent: 'right', paddingRight: '20px' }}
           >
-            <Button component={Link} to={'writtng'} variant='contained'>
+            <Button component={Link} to={`/${type}/writting`} variant='contained'>
               {buttonTextByType[type]}
             </Button>
           </Box>
