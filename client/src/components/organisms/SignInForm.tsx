@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import SquareImg from '../atoms/Img';
 import { shadowCssForMUI } from '~/others/cssLibrary';
+import axios from 'axios';
 
 //XU2Z
 const SignIn = () => {
@@ -16,7 +17,7 @@ const SignIn = () => {
     const data = new FormData(event.currentTarget);
 
     // const resss = await fetch(
-    //   'https://neighbor42.com:8181/api/v1/mail/re-code?email=cdt9473@gmail.com',
+    //   'https://neighbor42.com:8181/api/v1/mail/re-code?email=cdt9472@gmail.com',
     //   {
     //     method: 'POST',
     //     headers: {
@@ -26,6 +27,18 @@ const SignIn = () => {
     // );
     // const dddd = await resss.json();
     // console.log(dddd);
+
+    const res = await axios.post(
+      'https://neighbor42.com:8181/api/v1/mail/re-code?email=cdt9471@gmail.com',
+      undefined,
+      {
+        headers: {
+          'Content-type': 'application/json',
+          Accept: 'application/json',
+        },
+      },
+    );
+    console.log(res);
 
     // const res = await fetch(
     //   'https://neighbor42.com:8181/api/v1/auth/verify-code?email=cdt9473@gmail.com&code=C5YL',
