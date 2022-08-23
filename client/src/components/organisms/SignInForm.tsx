@@ -28,7 +28,7 @@ const SignIn = () => {
     // console.log(dddd);
 
     // const res = await fetch(
-    //   'https://neighbor42.com:8181/api/v1/auth/verify-code?email=cdt9473@gmail.com&code=BJ6Y',
+    //   'https://neighbor42.com:8181/api/v1/auth/verify-code?email=cdt9473@gmail.com&code=C5YL',
     //   {
     //     method: 'POST',
     //     headers: {
@@ -39,23 +39,36 @@ const SignIn = () => {
     // const ddd = await res.json();
     // console.log(ddd);
 
-    const res = await fetch('https://neighbor42.com:8181/api/v1/auth/account/new', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        lineName: '101',
-        houseName: '101',
-        username: 'yoon',
-        email: 'cdt9473@gmail.com',
-        passwd: 'root',
-      }),
-    });
-    const ddd = await res.json();
-    console.log(ddd);
+    // const res = await fetch('https://neighbor42.com:8181/api/v1/house/new', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     lineName: '101',
+    //     houseName: '101',
+    //   }),
+    // });
+    // const ddd = await res.json();
+    // console.log(ddd);
 
-    // const ress = await fetch('https://34.64.212.250:8181/api/v1/auth/account/login', {
+    // const res = await fetch('https://neighbor42.com:8181/api/v1/auth/account/new', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     lineName: '101',
+    //     houseName: '101',
+    //     username: 'yoon',
+    //     email: 'cdt9473@gmail.com',
+    //     passwd: 'root',
+    //   }),
+    // });
+    // const ddd = await res.json();
+    // console.log(ddd);
+
+    // const ress = await fetch('https://neighbor42.com:8181/api/v1/auth/account/login', {
     //   method: 'POST',
     //   headers: {
     //     'Content-Type': 'application/json',
@@ -69,12 +82,11 @@ const SignIn = () => {
     // const dd = await ress.json();
     // console.log(dd);
 
-    // const ress = await fetch('http://34.64.212.250:8181/api/v1/auth/profile/add', {
+    // const ress = await fetch('https://neighbor42.com:8181/api/v1/auth/profile/new', {
     //   method: 'POST',
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },
-    //   credentials: 'include',
     //   body: JSON.stringify({
     //     name: 'test',
     //     age: 10,
