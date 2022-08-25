@@ -8,29 +8,81 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import SquareImg from '../atoms/Img';
 import { shadowCssForMUI } from '~/others/cssLibrary';
+import axios from 'axios';
 
+//XU2Z
 const SignIn = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    const res = await fetch('https://34.64.212.250:8181/api/v1/auth/account/new', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        lineName: '103',
-        houseName: '101',
-        username: 'yoon',
-        email: 'yoon',
-        passwd: 'root',
-      }),
-    });
-    const ddd = await res.json();
-    console.log(ddd);
+    // const resss = await fetch('https://neighbor42.com:8181/api/v1/mail/code', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     email: 'cdt9473@gmail.com',
+    //   }),
+    // });
+    // const dddd = await resss.json();
+    // console.log(dddd);
 
-    const ress = await fetch('https://34.64.212.250:8181/api/v1/auth/account/login', {
+    // const resss = await fetch('https://neighbor42.com:8181/api/v1/auth/verify-code', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     email: 'cdt9473@gmail.com',
+    //     code: 'BC1L',
+    //   }),
+    // });
+    // const dddd = await resss.json();
+    // console.log(dddd);
+
+    // const ress = await fetch('https://neighbor42.com:8181/api/v1/manager/lines/new', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     name: '101',
+    //   }),
+    // });
+    // const dddd = await ress.json();
+    // console.log(dddd);
+
+    // const res = await fetch('https://neighbor42.com:8181/api/v1/manager/houses/new', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     lineName: '101',
+    //     houseName: '101',
+    //   }),
+    // });
+    // const ddd = await res.json();
+    // console.log(ddd);
+
+    // const res = await fetch('https://neighbor42.com:8181/api/v1/auth/accounts/new', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     lineName: '101',
+    //     houseName: '101',
+    //     username: 'yoon',
+    //     email: 'cdt9473@gmail.com',
+    //     passwd: 'root',
+    //   }),
+    // });
+    // const ddd = await res.json();
+    // console.log(ddd);
+
+    const ress = await fetch('https://neighbor42.com:8181/api/v1/auth/accounts/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,33 +96,34 @@ const SignIn = () => {
     const dd = await ress.json();
     console.log(dd);
 
-    // const ress = await fetch('http://34.64.212.250:8181/api/v1/auth/profile/add', {
+    // const accessToken = dd.response.accessToken;
+    // console.log(accessToken);
+
+    // const res = await fetch('https://neighbor42.com:8181/api/v1/auth/profiles/new', {
     //   method: 'POST',
     //   headers: {
     //     'Content-Type': 'application/json',
+    //     Authorization: `Bearer ${accessToken}`,
     //   },
-    //   credentials: 'include',
     //   body: JSON.stringify({
-    //     name: 'test',
+    //     name: 'testt',
     //     age: 10,
     //     pin: '0123',
     //     gender: 'MALE',
     //   }),
     // });
-    // console.log(ress);
+    // const d = await res.json();
+    // console.log(d);
 
-    // const res = await fetch('34.64.212.250:8181' + '/api/v1/profile', {
-    //   method: 'GET',
+    // const ress = await fetch('https://neighbor42.com:8181/api/v1/auth/account-token', {
+    //   method: 'POST',
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },
+    //   credentials: 'include',
     // });
-    // const r = await res.json();
-
-    // console.log({
-    //   username: data.get('username'),
-    //   password: data.get('password'),
-    // });
+    // const dd = await ress.json();
+    // console.log(dd);
   };
 
   return (
