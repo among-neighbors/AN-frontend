@@ -35,7 +35,7 @@ const SignIn = () => {
     //   },
     //   body: JSON.stringify({
     //     email: 'cdt9473@gmail.com',
-    //     code: 'JYTV',
+    //     code: 'BC1L',
     //   }),
     // });
     // const dddd = await resss.json();
@@ -96,24 +96,34 @@ const SignIn = () => {
     const dd = await ress.json();
     console.log(dd);
 
-    const accessToken = dd.response.accessToken;
-    console.log(accessToken);
+    // const accessToken = dd.response.accessToken;
+    // console.log(accessToken);
 
-    const res = await fetch('https://neighbor42.com:8181/api/v1/auth/profiles/new', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        name: 'testt',
-        age: 10,
-        pin: '0123',
-        gender: 'MALE',
-      }),
-    });
-    const d = await res.json();
-    console.log(d);
+    // const res = await fetch('https://neighbor42.com:8181/api/v1/auth/profiles/new', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: `Bearer ${accessToken}`,
+    //   },
+    //   body: JSON.stringify({
+    //     name: 'testt',
+    //     age: 10,
+    //     pin: '0123',
+    //     gender: 'MALE',
+    //   }),
+    // });
+    // const d = await res.json();
+    // console.log(d);
+
+    // const ress = await fetch('https://neighbor42.com:8181/api/v1/auth/account-token', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   credentials: 'include',
+    // });
+    // const dd = await ress.json();
+    // console.log(dd);
   };
 
   return (
