@@ -1,11 +1,20 @@
-import { createStore } from 'redux';
+import { combineReducers, createStore } from 'redux';
 
 const ACTION_FROM_NOTICE = 'actionToNotice';
 const ACTION_FROM_COMMUNITY = 'actionToCommunity';
 
+const ACTION_TO_HANDLE_HELP_SIDE_BAR = 'actionToHandleHelpSideBar';
+const ACTION_TO_CLOSE_HELP_SIDE_BAR = 'actionToCloseHelpSideBar';
+
 interface TableNavState {
+  [key: string]: number;
   notice: number;
   community: number;
+}
+
+interface RootState {
+  helpSideBarReducer: boolean;
+  tableNavReducer: TableNavState;
 }
 
 const tableNavReducer = (
@@ -13,7 +22,10 @@ const tableNavReducer = (
     notice: 0,
     community: 0,
   },
-  action: any,
+  action: {
+    type: string;
+    idx: number;
+  },
 ) => {
   switch (action.type) {
     case ACTION_FROM_COMMUNITY:
@@ -31,37 +43,41 @@ const tableNavReducer = (
   }
 };
 
-const tableNavStore = createStore(tableNavReducer);
+const helpSideBarReducer = (state: boolean = false, action: { type: string }) => {
+  switch (action.type) {
+    case ACTION_TO_HANDLE_HELP_SIDE_BAR:
+      return !state;
+    case ACTION_TO_CLOSE_HELP_SIDE_BAR:
+      return false;
+    default:
+      return state;
+  }
+};
+
+const rootReducer = combineReducers({
+  tableNavReducer,
+  helpSideBarReducer,
+});
+
+const store = createStore(rootReducer);
 
 const handleTableNav = (isNotice: boolean, idx: number) => {
-  tableNavStore.dispatch({
+  store.dispatch({
     type: isNotice ? ACTION_FROM_NOTICE : ACTION_FROM_COMMUNITY,
     idx,
   });
 };
 
-export { tableNavStore, handleTableNav };
+const handleHelpSideBar = () => {
+  store.dispatch({
+    type: ACTION_TO_HANDLE_HELP_SIDE_BAR,
+  });
+};
 
-// const SUCCESS_TO_SIGN_IN = 'succesToSignIn';
-// const FAIL_TO_SIGN_IN = 'failToSignIn';
+const closeHelpSideBar = () => {
+  store.dispatch({
+    type: ACTION_TO_CLOSE_HELP_SIDE_BAR,
+  });
+};
 
-// const reducer = (state: boolean = false, action: any) => {
-//   switch (action.type) {
-//     case SUCCESS_TO_SIGN_IN:
-//       return true;
-//     case FAIL_TO_SIGN_IN:
-//       return false;
-//     default:
-//       return state;
-//   }
-// };
-
-// const signInStore = createStore(reducer);
-
-// export const weAreSignIn = () => {
-//   signInStore.dispatch({
-//     type: SUCCESS_TO_SIGN_IN,
-//   });
-// };
-
-// export default signInStore;
+export { store, handleTableNav, handleHelpSideBar, closeHelpSideBar, RootState };

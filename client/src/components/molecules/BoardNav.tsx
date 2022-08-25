@@ -2,12 +2,16 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link } from 'react-router-dom';
 
-const BoardNav = () => {
+interface BoardNavProps {
+  type: String;
+}
+
+const BoardNav = ({ type }: BoardNavProps) => {
   return (
     <>
       <div className='boardNav'>
         <Link
-          to='/'
+          to={`/${type}`}
           style={{
             width: '70px',
             height: '40px',
