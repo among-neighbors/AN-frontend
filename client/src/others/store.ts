@@ -1,10 +1,13 @@
 import { combineReducers, createStore } from 'redux';
 
-const ACTION_FROM_NOTICE = 'actionToNotice';
-const ACTION_FROM_COMMUNITY = 'actionToCommunity';
+const ACTION_FROM_NOTICE = 'actionToNotice',
+  ACTION_FROM_COMMUNITY = 'actionToCommunity';
 
-const ACTION_TO_HANDLE_HELP_SIDE_BAR = 'actionToHandleHelpSideBar';
-const ACTION_TO_CLOSE_HELP_SIDE_BAR = 'actionToCloseHelpSideBar';
+const ACTION_TO_HANDLE_HELP_SIDE_BAR = 'actionToHandleHelpSideBar',
+  ACTION_TO_CLOSE_HELP_SIDE_BAR = 'actionToCloseHelpSideBar';
+
+const ACTION_TO_LOGIN = 'actionToLogin',
+  ACTION_TO_LOGOUT = 'actionToLogout';
 
 interface TableNavState {
   [key: string]: number;
@@ -54,9 +57,21 @@ const helpSideBarReducer = (state: boolean = false, action: { type: string }) =>
   }
 };
 
+const loginStateReducer = (state: boolean = false, action: { type: string }) => {
+  switch (action.type) {
+    case ACTION_TO_LOGIN:
+      return true;
+    case ACTION_TO_LOGOUT:
+      return false;
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   tableNavReducer,
   helpSideBarReducer,
+  loginStateReducer,
 });
 
 const store = createStore(rootReducer);
@@ -80,4 +95,23 @@ const closeHelpSideBar = () => {
   });
 };
 
-export { store, handleTableNav, handleHelpSideBar, closeHelpSideBar, RootState };
+const handleLogin = () => {
+  store.dispatch({
+    type: ACTION_TO_LOGIN,
+  });
+};
+const handleLogout = () => {
+  store.dispatch({
+    type: ACTION_TO_LOGOUT,
+  });
+};
+
+export {
+  store,
+  handleTableNav,
+  handleHelpSideBar,
+  closeHelpSideBar,
+  handleLogin,
+  handleLogout,
+  RootState,
+};
