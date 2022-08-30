@@ -10,7 +10,7 @@ import SquareImg from '../atoms/Img';
 import { shadowCssForMUI } from '~/others/cssLibrary';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
-import { handleLogin } from '~/others/store';
+import { handleRefreshAccountAccessToken } from '~/others/store';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -31,8 +31,8 @@ const SignIn = () => {
           withCredentials: true,
         },
       );
-      console.log(res.data.response);
-      handleLogin();
+      console.log();
+      handleRefreshAccountAccessToken(res.data.response.accessToken);
       navigate('/');
     } catch (err) {
       alert(err);

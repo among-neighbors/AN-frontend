@@ -11,6 +11,7 @@ import { RootState } from './others/store';
 import ViewPage from './pages/ViewPage';
 import WrittingPage from './pages/WrittingPage';
 import { Navigate } from 'react-router-dom';
+import Checker from './components/organisms/Checker';
 
 interface RouterProps {
   state: RootState;
@@ -20,6 +21,7 @@ const Router = ({ state }: RouterProps) => {
   return (
     <>
       <BrowserRouter>
+        <Checker />
         <ThemeProvider theme={theme(false)}>
           <Header />
         </ThemeProvider>

@@ -6,8 +6,8 @@ const ACTION_FROM_NOTICE = 'actionToNotice',
 const ACTION_TO_HANDLE_HELP_SIDE_BAR = 'actionToHandleHelpSideBar',
   ACTION_TO_CLOSE_HELP_SIDE_BAR = 'actionToCloseHelpSideBar';
 
-const ACTION_TO_LOGIN = 'actionToLogin',
-  ACTION_TO_LOGOUT = 'actionToLogout';
+const ACTION_TO_REFRESH_ACCOUNT_ACCESS_TOKEN = 'actionToRefreshAccountAccessToken',
+  ACTION_TO_REFRESH_PROFILE_ACCESS_TOKEN = 'actionToRefreshProfileAccessToken';
 
 interface TableNavState {
   [key: string]: number;
@@ -15,9 +15,15 @@ interface TableNavState {
   community: number;
 }
 
+interface accessTokenState {
+  accountAccessToken: string;
+  profileAccessToken: string;
+}
+
 interface RootState {
   helpSideBarReducer: boolean;
   tableNavReducer: TableNavState;
+  accessTokenReducer: accessTokenState;
 }
 
 const tableNavReducer = (
@@ -57,12 +63,24 @@ const helpSideBarReducer = (state: boolean = false, action: { type: string }) =>
   }
 };
 
-const loginStateReducer = (state: boolean = false, action: { type: string }) => {
+const accessTokenReducer = (
+  state = {
+    accountAccessToken: '',
+    profileAccessToken: '',
+  },
+  action: { type: string; accessToken: string },
+) => {
   switch (action.type) {
-    case ACTION_TO_LOGIN:
-      return true;
-    case ACTION_TO_LOGOUT:
-      return false;
+    case ACTION_TO_REFRESH_ACCOUNT_ACCESS_TOKEN:
+      return {
+        accountAccessToken: action.accessToken,
+        profileAccessToken: state.profileAccessToken,
+      };
+    case ACTION_TO_REFRESH_PROFILE_ACCESS_TOKEN:
+      return {
+        accountAccessToken: state.accountAccessToken,
+        profileAccessToken: action.accessToken,
+      };
     default:
       return state;
   }
@@ -71,7 +89,7 @@ const loginStateReducer = (state: boolean = false, action: { type: string }) => 
 const rootReducer = combineReducers({
   tableNavReducer,
   helpSideBarReducer,
-  loginStateReducer,
+  accessTokenReducer,
 });
 
 const store = createStore(rootReducer);
@@ -95,14 +113,16 @@ const closeHelpSideBar = () => {
   });
 };
 
-const handleLogin = () => {
+const handleRefreshAccountAccessToken = (accessToken: string) => {
   store.dispatch({
-    type: ACTION_TO_LOGIN,
+    type: ACTION_TO_REFRESH_ACCOUNT_ACCESS_TOKEN,
+    accessToken,
   });
 };
-const handleLogout = () => {
+const handleRefreshProfileAccessToken = (accessToken: string) => {
   store.dispatch({
-    type: ACTION_TO_LOGOUT,
+    type: ACTION_TO_REFRESH_PROFILE_ACCESS_TOKEN,
+    accessToken,
   });
 };
 
@@ -111,7 +131,8 @@ export {
   handleTableNav,
   handleHelpSideBar,
   closeHelpSideBar,
-  handleLogin,
-  handleLogout,
+  handleRefreshAccountAccessToken,
+  handleRefreshProfileAccessToken,
   RootState,
+  accessTokenState,
 };
