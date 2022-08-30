@@ -8,6 +8,7 @@ import {
   handleRefreshProfileAccessToken,
   RootState,
 } from '~/others/store';
+import ProfileLogin from './ProfileLogin';
 
 interface CheckerProps {
   accessTokenState: accessTokenState;
@@ -48,6 +49,8 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
     }
   }, []);
   useInterval(checkProfileLogin, profileAccessToken === '' ? null : 10000);
+  if (accountAccessToken !== '' && profileAccessToken === '')
+    return <ProfileLogin token={accountAccessToken} />;
   return <></>;
 };
 
