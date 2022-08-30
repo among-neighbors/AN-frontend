@@ -31,7 +31,6 @@ const SignIn = () => {
           withCredentials: true,
         },
       );
-      console.log();
       handleRefreshAccountAccessToken(res.data.response.accessToken);
       navigate('/');
     } catch (err) {

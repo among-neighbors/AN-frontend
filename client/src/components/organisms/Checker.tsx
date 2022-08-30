@@ -1,7 +1,13 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { accessTokenState, RootState } from '~/others/store';
+import useInterval from 'use-interval';
+import {
+  accessTokenState,
+  handleRefreshAccountAccessToken,
+  handleRefreshProfileAccessToken,
+  RootState,
+} from '~/others/store';
 
 interface CheckerProps {
   accessTokenState: accessTokenState;
@@ -12,8 +18,7 @@ const checkAccountLogin = async () => {
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true,
   });
-  console.log(res);
-  return res;
+  handleRefreshAccountAccessToken(res.data.response.accessToken);
 };
 
 const checkProfileLogin = async () => {
@@ -21,31 +26,28 @@ const checkProfileLogin = async () => {
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true,
   });
-  return res;
+  handleRefreshProfileAccessToken(res.data.response.accessToken);
 };
 
 const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
-  console.log(accessTokenState);
+  const { accountAccessToken, profileAccessToken } = accessTokenState;
   useEffect(() => {
     try {
-      const res = checkAccountLogin();
-      console.log(res, 'HI');
-    } catch (e) {
-      console.log(e);
+      checkAccountLogin();
+    } catch (err) {
+      console.log(err);
     }
-
-    // 로그인 access token 통해서 로그인 상태 확인
   }, []);
+  useInterval(checkAccountLogin, accountAccessToken === '' ? null : 10000);
 
   useEffect(() => {
-    // 로그인이 되어있거나, 로그인에 성공했다면 useInterval을 통해 토큰 유지
-    // => 받은 토큰은 store에 저장 후 사용
+    try {
+      checkProfileLogin();
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
-
-  useEffect(() => {
-    // 프로필 로그인 access token 통해서 프로필 로그인 상태 확인
-  }, []);
-
+  useInterval(checkProfileLogin, profileAccessToken === '' ? null : 10000);
   return <></>;
 };
 
