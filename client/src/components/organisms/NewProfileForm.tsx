@@ -8,19 +8,54 @@ import {
   TextField,
 } from '@mui/material';
 import { Box } from '@mui/system';
+import axios from 'axios';
 import React from 'react';
+import { connect } from 'react-redux';
+import { RootState } from '~/others/store';
 
 interface NewProfileFormProps {
   setIsNewProfile: Function;
+  accountAccessToken: string;
 }
 
-const NewProfileForm: React.FC<NewProfileFormProps> = ({ setIsNewProfile }) => {
+const NewProfileForm: React.FC<NewProfileFormProps> = ({ setIsNewProfile, accountAccessToken }) => {
   const handleSubmitNewProfile = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data.get('name'));
+    const joinData = {
+      name: data.get('name') ?? '',
+      age: data.get('age') ?? '',
+      sex: data.get('sex') ?? '',
+      pin: data.get('pin') ?? '',
+      rePin: data.get('re-pin') ?? '',
+    };
+    const { name, age, sex, pin, rePin } = joinData;
 
-    // setIsNewProfile(true);
+    const pinRegex = /\d{4}$/;
+    if (!pinRegex.test(pin.toString())) return;
+    if (pin !== rePin) return;
+
+    try {
+      const res = await axios.post(
+        'https://neighbor42.com:8181/api/v1/auth/profiles/new',
+        {
+          name,
+          age: Number(age),
+          pin,
+          gender: sex,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accountAccessToken}`,
+          },
+          withCredentials: true,
+        },
+      );
+      setIsNewProfile(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -49,7 +84,7 @@ const NewProfileForm: React.FC<NewProfileFormProps> = ({ setIsNewProfile }) => {
         <FormLabel id='radioButtonsForSex' sx={{ m: 1, marginRight: '20px' }}>
           성별
         </FormLabel>
-        <RadioGroup row>
+        <RadioGroup row name='sex' defaultValue='MALE'>
           <FormControlLabel value='MALE' control={<Radio />} label='남성' />
           <FormControlLabel value='FEMALE' control={<Radio />} label='여성' />
         </RadioGroup>
@@ -70,11 +105,11 @@ const NewProfileForm: React.FC<NewProfileFormProps> = ({ setIsNewProfile }) => {
         margin='normal'
         required
         fullWidth
-        id='pin-again'
+        id='re-pin'
         label='pin 번호 확인'
-        name='pin-again'
+        name='re-pin'
         type='password'
-        autoComplete='pin-again'
+        autoComplete='re-pin'
         autoFocus
       />
       <Button type='submit' fullWidth variant='contained'>
@@ -84,4 +119,10 @@ const NewProfileForm: React.FC<NewProfileFormProps> = ({ setIsNewProfile }) => {
   );
 };
 
-export default NewProfileForm;
+const mapStateToProps = (state: RootState) => {
+  return {
+    accountAccessToken: state.accessTokenReducer.accountAccessToken,
+  };
+};
+
+export default connect(mapStateToProps)(NewProfileForm);
