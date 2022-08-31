@@ -4,8 +4,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Table, TableBody, TableRow } from '@mui/material';
 import { TableRowForComment } from '../molecules/TableRow';
+import styled from 'styled-components';
 
-const CommentForm = () => {
+const CommentForm: React.FC = () => {
   const [value, setValue] = React.useState('');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +62,7 @@ interface CommentsProp {
   comments: Comment[];
 }
 
-const Comments = ({ comments }: CommentsProp) => {
+const Comments: React.FC<CommentsProp> = ({ comments }) => {
   React.useEffect(() => {}, []);
 
   return (
@@ -71,7 +72,7 @@ const Comments = ({ comments }: CommentsProp) => {
           {comments.map((comment, index) => {
             return (
               <TableRow key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
-                <TableRowForComment comment={comment} />
+                <TableRowForComment commentData={comment} />
               </TableRow>
             );
           })}
@@ -81,35 +82,32 @@ const Comments = ({ comments }: CommentsProp) => {
   );
 };
 
-const Comment = () => {
+const Comment: React.FC = () => {
   return (
-    <>
-      <div className='comment'>
-        <CommentForm />
-        <Comments
-          comments={[
-            {
-              writer: '홍길동',
-              comment: '댓글입니당~',
-              date: '2022.08.14',
-            },
-            {
-              writer: '홍길동',
-              comment: '댓글입니당하이댓글입니당하이댓글입니당하이',
-              date: '2022.08.14',
-            },
-          ]}
-        />
-      </div>
-      <style jsx>{`
-        .comment {
-          max-width: 1200px;
-          width: 100%;
-          height: 200px;
-        }
-      `}</style>
-    </>
+    <CommentContainer className='comment'>
+      <CommentForm />
+      <Comments
+        comments={[
+          {
+            writer: '홍길동',
+            comment: '댓글입니당~',
+            date: '2022.08.14',
+          },
+          {
+            writer: '홍길동',
+            comment: '댓글입니당하이댓글입니당하이댓글입니당하이',
+            date: '2022.08.14',
+          },
+        ]}
+      />
+    </CommentContainer>
   );
 };
+
+const CommentContainer = styled.div`
+  max-width: 1200px;
+  width: 100%;
+  height: 200px;
+`;
 
 export default Comment;

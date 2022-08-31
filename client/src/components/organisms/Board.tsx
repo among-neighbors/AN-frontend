@@ -16,7 +16,7 @@ interface BoardProps {
   type: String;
 }
 
-const Board = ({ row, type }: BoardProps) => {
+const Board: React.FC<BoardProps> = ({ row, type }) => {
   if (!row) return <></>;
   return (
     <Box sx={{ maxWidth: '1200px', width: '100%' }}>

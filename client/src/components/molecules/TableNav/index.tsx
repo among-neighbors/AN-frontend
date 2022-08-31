@@ -3,17 +3,7 @@ import { Button } from '@mui/material';
 import { handleTableNav, RootState } from '~/others/store';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/system';
-
-const tableList = [
-  {
-    type: 'notice',
-    navList: ['통합 공지', '단지 공지', '라인 공지'],
-  },
-  {
-    type: 'community',
-    navList: ['통합 게시글', '단지 게시글', '라인 게시글', '내 글 목록'],
-  },
-];
+import { clickedStyleOfTableNavButton, nonClickedStyleOfTableNavButton } from './styled';
 
 interface TableNavProps {
   type: string;
@@ -21,29 +11,8 @@ interface TableNavProps {
   isPageMove?: boolean;
 }
 
-const defaultStyleOfTableNavButton = {
-  whiteSpace: 'nowrap',
-  height: '40px',
-  width: '105px',
-  borderRadius: '0',
-};
-
-const clickedStyleOfTableNavButton = {
-  ...defaultStyleOfTableNavButton,
-  fontWeight: 700,
-  outline: 'solid 1px #f6be9a',
-  zIndex: 1,
-};
-
-const nonClickedStyleOfTableNavButton = {
-  ...defaultStyleOfTableNavButton,
-  outline: 'solid 1px #BDBDBD',
-  color: '#808080',
-};
-
-const TableNav = ({ type, state, isPageMove = true }: TableNavProps) => {
+const TableNav: React.FC<TableNavProps> = ({ type, state, isPageMove = true }) => {
   const tableNav = tableList.find((table) => table.type === type);
-
   if (tableNav === undefined) return <></>;
   return (
     <Box sx={{ display: 'flex', margin: '10px 0 25px 0', gap: '1px' }}>
@@ -70,6 +39,17 @@ const TableNav = ({ type, state, isPageMove = true }: TableNavProps) => {
     </Box>
   );
 };
+
+const tableList = [
+  {
+    type: 'notice',
+    navList: ['통합 공지', '단지 공지', '라인 공지'],
+  },
+  {
+    type: 'community',
+    navList: ['통합 게시글', '단지 게시글', '라인 게시글', '내 글 목록'],
+  },
+];
 
 const mapStateToProps = (state: RootState) => {
   return {
