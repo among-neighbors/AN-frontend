@@ -14,6 +14,8 @@ import { connect } from 'react-redux';
 import { RootState } from '~/others/store';
 import styled from 'styled-components';
 import { shadowCSSForStyledComponent } from '~/others/cssLibrary';
+import SquareImg from '../atoms/Img';
+import { ProfileHomeButton } from './ProfileHome';
 
 interface NewProfileFormProps {
   setIsProfileHome: Function;
@@ -64,76 +66,81 @@ const NewProfileForm: React.FC<NewProfileFormProps> = ({
   };
 
   return (
-    <NewProfileFormContainer onSubmit={handleSubmitNewProfile}>
-      <Typography
-        variant='h6'
-        noWrap
-        sx={{
-          fontFamily: 'monospace',
-          fontWeight: 700,
-          color: 'inherit',
-          alignItems: 'center',
-          textAlign: 'center',
-        }}
-      >
-        새 프로필 생성하기
-      </Typography>
-      <TextField
-        margin='normal'
-        required
-        fullWidth
-        id='name'
-        label='이름'
-        name='name'
-        autoComplete='name'
-        autoFocus
-      />
-      <TextField
-        margin='normal'
-        required
-        fullWidth
-        id='age'
-        label='나이'
-        name='age'
-        autoComplete='age'
-        autoFocus
-      />
-      <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-        <FormLabel id='radioButtonsForSex' sx={{ m: 1, marginRight: '20px' }}>
-          성별
-        </FormLabel>
-        <RadioGroup row name='sex' defaultValue='MALE'>
-          <FormControlLabel value='MALE' control={<Radio />} label='남성' />
-          <FormControlLabel value='FEMALE' control={<Radio />} label='여성' />
-        </RadioGroup>
-      </FormControl>
+    <>
+      <ProfileHomeButton onClick={() => setIsProfileHome(true)}>
+        <SquareImg src='../../../public/img/back.png' length='60px' />
+      </ProfileHomeButton>
+      <NewProfileFormContainer onSubmit={handleSubmitNewProfile}>
+        <Typography
+          variant='h6'
+          noWrap
+          sx={{
+            fontFamily: 'monospace',
+            fontWeight: 700,
+            color: 'inherit',
+            alignItems: 'center',
+            textAlign: 'center',
+          }}
+        >
+          새 프로필 생성하기
+        </Typography>
+        <TextField
+          margin='normal'
+          required
+          fullWidth
+          id='name'
+          label='이름'
+          name='name'
+          autoComplete='name'
+          autoFocus
+        />
+        <TextField
+          margin='normal'
+          required
+          fullWidth
+          id='age'
+          label='나이'
+          name='age'
+          autoComplete='age'
+          autoFocus
+        />
+        <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <FormLabel id='radioButtonsForSex' sx={{ m: 1, marginRight: '20px' }}>
+            성별
+          </FormLabel>
+          <RadioGroup row name='sex' defaultValue='MALE'>
+            <FormControlLabel value='MALE' control={<Radio />} label='남성' />
+            <FormControlLabel value='FEMALE' control={<Radio />} label='여성' />
+          </RadioGroup>
+        </FormControl>
 
-      <TextField
-        margin='normal'
-        required
-        fullWidth
-        id='pin'
-        label='pin 번호 입력'
-        name='pin'
-        type='password'
-        autoComplete='pin'
-        autoFocus
-      />
-      <TextField
-        margin='normal'
-        required
-        fullWidth
-        id='re-pin'
-        label='pin 번호 확인'
-        name='re-pin'
-        type='password'
-        autoComplete='re-pin'
-        autoFocus
-      />
-      <Button sx={{ marginTop: '20px' }} type='submit' fullWidth variant='contained'>
-        프로필 생성
-      </Button>
-    </NewProfileFormContainer>
+        <TextField
+          margin='normal'
+          required
+          fullWidth
+          id='pin'
+          label='pin 번호 입력'
+          name='pin'
+          type='password'
+          autoComplete='pin'
+          autoFocus
+        />
+        <TextField
+          margin='normal'
+          required
+          fullWidth
+          id='re-pin'
+          label='pin 번호 확인'
+          name='re-pin'
+          type='password'
+          autoComplete='re-pin'
+          autoFocus
+        />
+        <Button sx={{ marginTop: '20px' }} type='submit' fullWidth variant='contained'>
+          프로필 생성
+        </Button>
+      </NewProfileFormContainer>
+    </>
   );
 };
 

@@ -77,6 +77,14 @@ const Profiles: React.FC<ProfilesProps> = ({ profileList, handleOpenNewProfile, 
     });
   };
 
+  const goToProfileHome = () => {
+    setIsSelectedProfile(false);
+    setSelectedProfileData({
+      profileId: 0,
+      name: '',
+    });
+  };
+
   const handleSubmitProfileLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -101,36 +109,41 @@ const Profiles: React.FC<ProfilesProps> = ({ profileList, handleOpenNewProfile, 
   return (
     <>
       {isSelectedProfile ? (
-        <SelectedProfileContainer onSubmit={handleSubmitProfileLogin}>
-          <SelectedProfile>{selectedProfileData.name}</SelectedProfile>
-          <TextField
-            margin='normal'
-            required
-            id='pin'
-            label='pin 번호 입력'
-            name='pin'
-            type='password'
-            autoComplete='pin'
-            autoFocus
-            sx={{
-              width: '250px',
-              '& .MuiOutlinedInput-root:hover': {
-                '&:hover > fieldset': {
-                  borderColor: '#EC8034',
+        <>
+          <ProfileHomeButton onClick={goToProfileHome}>
+            <SquareImg src='../../../public/img/back.png' length='60px' />
+          </ProfileHomeButton>
+          <SelectedProfileContainer onSubmit={handleSubmitProfileLogin}>
+            <SelectedProfile>{selectedProfileData.name}</SelectedProfile>
+            <TextField
+              margin='normal'
+              required
+              id='pin'
+              label='pin 번호 입력'
+              name='pin'
+              type='password'
+              autoComplete='pin'
+              autoFocus
+              sx={{
+                width: '250px',
+                '& .MuiOutlinedInput-root:hover': {
+                  '&:hover > fieldset': {
+                    borderColor: '#EC8034',
+                  },
                 },
-              },
-              '& > div, & > label': {
-                color: '#fff',
-              },
-              '& > div > fieldset': {
-                borderColor: '#fff',
-              },
-            }}
-          />
-          <ProfileLoginButton type='submit' variant='contained'>
-            프로필 로그인
-          </ProfileLoginButton>
-        </SelectedProfileContainer>
+                '& > div, & > label': {
+                  color: '#fff',
+                },
+                '& > div > fieldset': {
+                  borderColor: '#fff',
+                },
+              }}
+            />
+            <ProfileLoginButton type='submit' variant='contained'>
+              프로필 로그인
+            </ProfileLoginButton>
+          </SelectedProfileContainer>
+        </>
       ) : (
         <ProfileListContainer>
           {profileList.map(({ profileId, name }, index) => {
@@ -149,6 +162,18 @@ const Profiles: React.FC<ProfilesProps> = ({ profileList, handleOpenNewProfile, 
   );
 };
 
+export const ProfileHomeButton = styled.button`
+  position: absolute;
+  top: 30px;
+  left: 20px;
+  width: 60px;
+  height: 60px;
+  background: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+`;
+
 const ProfileHomeContainer = styled.div`
   display: flex;
   align-items: center;
@@ -158,7 +183,7 @@ const ProfileHomeContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   z-index: 1101;
 `;
 
