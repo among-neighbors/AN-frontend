@@ -1,10 +1,10 @@
 import { Button, TextField } from '@mui/material';
-import { Box } from '@mui/system';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { shadowCSSForStyledComponent } from '~/others/cssLibrary';
 import { handleRefreshProfileAccessToken } from '~/others/store';
+import SquareImg from '../atoms/Img';
 import NewProfileForm from './NewProfileForm';
 
 interface ProfileHomeProps {
@@ -106,15 +106,30 @@ const Profiles: React.FC<ProfilesProps> = ({ profileList, handleOpenNewProfile, 
           <TextField
             margin='normal'
             required
-            fullWidth
             id='pin'
             label='pin 번호 입력'
             name='pin'
             type='password'
             autoComplete='pin'
             autoFocus
+            sx={{
+              width: '250px',
+              '& .MuiOutlinedInput-root:hover': {
+                '&:hover > fieldset': {
+                  borderColor: '#EC8034',
+                },
+              },
+              '& > div, & > label': {
+                color: '#fff',
+              },
+              '& > div > fieldset': {
+                borderColor: '#fff',
+              },
+            }}
           />
-          <ProfileLoginButton type='submit'>프로필 로그인</ProfileLoginButton>
+          <ProfileLoginButton type='submit' variant='contained'>
+            프로필 로그인
+          </ProfileLoginButton>
         </SelectedProfileContainer>
       ) : (
         <ProfileListContainer>
@@ -125,7 +140,9 @@ const Profiles: React.FC<ProfilesProps> = ({ profileList, handleOpenNewProfile, 
               </Profile>
             );
           })}
-          <NewProfileButton onClick={handleOpenNewProfile}>신규 프로필 등록</NewProfileButton>
+          <NewProfileButton onClick={handleOpenNewProfile}>
+            <SquareImg src='../../../public/img/plus.png' length='50px' />
+          </NewProfileButton>
         </ProfileListContainer>
       )}
     </>
@@ -141,7 +158,7 @@ const ProfileHomeContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
   z-index: 1101;
 `;
 
@@ -152,6 +169,7 @@ const SelectedProfileContainer = styled.form`
   flex-direction: column;
   width: 100%;
   height: 100%;
+  gap: 20px;
 `;
 
 const ProfileListContainer = styled.div`
@@ -161,6 +179,7 @@ const ProfileListContainer = styled.div`
   flex-wrap: wrap;
   width: 100%;
   gap: 40px;
+  padding: 40px;
 `;
 
 const ProfileLoginButton = styled(Button)``;
@@ -173,7 +192,14 @@ const Profile = styled.div`
   height: 150px;
   background: #fff;
   font-size: 30px;
+  padding: 30px;
+  cursor: pointer;
+  text-align: center;
   ${shadowCSSForStyledComponent}
+  &:hover {
+    transform: translate(4px, -4px);
+  }
+  transition: 0.3s;
 `;
 
 const NewProfileButton = styled(Profile)``;
@@ -182,6 +208,11 @@ const SelectedProfile = styled(Profile)`
   width: 250px;
   height: 250px;
   font-size: 50px;
+  padding: 50px;
+  &:hover {
+    transform: none;
+  }
+  cursor: inherit;
 `;
 
 export default ProfileHome;

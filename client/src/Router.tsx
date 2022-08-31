@@ -21,8 +21,8 @@ const Router = ({ state }: RouterProps) => {
   return (
     <>
       <BrowserRouter>
-        <Checker />
         <ThemeProvider theme={theme(false)}>
+          <Checker />
           <Header />
         </ThemeProvider>
         <ThemeProvider theme={theme(state.helpSideBarReducer)}>

@@ -6,12 +6,14 @@ import {
   Radio,
   RadioGroup,
   TextField,
+  Typography,
 } from '@mui/material';
-import { Box } from '@mui/system';
 import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '~/others/store';
+import styled from 'styled-components';
+import { shadowCSSForStyledComponent } from '~/others/cssLibrary';
 
 interface NewProfileFormProps {
   setIsProfileHome: Function;
@@ -62,7 +64,20 @@ const NewProfileForm: React.FC<NewProfileFormProps> = ({
   };
 
   return (
-    <Box component='form' onSubmit={handleSubmitNewProfile}>
+    <NewProfileFormContainer onSubmit={handleSubmitNewProfile}>
+      <Typography
+        variant='h6'
+        noWrap
+        sx={{
+          fontFamily: 'monospace',
+          fontWeight: 700,
+          color: 'inherit',
+          alignItems: 'center',
+          textAlign: 'center',
+        }}
+      >
+        새 프로필 생성하기
+      </Typography>
       <TextField
         margin='normal'
         required
@@ -115,12 +130,19 @@ const NewProfileForm: React.FC<NewProfileFormProps> = ({
         autoComplete='re-pin'
         autoFocus
       />
-      <Button type='submit' fullWidth variant='contained'>
-        프로필 등록
+      <Button sx={{ marginTop: '20px' }} type='submit' fullWidth variant='contained'>
+        프로필 생성
       </Button>
-    </Box>
+    </NewProfileFormContainer>
   );
 };
+
+const NewProfileFormContainer = styled.form`
+  margin: 0 20px;
+  padding: 20px 20px;
+  background: #fff;
+  ${shadowCSSForStyledComponent}
+`;
 
 const mapStateToProps = (state: RootState) => {
   return {
