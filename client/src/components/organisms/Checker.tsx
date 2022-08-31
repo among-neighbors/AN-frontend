@@ -9,15 +9,20 @@ import {
   RootState,
 } from '~/others/store';
 import ProfileHome from './ProfileHome';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface CheckerProps {
   accessTokenState: accessTokenState;
 }
 
+const allowPath = ['/', '/sign'];
+
 const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
   const { accountAccessToken, profileAccessToken } = accessTokenState;
   const [accountKey, setAccountKey] = useState(false);
   const [profileKey, setProfileKey] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const checkAccountLogin = async () => {
     try {
@@ -51,6 +56,20 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
     checkAccountLogin();
     checkProfileLogin();
   }, []);
+
+  useEffect(() => {
+    if (!accountKey || !profileKey) return;
+    if (accountAccessToken !== '' && profileAccessToken === '') {
+      navigate('/');
+    }
+    if (accountAccessToken === '' && profileAccessToken === '') {
+      const isAllowPath = allowPath.some((path) => location.pathname === path);
+      if (!isAllowPath) navigate('/sign');
+    }
+    if (accountAccessToken !== '' && profileAccessToken !== '') {
+      if (location.pathname === '/sign') navigate('/');
+    }
+  }, [accountKey, profileKey, location.pathname]);
 
   useInterval(checkAccountLogin, accountAccessToken === '' ? null : 10000);
   useInterval(checkProfileLogin, profileAccessToken === '' ? null : 10000);
