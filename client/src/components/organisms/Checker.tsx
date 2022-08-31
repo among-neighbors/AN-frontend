@@ -8,7 +8,7 @@ import {
   handleRefreshProfileAccessToken,
   RootState,
 } from '~/others/store';
-import ProfileLogin from './ProfileLogin';
+import ProfileLogin from './ProfileHome';
 
 interface CheckerProps {
   accessTokenState: accessTokenState;

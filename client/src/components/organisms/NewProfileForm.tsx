@@ -14,11 +14,14 @@ import { connect } from 'react-redux';
 import { RootState } from '~/others/store';
 
 interface NewProfileFormProps {
-  setIsNewProfile: Function;
+  setIsProfileHome: Function;
   accountAccessToken: string;
 }
 
-const NewProfileForm: React.FC<NewProfileFormProps> = ({ setIsNewProfile, accountAccessToken }) => {
+const NewProfileForm: React.FC<NewProfileFormProps> = ({
+  setIsProfileHome,
+  accountAccessToken,
+}) => {
   const handleSubmitNewProfile = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -52,7 +55,7 @@ const NewProfileForm: React.FC<NewProfileFormProps> = ({ setIsNewProfile, accoun
           withCredentials: true,
         },
       );
-      setIsNewProfile(false);
+      setIsProfileHome(true);
     } catch (err) {
       console.log(err);
     }
