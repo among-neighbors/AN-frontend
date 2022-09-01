@@ -9,121 +9,33 @@ import Container from '@mui/material/Container';
 import SquareImg from '../atoms/Img';
 import { shadowCssForMUI } from '~/others/cssLibrary';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
+import { handleRefreshAccountAccessToken } from '~/others/store';
 
-//XU2Z
 const SignIn = () => {
+  const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    // const resss = await fetch('https://neighbor42.com:8181/api/v1/mail/code', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     email: 'cdt9473@gmail.com',
-    //   }),
-    // });
-    // const dddd = await resss.json();
-    // console.log(dddd);
-
-    // const resss = await fetch('https://neighbor42.com:8181/api/v1/auth/verify-code', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     email: 'cdt9473@gmail.com',
-    //     code: 'BC1L',
-    //   }),
-    // });
-    // const dddd = await resss.json();
-    // console.log(dddd);
-
-    // const ress = await fetch('https://neighbor42.com:8181/api/v1/manager/lines/new', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     name: '101',
-    //   }),
-    // });
-    // const dddd = await ress.json();
-    // console.log(dddd);
-
-    // const res = await fetch('https://neighbor42.com:8181/api/v1/manager/houses/new', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     lineName: '101',
-    //     houseName: '101',
-    //   }),
-    // });
-    // const ddd = await res.json();
-    // console.log(ddd);
-
-    // const res = await fetch('https://neighbor42.com:8181/api/v1/auth/accounts/new', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     lineName: '101',
-    //     houseName: '101',
-    //     username: 'yoon',
-    //     email: 'cdt9473@gmail.com',
-    //     passwd: 'root',
-    //   }),
-    // });
-    // const ddd = await res.json();
-    // console.log(ddd);
-
-    const ress = await fetch('https://neighbor42.com:8181/api/v1/auth/accounts/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        username: 'yoon',
-        passwd: 'root',
-      }),
-    });
-    const dd = await ress.json();
-    console.log(dd);
-
-    // const accessToken = dd.response.accessToken;
-    // console.log(accessToken);
-
-    // const res = await fetch('https://neighbor42.com:8181/api/v1/auth/profiles/new', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: `Bearer ${accessToken}`,
-    //   },
-    //   body: JSON.stringify({
-    //     name: 'testt',
-    //     age: 10,
-    //     pin: '0123',
-    //     gender: 'MALE',
-    //   }),
-    // });
-    // const d = await res.json();
-    // console.log(d);
-
-    // const ress = await fetch('https://neighbor42.com:8181/api/v1/auth/account-token', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   credentials: 'include',
-    // });
-    // const dd = await ress.json();
-    // console.log(dd);
+    try {
+      const res = await axios.post(
+        'https://neighbor42.com:8181/api/v1/auth/accounts/login',
+        {
+          username: data.get('username'),
+          passwd: data.get('password'),
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        },
+      );
+      handleRefreshAccountAccessToken(res.data.response.accessToken);
+      navigate('/');
+    } catch (err) {
+      alert(err);
+    }
   };
 
   return (

@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import { RootState } from './others/store';
 import ViewPage from './pages/ViewPage';
 import WrittingPage from './pages/WrittingPage';
+import { Navigate } from 'react-router-dom';
+import Checker from './components/organisms/Checker';
 
 interface RouterProps {
   state: RootState;
@@ -20,6 +22,7 @@ const Router = ({ state }: RouterProps) => {
     <>
       <BrowserRouter>
         <ThemeProvider theme={theme(false)}>
+          <Checker />
           <Header />
         </ThemeProvider>
         <ThemeProvider theme={theme(state.helpSideBarReducer)}>
@@ -40,6 +43,7 @@ const Router = ({ state }: RouterProps) => {
             <Route path='/community'>
               <Route path=':id' element={<ViewPage type='community' />} />
             </Route>
+            <Route path='/*' element={<Navigate to='/' />}></Route>
           </Routes>
           <HelpSideBar />
         </ThemeProvider>

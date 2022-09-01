@@ -5,7 +5,7 @@ import { store } from './others/store';
 import Router from './Router';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  <>
     <Provider store={store}>
       <Router />
     </Provider>
@@ -30,5 +30,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         padding-top: 70px;
       }
     `}</style>
-  </React.StrictMode>,
+  </>,
 );
