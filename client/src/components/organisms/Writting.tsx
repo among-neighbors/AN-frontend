@@ -22,12 +22,7 @@ interface WrittingProps {
   type: string;
 }
 
-const submitTextByTypes: SubmitTextByTypes = {
-  community: '글 작성',
-  complaint: '민원 작성',
-};
-
-const Writting = ({ type }: WrittingProps) => {
+const Writting: React.FC<WrittingProps> = ({ type }) => {
   const [writingData, setWritingData] = useState<WritingData>({
     title: '',
     boundary: 'complex',
@@ -130,6 +125,11 @@ const Writting = ({ type }: WrittingProps) => {
       </Box>
     </>
   );
+};
+
+const submitTextByTypes: SubmitTextByTypes = {
+  community: '글 작성',
+  complaint: '민원 작성',
 };
 
 export default Writting;

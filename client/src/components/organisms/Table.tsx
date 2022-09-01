@@ -18,38 +18,6 @@ interface Column {
   format?: (value: boolean) => string;
 }
 
-const columns = (labels: string[]): Column[] => {
-  return [
-    { id: 'ID', label: `${labels[0]}`, minWidth: 80, align: 'center' },
-    { id: 'title', label: `${labels[1]}`, minWidth: 300 },
-    {
-      id: 'type',
-      label: `${labels[2]}`,
-      minWidth: 90,
-      align: 'center',
-      format: (value: boolean) => {
-        if (value === false) {
-          return '단지';
-        } else {
-          return '라인';
-        }
-      },
-    },
-    {
-      id: 'writer',
-      label: `${labels[3]}`,
-      minWidth: 110,
-      align: 'center',
-    },
-    {
-      id: 'date',
-      label: `${labels[4]}`,
-      minWidth: 150,
-      align: 'center',
-    },
-  ];
-};
-
 interface Data {
   ID: string;
   title: string;
@@ -67,13 +35,7 @@ interface LabelObj {
   [key: string]: string[];
 }
 
-const labelsOfTypes: LabelObj = {
-  notice: ['공지 ID', '제목', '공지 유형', '작성자', '등록일'],
-  community: ['게시글 ID', '제목', '게시글 유형', '작성자', '등록일'],
-  complaint: ['민원 ID', '제목', '민원 유형', '작성자', '등록일'],
-};
-
-const BoardTable = ({ type, rows }: TableProps) => {
+const BoardTable: React.FC<TableProps> = ({ type, rows }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -165,6 +127,44 @@ const BoardTable = ({ type, rows }: TableProps) => {
       />
     </Paper>
   );
+};
+
+const labelsOfTypes: LabelObj = {
+  notice: ['공지 ID', '제목', '공지 유형', '작성자', '등록일'],
+  community: ['게시글 ID', '제목', '게시글 유형', '작성자', '등록일'],
+  complaint: ['민원 ID', '제목', '민원 유형', '작성자', '등록일'],
+};
+
+const columns = (labels: string[]): Column[] => {
+  return [
+    { id: 'ID', label: `${labels[0]}`, minWidth: 80, align: 'center' },
+    { id: 'title', label: `${labels[1]}`, minWidth: 300 },
+    {
+      id: 'type',
+      label: `${labels[2]}`,
+      minWidth: 90,
+      align: 'center',
+      format: (value: boolean) => {
+        if (value === false) {
+          return '단지';
+        } else {
+          return '라인';
+        }
+      },
+    },
+    {
+      id: 'writer',
+      label: `${labels[3]}`,
+      minWidth: 110,
+      align: 'center',
+    },
+    {
+      id: 'date',
+      label: `${labels[4]}`,
+      minWidth: 150,
+      align: 'center',
+    },
+  ];
 };
 
 export default BoardTable;

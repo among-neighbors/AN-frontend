@@ -1,11 +1,19 @@
-import { Button, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { shadowCSSForStyledComponent } from '~/others/cssLibrary';
+import {
+  ProfileHomeButton,
+  ProfileHomeContainer,
+  SelectedProfileContainer,
+  ProfileListContainer,
+  ProfileLoginButton,
+  Profile,
+  NewProfileButton,
+  SelectedProfile,
+} from './styled';
 import { handleRefreshProfileAccessToken } from '~/others/store';
-import SquareImg from '../atoms/Img';
-import NewProfileForm from './NewProfileForm';
+import SquareImg from '../../atoms/Img';
+import NewProfileForm from '../NewProfileForm';
 
 interface ProfileHomeProps {
   token: string;
@@ -161,83 +169,5 @@ const Profiles: React.FC<ProfilesProps> = ({ profileList, handleOpenNewProfile, 
     </>
   );
 };
-
-export const ProfileHomeButton = styled.button`
-  position: absolute;
-  top: 30px;
-  left: 20px;
-  width: 60px;
-  height: 60px;
-  background: none;
-  outline: none;
-  border: none;
-  cursor: pointer;
-`;
-
-const ProfileHomeContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.9);
-  z-index: 1101;
-`;
-
-const SelectedProfileContainer = styled.form`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  gap: 20px;
-`;
-
-const ProfileListContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-  gap: 40px;
-  padding: 40px;
-`;
-
-const ProfileLoginButton = styled(Button)``;
-
-const Profile = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 150px;
-  height: 150px;
-  background: #fff;
-  font-size: 30px;
-  padding: 30px;
-  cursor: pointer;
-  text-align: center;
-  ${shadowCSSForStyledComponent}
-  &:hover {
-    transform: translate(4px, -4px);
-  }
-  transition: 0.3s;
-`;
-
-const NewProfileButton = styled(Profile)``;
-
-const SelectedProfile = styled(Profile)`
-  width: 250px;
-  height: 250px;
-  font-size: 50px;
-  padding: 50px;
-  &:hover {
-    transform: none;
-  }
-  cursor: inherit;
-`;
 
 export default ProfileHome;

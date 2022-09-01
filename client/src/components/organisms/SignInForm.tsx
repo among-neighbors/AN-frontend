@@ -12,7 +12,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { handleRefreshAccountAccessToken } from '~/others/store';
 
-const SignIn = () => {
+const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

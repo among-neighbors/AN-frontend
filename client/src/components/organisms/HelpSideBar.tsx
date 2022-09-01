@@ -12,7 +12,7 @@ const HelpSideBar: React.FC<HelpSideBarProps> = ({ isHelpSideBarOpen }) => {
   return (
     <>
       <Box
-        className='hide'
+        className={isHelpSideBarOpen ? '' : 'disNone'}
         sx={{
           display: { xs: 'block', sm: 'none' },
           position: 'fixed',
@@ -27,8 +27,8 @@ const HelpSideBar: React.FC<HelpSideBarProps> = ({ isHelpSideBarOpen }) => {
         onClick={closeHelpSideBar}
       />
 
-      <Block className='block'></Block>
-      <StyledHelpSideBar className='helpSideBar'>
+      <Block className={isHelpSideBarOpen ? '' : 'disNone'}></Block>
+      <StyledHelpSideBar className={isHelpSideBarOpen ? '' : 'disNone'}>
         <HelpCallBox />
         <HelpCallBox />
         <HelpCallBox />
@@ -36,27 +36,9 @@ const HelpSideBar: React.FC<HelpSideBarProps> = ({ isHelpSideBarOpen }) => {
         <HelpFinBox />
         <HelpFinBox />
       </StyledHelpSideBar>
-      <style jsx>{`
-        ${isHelpSideBarOpen
-          ? ``
-          : `
-        .block, .hide, .helpSideBar{
-          display: none;
-          }
-        }
-        `}
-      `}</style>
     </>
   );
 };
-
-interface VisibleDivProps {
-  isHelpSideBarOpen: boolean;
-}
-
-const VisibleDiv = styled.div<VisibleDivProps>`
-  ${(props) => (props.isHelpSideBarOpen ? '' : 'display: none;')}
-`;
 
 const Block = styled.div`
   width: 300px !important;

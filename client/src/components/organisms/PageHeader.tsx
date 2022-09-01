@@ -1,6 +1,34 @@
+import styled from 'styled-components';
+
 interface PageHeaderProps {
   type: string;
 }
+
+const PageHeader: React.FC<PageHeaderProps> = ({ type }) => {
+  const pageText = texts.find((text) => text.type === type);
+  if (!pageText) return <></>;
+  return (
+    <StyledPageHeader>
+      <h1>{pageText.title}</h1>
+      <p>{pageText.sub}</p>
+    </StyledPageHeader>
+  );
+};
+
+const StyledPageHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 150px;
+  & > h1 {
+    margin: 20px;
+  }
+  & > p {
+    font-size: 16px;
+  }
+`;
 
 const texts = [
   {
@@ -19,34 +47,5 @@ const texts = [
     sub: '반포 자이 커뮤니티에 오신 것을 환영합니다.',
   },
 ];
-
-const PageHeader = ({ type }: PageHeaderProps) => {
-  const pageText = texts.find((text) => text.type === type);
-  if (pageText === undefined) return <></>;
-  return (
-    <>
-      <div className='pageHeader'>
-        <h1>{pageText.title}</h1>
-        <p>{pageText.sub}</p>
-      </div>
-      <style jsx>{`
-        .pageHeader {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 150px;
-        }
-        .pageHeader > h1 {
-          margin: 20px;
-        }
-        .pageHeader > p {
-          font-size: 16px;
-        }
-      `}</style>
-    </>
-  );
-};
 
 export default PageHeader;

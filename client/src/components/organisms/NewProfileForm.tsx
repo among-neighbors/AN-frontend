@@ -15,7 +15,7 @@ import { RootState } from '~/others/store';
 import styled from 'styled-components';
 import { shadowCSSForStyledComponent } from '~/others/cssLibrary';
 import SquareImg from '../atoms/Img';
-import { ProfileHomeButton } from './ProfileHome';
+import { ProfileHomeButton } from './ProfileHome/styled';
 
 interface NewProfileFormProps {
   setIsProfileHome: Function;
