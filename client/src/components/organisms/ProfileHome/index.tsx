@@ -1,5 +1,4 @@
 import { TextField } from '@mui/material';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
   ProfileHomeButton,
@@ -14,6 +13,7 @@ import {
 import { handleRefreshProfileAccessToken } from '~/others/store';
 import SquareImg from '../../atoms/Img';
 import NewProfileForm from '../NewProfileForm';
+import myAxios from '~/others/myAxios';
 
 interface ProfileHomeProps {
   token: string;
@@ -34,10 +34,7 @@ const ProfileHome: React.FC<ProfileHomeProps> = ({ token }) => {
   };
 
   const getProfileList = async (token: string) => {
-    const res = await axios.get('https://neighbor42.com:8181/api/v1/accounts/profiles', {
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      withCredentials: true,
-    });
+    const res = await myAxios('get', 'api/v1/accounts/profiles', null, true, token);
     setProfileList(res.data.response.profiles);
   };
 
@@ -51,7 +48,7 @@ const ProfileHome: React.FC<ProfileHomeProps> = ({ token }) => {
   }, [isProfileHome]);
 
   useEffect(() => {
-    console.log(test);
+    // console.log(test);
     setTest(true);
   }, [test]);
 
@@ -102,21 +99,11 @@ const Profiles: React.FC<ProfilesProps> = ({ profileList, handleOpenNewProfile, 
   const handleSubmitProfileLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const res = await axios.post(
-      'https://neighbor42.com:8181/api/v1/auth/profiles/login',
-      {
-        profileId: selectedProfileData.profileId,
-        pin: data.get('pin'),
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      },
-    );
-
+    const body = {
+      profileId: selectedProfileData.profileId,
+      pin: data.get('pin'),
+    };
+    const res = await myAxios('post', 'api/v1/auth/profiles/login', body, true, token);
     handleRefreshProfileAccessToken(res.data.response.accessToken);
   };
 

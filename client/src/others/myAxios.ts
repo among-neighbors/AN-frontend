@@ -1,11 +1,13 @@
 import axios from 'axios';
 
-interface myAxiosProps {
-  action: string;
-  path: string;
-  body?: object;
-  withCredentials?: boolean;
-  token?: string | undefined;
+interface myAxiosFunc {
+  (
+    action: string,
+    path: string,
+    body?: object | null,
+    withCredentials?: boolean,
+    token?: string | undefined,
+  ): Promise<any>;
 }
 
 interface myAxiosOption {
@@ -17,7 +19,13 @@ interface myAxiosOption {
 
 const serverURL = 'https://neighbor42.com:8181/';
 
-const myAxios = async ({ action, path, body, withCredentials = false, token }: myAxiosProps) => {
+const myAxios: myAxiosFunc = async (
+  action,
+  path,
+  body = null,
+  withCredentials = false,
+  token = undefined,
+) => {
   const option: myAxiosOption = {
     headers: { 'Content-Type': 'application/json' },
     withCredentials,
