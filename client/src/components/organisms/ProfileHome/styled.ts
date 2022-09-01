@@ -14,7 +14,11 @@ const ProfileHomeButton = styled.button`
   cursor: pointer;
 `;
 
-const ProfileHomeContainer = styled.div`
+interface ProfileHomeContainerProps {
+  test: number;
+}
+
+const ProfileHomeContainer = styled.div<ProfileHomeContainerProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,6 +29,8 @@ const ProfileHomeContainer = styled.div`
   height: 100vh;
   background: rgba(0, 0, 0, 0.9);
   z-index: 1101;
+  opacity: ${(props) => (props.test ? '1' : '0')};
+  transition: 1s;
 `;
 
 const SelectedProfileContainer = styled.form`

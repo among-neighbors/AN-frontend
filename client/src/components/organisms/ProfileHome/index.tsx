@@ -27,6 +27,7 @@ interface ProfileData {
 const ProfileHome: React.FC<ProfileHomeProps> = ({ token }) => {
   const [profileList, setProfileList] = useState<ProfileData[]>([]);
   const [isProfileHome, setIsProfileHome] = useState(true);
+  const [test, setTest] = useState(false);
 
   const handleOpenNewProfile = () => {
     setIsProfileHome(false);
@@ -49,8 +50,15 @@ const ProfileHome: React.FC<ProfileHomeProps> = ({ token }) => {
     }
   }, [isProfileHome]);
 
+  useEffect(() => {
+    const my = document.getElementById('test');
+    console.log(my);
+    console.log(test);
+    setTest(true);
+  }, [test]);
+
   return (
-    <ProfileHomeContainer>
+    <ProfileHomeContainer id='test' test={test ? 1 : 0}>
       {isProfileHome ? (
         <Profiles
           profileList={profileList}

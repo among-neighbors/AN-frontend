@@ -74,8 +74,9 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
   useInterval(checkAccountLogin, accountAccessToken === '' ? null : 10000);
   useInterval(checkProfileLogin, profileAccessToken === '' ? null : 10000);
 
-  if (accountKey && profileKey && accountAccessToken !== '' && profileAccessToken === '')
+  if (accountKey && profileKey && accountAccessToken !== '' && profileAccessToken === '') {
     return <ProfileHome token={accountAccessToken} />;
+  }
   return <></>;
 };
 
