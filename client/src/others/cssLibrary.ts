@@ -32,7 +32,7 @@ const GlobalStyle = createGlobalStyle`
         text-decoration: none;
     }
     .disNone {
-      display: none;
+      display: none !important;
     }
 `;
 

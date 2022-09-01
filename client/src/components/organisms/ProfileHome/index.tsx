@@ -52,8 +52,8 @@ const ProfileHome: React.FC<ProfileHomeProps> = ({ token }) => {
 
   useEffect(() => {
     const my = document.getElementById('test');
-    console.log(my);
-    console.log(test);
+    // console.log(my);
+    // console.log(test);
     setTest(true);
   }, [test]);
 

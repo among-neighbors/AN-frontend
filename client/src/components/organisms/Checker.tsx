@@ -15,8 +15,6 @@ interface CheckerProps {
   accessTokenState: accessTokenState;
 }
 
-const allowPath = ['/', '/sign'];
-
 const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
   const { accountAccessToken, profileAccessToken } = accessTokenState;
   const [accountKey, setAccountKey] = useState(false);
@@ -71,14 +69,18 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
     }
   }, [accountKey, profileKey, location.pathname]);
 
-  useInterval(checkAccountLogin, accountAccessToken === '' ? null : 10000);
-  useInterval(checkProfileLogin, profileAccessToken === '' ? null : 10000);
+  useInterval(checkAccountLogin, accountAccessToken === '' ? null : TIME_FOR_REFRESH_TOKEN);
+  useInterval(checkProfileLogin, profileAccessToken === '' ? null : TIME_FOR_REFRESH_TOKEN);
 
   if (accountKey && profileKey && accountAccessToken !== '' && profileAccessToken === '') {
     return <ProfileHome token={accountAccessToken} />;
   }
   return <></>;
 };
+
+const allowPath = ['/', '/sign'];
+
+const TIME_FOR_REFRESH_TOKEN = 10000;
 
 const mapStateToProps = (state: RootState) => {
   return {
