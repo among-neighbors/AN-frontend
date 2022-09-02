@@ -8,14 +8,9 @@ import PageHeader from '~/components/organisms/PageHeader';
 import BoardTable from '~/components/organisms/Table';
 import myAxios from '~/others/myAxios';
 import { RootState } from '~/others/store';
-
-interface Data {
-  ID: string;
-  title: string;
-  type: boolean;
-  writer: string;
-  date: string;
-}
+import { useLocation } from 'react-router-dom';
+import { parse } from 'query-string';
+import { ComplaintData, NoticeData, CommunityData, Obj } from '~/others/integrateInterface';
 
 interface ListPageProps {
   type: string;
@@ -23,16 +18,41 @@ interface ListPageProps {
   isReadyForRequestAPI: boolean;
 }
 
-interface stringObj {
-  [key: string]: string;
-}
+// rows type 관련 처리해야함.
 
 const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPageProps) => {
-  const [ListData, setListData] = useState([]);
+  const location = useLocation();
+  const [tableData, setTableData] = useState<{
+    list: any[];
+    isFirstPage: boolean;
+    isLastPage: boolean;
+  }>({
+    list: [],
+    isFirstPage: false,
+    isLastPage: false,
+  });
+  const { list, isFirstPage, isLastPage } = tableData;
+  const rows = handleList(list, type);
 
   const getListData = async () => {
-    const res = await myAxios('get', `${APIbyType[type]}`, null, true, accountAccessToken);
-    setListData(res.data.response.communityList);
+    const URLQueryData = parse(location.search);
+    const { page, range, category } = URLQueryData;
+    const querys: Obj<string> = {
+      notice: `?page=${page ?? 1}&count=10&range=${range ?? 'ALL'}`,
+      complaint: `?page=${page ?? 1}&count=10`,
+      community: `?page=${page ?? 1}&count=10&range=${range ?? 'ALL'}&category=${
+        category ?? 'ALL'
+      }`,
+    };
+    const res = await myAxios(
+      'get',
+      `${APIbyType[type]}${querys[type]}`,
+      null,
+      true,
+      accountAccessToken,
+    );
+    console.log(res);
+    setTableData(res.data.response);
   };
 
   useEffect(() => {
@@ -60,49 +80,53 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
         ) : (
           <></>
         )}
-        <BoardTable type={type} rows={rows} />
+        <BoardTable type={type} rows={rows} isFirstPage={isFirstPage} isLastPage={isLastPage} />
       </Box>
     </>
   );
 };
 
-const APIbyType: stringObj = {
-  notice: `api/v1/notices`,
-  complaint: `api/v1/reports`,
-  community: `api/v1/communities?page=1&count=10&range=ALL&category=ALL`,
+const handleList = (list: any[], type: string) => {
+  return list.map(({ Id, title, category, range, writer, createdDate }) => {
+    const common = {
+      ID: Id,
+      title,
+    };
+    switch (type) {
+      case 'notice':
+        return {
+          ...common,
+          type: range,
+          date: createdDate,
+          writer,
+        };
+      case 'complaint':
+        return {
+          ...common,
+          date: createdDate,
+          writer: `${writer.lineName}동 ${writer.houseName}호`,
+        };
+      case 'community':
+        return {
+          ...common,
+          type: range,
+          category,
+          writer: writer.name,
+        };
+    }
+  });
 };
 
-const buttonTextByType: stringObj = {
+const APIbyType: Obj<string> = {
+  notice: `api/v1/notices`,
+  complaint: `api/v1/reports`,
+  community: `api/v1/communities`,
+};
+
+const buttonTextByType: Obj<string> = {
   complaint: '민원 작성',
   community: '글쓰기',
 };
-
-function createData(ID: string, title: string, type: boolean, writer: string, date: string): Data {
-  return { ID, title, type, writer, date };
-}
-
-const rows = [
-  createData('0', '해윙', true, '홍길동', '2022.08.14'),
-  createData('1', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('2', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-  createData('3033', '안녕하세요 제목입니다.', true, '홍길동', '2022.08.14'),
-];
 
 const mapStateToProps = (state: RootState) => {
   return {

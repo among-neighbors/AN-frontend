@@ -9,6 +9,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Link } from 'react-router-dom';
 import { TableRowForMobile } from '../molecules/TableRow';
+import { ComplaintData, NoticeData, CommunityData, Obj } from '~/others/integrateInterface';
 
 interface Column {
   id: 'ID' | 'title' | 'type' | 'writer' | 'date';
@@ -18,24 +19,14 @@ interface Column {
   format?: (value: boolean) => string;
 }
 
-interface Data {
-  ID: string;
-  title: string;
-  type: boolean;
-  writer: string;
-  date: string;
-}
-
 interface TableProps {
   type: string;
-  rows: Data[];
+  rows: NoticeData[] | ComplaintData[] | CommunityData[];
+  isFirstPage: boolean;
+  isLastPage: boolean;
 }
 
-interface LabelObj {
-  [key: string]: string[];
-}
-
-const BoardTable: React.FC<TableProps> = ({ type, rows }) => {
+const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -129,10 +120,10 @@ const BoardTable: React.FC<TableProps> = ({ type, rows }) => {
   );
 };
 
-const labelsOfTypes: LabelObj = {
+const labelsOfTypes: Obj<string[]> = {
   notice: ['공지 ID', '제목', '공지 유형', '작성자', '등록일'],
-  community: ['게시글 ID', '제목', '게시글 유형', '작성자', '등록일'],
-  complaint: ['민원 ID', '제목', '민원 유형', '작성자', '등록일'],
+  community: ['게시글 ID', '제목', '게시글 유형', '카테고리', '작성자', '등록일'],
+  complaint: ['민원 ID', '제목', '작성자', '등록일'],
 };
 
 const columns = (labels: string[]): Column[] => {
