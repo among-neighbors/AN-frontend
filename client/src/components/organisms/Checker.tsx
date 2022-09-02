@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import useInterval from 'use-interval';
 import {
   accessTokenState,
+  getReadyForRequestAPI,
   handleRefreshAccountAccessToken,
   handleRefreshProfileAccessToken,
   RootState,
@@ -51,6 +52,7 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
 
   useEffect(() => {
     if (!accountKey || !profileKey) return;
+    getReadyForRequestAPI();
     if (accountAccessToken !== '' && profileAccessToken === '') {
       navigate('/');
     }

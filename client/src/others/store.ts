@@ -9,6 +9,8 @@ const ACTION_TO_HANDLE_HELP_SIDE_BAR = 'actionToHandleHelpSideBar',
 const ACTION_TO_REFRESH_ACCOUNT_ACCESS_TOKEN = 'actionToRefreshAccountAccessToken',
   ACTION_TO_REFRESH_PROFILE_ACCESS_TOKEN = 'actionToRefreshProfileAccessToken';
 
+const ACTION_TO_GET_READY_FOR_REQUEST_API = 'actionToGetReadyForRequestAPI';
+
 interface TableNavState {
   [key: string]: number;
   notice: number;
@@ -24,6 +26,7 @@ interface RootState {
   helpSideBarReducer: boolean;
   tableNavReducer: TableNavState;
   accessTokenReducer: accessTokenState;
+  readyForRequestAPIReducer: boolean;
 }
 
 const tableNavReducer = (
@@ -52,7 +55,7 @@ const tableNavReducer = (
   }
 };
 
-const helpSideBarReducer = (state: boolean = false, action: { type: string }) => {
+const helpSideBarReducer = (state = false, action: { type: string }) => {
   switch (action.type) {
     case ACTION_TO_HANDLE_HELP_SIDE_BAR:
       return !state;
@@ -86,10 +89,20 @@ const accessTokenReducer = (
   }
 };
 
+const readyForRequestAPIReducer = (state = false, action: { type: string }) => {
+  switch (action.type) {
+    case ACTION_TO_GET_READY_FOR_REQUEST_API:
+      return true;
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   tableNavReducer,
   helpSideBarReducer,
   accessTokenReducer,
+  readyForRequestAPIReducer,
 });
 
 const store = createStore(rootReducer);
@@ -126,6 +139,12 @@ const handleRefreshProfileAccessToken = (accessToken: string) => {
   });
 };
 
+const getReadyForRequestAPI = () => {
+  store.dispatch({
+    type: ACTION_TO_GET_READY_FOR_REQUEST_API,
+  });
+};
+
 export {
   store,
   handleTableNav,
@@ -133,6 +152,7 @@ export {
   closeHelpSideBar,
   handleRefreshAccountAccessToken,
   handleRefreshProfileAccessToken,
+  getReadyForRequestAPI,
   RootState,
   accessTokenState,
 };
