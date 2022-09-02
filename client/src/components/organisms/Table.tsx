@@ -10,6 +10,10 @@ import TableRow from '@mui/material/TableRow';
 import { Link } from 'react-router-dom';
 import { TableRowForMobile } from '../molecules/TableRow';
 import { Obj, ColumnId, TypeDataArray } from '~/others/integrateInterface';
+import { Box } from '@mui/system';
+import { Typography } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { parse } from 'query-string';
 
 interface Column {
   id: ColumnId;
@@ -27,16 +31,18 @@ interface TableProps {
 }
 
 const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage }) => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const queryObj = Object(parse(location.search));
+  const page = queryObj.page ?? '1';
 
   const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+    queryObj['page'] = (Number(page) + newPage - (page === '1' ? 0 : 1)).toString();
+    const queryStr = new URLSearchParams(queryObj).toString();
+    navigate({
+      pathname: location.pathname,
+      search: queryStr,
+    });
   };
 
   return (
@@ -76,7 +82,6 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
                   >
                     {columns(type).map((column) => {
                       const value = row[column.id];
-                      console.log(value);
                       return (
                         <TableCell
                           key={column.id}
@@ -106,15 +111,22 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10]}
-        component='div'
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'right' }}>
+        <Typography>{page} page</Typography>
+        <TablePagination
+          sx={{
+            '& div > p': {
+              display: 'none',
+            },
+          }}
+          rowsPerPageOptions={[10]}
+          component='div'
+          count={isLastPage ? 20 - (page === '1' ? 10 : 0) : 21 - (page === '1' ? 10 : 0)}
+          rowsPerPage={10}
+          page={isFirstPage ? 0 : 1}
+          onPageChange={handleChangePage}
+        />
+      </Box>
     </Paper>
   );
 };

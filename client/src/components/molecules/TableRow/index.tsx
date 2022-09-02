@@ -1,16 +1,6 @@
 import { StyledTableRowForComment, StyledTableRowForMobile } from './styled';
-import {
-  ComplaintData,
-  NoticeData,
-  CommunityData,
-  isNoticeData,
-  isCommunityData,
-  Obj,
-} from '~/others/integrateInterface';
-
-interface TableRowForMobileProps {
-  row: NoticeData | ComplaintData | CommunityData;
-}
+import { isNoticeData, isCommunityData, Obj } from '~/others/integrateInterface';
+import { TableRowForMobileProps, TableRowForCommentProps } from './interface';
 
 const TableRowForMobile: React.FC<TableRowForMobileProps> = ({ row }) => {
   if (isNoticeData(row)) {
@@ -41,16 +31,6 @@ const TableRowForMobile: React.FC<TableRowForMobileProps> = ({ row }) => {
     </StyledTableRowForMobile>
   );
 };
-
-interface Comment {
-  writer: string;
-  comment: string;
-  date: string;
-}
-
-interface TableRowForCommentProps {
-  commentData: Comment;
-}
 
 const TableRowForComment: React.FC<TableRowForCommentProps> = ({ commentData }) => {
   const { comment, writer, date } = commentData;
