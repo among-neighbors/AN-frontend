@@ -1,0 +1,45 @@
+import axios from 'axios';
+
+interface myAxiosFunc {
+  (
+    action: string,
+    path: string,
+    body?: object | null,
+    withCredentials?: boolean,
+    token?: string | undefined,
+  ): Promise<any>;
+}
+
+interface myAxiosOption {
+  headers: {
+    [key: string]: string;
+  };
+  withCredentials: boolean;
+}
+
+const serverURL = 'https://neighbor42.com:8181/';
+
+const myAxios: myAxiosFunc = async (
+  action,
+  path,
+  body = null,
+  withCredentials = false,
+  token = undefined,
+) => {
+  const option: myAxiosOption = {
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials,
+  };
+  if (token) option.headers['Authorization'] = `Bearer ${token}`;
+
+  switch (action) {
+    case 'get':
+      return await axios.get(`${serverURL}${path}`, option);
+    case 'post':
+      return await axios.post(`${serverURL}${path}`, body, option);
+    default:
+      return;
+  }
+};
+
+export default myAxios;

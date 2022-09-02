@@ -1,17 +1,18 @@
 import { Box } from '@mui/system';
 import { connect } from 'react-redux';
 import { closeHelpSideBar, RootState } from '~/others/store';
-import { HelpCallBox, HelpFinBox } from '../molecules/HelpCallBox';
+import { HelpCallBox, HelpFinBox } from '../molecules/HelpBoxes.tsx';
+import styled from 'styled-components';
 
 interface HelpSideBarProps {
-  state: RootState;
+  isHelpSideBarOpen: boolean;
 }
 
-const HelpSideBar = ({ state }: HelpSideBarProps) => {
+const HelpSideBar: React.FC<HelpSideBarProps> = ({ isHelpSideBarOpen }) => {
   return (
     <>
       <Box
-        className='hide'
+        className={isHelpSideBarOpen ? '' : 'disNone'}
         sx={{
           display: { xs: 'block', sm: 'none' },
           position: 'fixed',
@@ -26,47 +27,39 @@ const HelpSideBar = ({ state }: HelpSideBarProps) => {
         onClick={closeHelpSideBar}
       />
 
-      <div className='block'></div>
-      <div className='helpSideBar'>
+      <Block className={isHelpSideBarOpen ? '' : 'disNone'}></Block>
+      <StyledHelpSideBar className={isHelpSideBarOpen ? '' : 'disNone'}>
         <HelpCallBox />
         <HelpCallBox />
         <HelpCallBox />
         <HelpFinBox />
         <HelpFinBox />
         <HelpFinBox />
-      </div>
-      <style jsx>{`
-        .block {
-          width: 300px !important;
-          min-width: 300px;
-          height: calc(100vh - 70px);
-        }
-        .helpSideBar {
-          position: fixed;
-          top: 70px;
-          right: 0;
-          width: 300px !important;
-          min-width: 300px;
-          height: calc(100vh - 70px);
-          background: #fff;
-          border-left: solid 1px #ddd;
-          z-index: 2;
-        }
-        ${state.helpSideBarReducer
-          ? ``
-          : `
-        .block, .hide, .helpSideBar{
-          display: none;
-          }
-        }
-        `}
-      `}</style>
+      </StyledHelpSideBar>
     </>
   );
 };
 
+const Block = styled.div`
+  width: 300px !important;
+  min-width: 300px;
+  height: calc(100vh - 70px);
+`;
+
+const StyledHelpSideBar = styled.div`
+  position: fixed;
+  top: 70px;
+  right: 0;
+  width: 300px !important;
+  min-width: 300px;
+  height: calc(100vh - 70px);
+  background: #fff;
+  border-left: solid 1px #ddd;
+  z-index: 2;
+`;
+
 const mapStateToProps = (state: RootState) => {
-  return { state };
+  return { isHelpSideBarOpen: state.helpSideBarReducer };
 };
 
 export default connect(mapStateToProps)(HelpSideBar);

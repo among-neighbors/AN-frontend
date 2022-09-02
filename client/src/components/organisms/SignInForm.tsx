@@ -8,29 +8,21 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import SquareImg from '../atoms/Img';
 import { shadowCssForMUI } from '~/others/cssLibrary';
-import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { handleRefreshAccountAccessToken } from '~/others/store';
+import myAxios from '~/others/myAxios';
 
-const SignIn = () => {
+const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     try {
-      const res = await axios.post(
-        'https://neighbor42.com:8181/api/v1/auth/accounts/login',
-        {
-          username: data.get('username'),
-          passwd: data.get('password'),
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
-        },
-      );
+      const body = {
+        username: data.get('username'),
+        passwd: data.get('password'),
+      };
+      const res = await myAxios('post', 'api/v1/auth/accounts/login', body, true);
       handleRefreshAccountAccessToken(res.data.response.accessToken);
       navigate('/');
     } catch (err) {

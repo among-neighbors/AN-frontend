@@ -8,14 +8,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '~/others/store';
 import styled from 'styled-components';
 import { shadowCSSForStyledComponent } from '~/others/cssLibrary';
 import SquareImg from '../atoms/Img';
-import { ProfileHomeButton } from './ProfileHome';
+import { ProfileHomeButton } from './ProfileHome/styled';
+import myAxios from '~/others/myAxios';
 
 interface NewProfileFormProps {
   setIsProfileHome: Function;
@@ -43,22 +43,13 @@ const NewProfileForm: React.FC<NewProfileFormProps> = ({
     if (pin !== rePin) return;
 
     try {
-      const res = await axios.post(
-        'https://neighbor42.com:8181/api/v1/auth/profiles/new',
-        {
-          name,
-          age: Number(age),
-          pin,
-          gender: sex,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accountAccessToken}`,
-          },
-          withCredentials: true,
-        },
-      );
+      const body = {
+        name,
+        age: Number(age),
+        pin,
+        gender: sex,
+      };
+      const res = await myAxios('post', 'api/v1/auth/profiles/new', body, true, accountAccessToken);
       setIsProfileHome(true);
     } catch (err) {
       console.log(err);

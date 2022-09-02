@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import useInterval from 'use-interval';
@@ -10,12 +9,11 @@ import {
 } from '~/others/store';
 import ProfileHome from './ProfileHome';
 import { useNavigate, useLocation } from 'react-router-dom';
+import myAxios from '~/others/myAxios';
 
 interface CheckerProps {
   accessTokenState: accessTokenState;
 }
-
-const allowPath = ['/', '/sign'];
 
 const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
   const { accountAccessToken, profileAccessToken } = accessTokenState;
@@ -26,10 +24,7 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
 
   const checkAccountLogin = async () => {
     try {
-      const res = await axios.post('https://neighbor42.com:8181/api/v1/auth/account-token', null, {
-        headers: { 'Content-Type': 'application/json' },
-        withCredentials: true,
-      });
+      const res = await myAxios('post', 'api/v1/auth/account-token', null, true);
       handleRefreshAccountAccessToken(res.data.response.accessToken);
     } catch (err) {
       console.log(err);
@@ -40,10 +35,7 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
 
   const checkProfileLogin = async () => {
     try {
-      const res = await axios.post('https://neighbor42.com:8181/api/v1/auth/profile-token', null, {
-        headers: { 'Content-Type': 'application/json' },
-        withCredentials: true,
-      });
+      const res = await myAxios('post', 'api/v1/auth/profile-token', null, true);
       handleRefreshProfileAccessToken(res.data.response.accessToken);
     } catch (err) {
       console.log(err);
@@ -71,13 +63,18 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
     }
   }, [accountKey, profileKey, location.pathname]);
 
-  useInterval(checkAccountLogin, accountAccessToken === '' ? null : 10000);
-  useInterval(checkProfileLogin, profileAccessToken === '' ? null : 10000);
+  useInterval(checkAccountLogin, accountAccessToken === '' ? null : TIME_FOR_REFRESH_TOKEN);
+  useInterval(checkProfileLogin, profileAccessToken === '' ? null : TIME_FOR_REFRESH_TOKEN);
 
-  if (accountKey && profileKey && accountAccessToken !== '' && profileAccessToken === '')
+  if (accountKey && profileKey && accountAccessToken !== '' && profileAccessToken === '') {
     return <ProfileHome token={accountAccessToken} />;
+  }
   return <></>;
 };
+
+const allowPath = ['/', '/sign'];
+
+const TIME_FOR_REFRESH_TOKEN = 10000;
 
 const mapStateToProps = (state: RootState) => {
   return {
