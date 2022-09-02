@@ -46,14 +46,13 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
       true,
       accountAccessToken,
     );
-    // console.log(res);
     setTableData(res.data.response);
   };
 
   useEffect(() => {
     if (!isReadyForRequestAPI) return;
     getListData();
-  }, [isReadyForRequestAPI]);
+  }, [isReadyForRequestAPI, location.pathname, location.search]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
@@ -72,7 +71,9 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
       ) : (
         <></>
       )}
-      <BoardTable type={type} rows={rows} isFirstPage={isFirstPage} isLastPage={isLastPage} />
+      {rows && (
+        <BoardTable type={type} rows={rows} isFirstPage={isFirstPage} isLastPage={isLastPage} />
+      )}
     </Box>
   );
 };
@@ -85,7 +86,12 @@ const isNoticeListData = (list: any): list is NoticeListData[] => {
   return list[0].expiredDate !== undefined;
 };
 
-const handleList = (list: ListDataArray): TypeDataArray => {
+const handledDate = (createdDate: string): string => {
+  return createdDate.substring(0, 10);
+};
+
+const handleList = (list: ListDataArray): TypeDataArray | null => {
+  if (list.length === 0) return null;
   if (isCommunityListData(list)) {
     return list.map(({ id, title, createdDate, writer, range, category }) => {
       return {
@@ -94,7 +100,7 @@ const handleList = (list: ListDataArray): TypeDataArray => {
         type: range,
         category,
         writer: writer.name,
-        date: createdDate,
+        date: handledDate(createdDate),
       };
     });
   }
@@ -105,7 +111,7 @@ const handleList = (list: ListDataArray): TypeDataArray => {
         title,
         type: range,
         writer,
-        date: createdDate,
+        date: handledDate(createdDate),
       };
     });
   }
@@ -114,7 +120,7 @@ const handleList = (list: ListDataArray): TypeDataArray => {
     return {
       ID: id,
       title,
-      date: createdDate,
+      date: handledDate(createdDate),
       writer: `${writer.lineName}동 ${writer.houseName}호`,
     };
   });

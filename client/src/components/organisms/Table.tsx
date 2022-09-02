@@ -23,7 +23,7 @@ interface Column {
   label: string;
   minWidth?: number;
   align?: 'center';
-  format?: (value: boolean) => string;
+  format?: Function;
 }
 
 interface TableProps {
@@ -83,15 +83,14 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
                   >
                     {columns(type).map((column) => {
                       const value = row[column.id];
+                      console.log(value);
                       return (
                         <TableCell
                           key={column.id}
                           align={column.align}
                           style={{ whiteSpace: 'nowrap' }}
                         >
-                          {column.format && typeof value === 'boolean'
-                            ? column.format(value)
-                            : value}
+                          {column.format ? column.format(value) : value}
                         </TableCell>
                       );
                     })}
@@ -131,6 +130,7 @@ interface typeData {
   labels: string[];
   Ids: ColumnId[];
   minWidths: number[];
+  formats: (Function | undefined)[];
 }
 
 const dataOfTypes: Obj<typeData> = {
@@ -138,16 +138,42 @@ const dataOfTypes: Obj<typeData> = {
     labels: ['공지 ID', '제목', '공지 유형', '작성자', '등록일'],
     Ids: ['ID', 'title', 'type', 'writer', 'date'],
     minWidths: [80, 300, 90, 110, 150],
+    formats: [undefined, undefined, undefined, undefined, undefined],
   },
   community: {
     labels: ['게시글 ID', '제목', '게시글 유형', '카테고리', '작성자', '등록일'],
     Ids: ['ID', 'title', 'type', 'category', 'writer', 'date'],
     minWidths: [80, 300, 90, 100, 110, 150],
+    formats: [
+      undefined,
+      undefined,
+      (value: string) => {
+        if (value === 'ALL') return '전체';
+        return '라인';
+      },
+      (value: string) => {
+        switch (value) {
+          case 'ALL':
+            return '전체';
+          case 'QNA':
+            return '질문글';
+          case 'SELLING':
+            return '팝니다';
+          case 'BUYING':
+            return '삽니다';
+          case 'PLAIN':
+            return '기본글';
+        }
+      },
+      undefined,
+      undefined,
+    ],
   },
   complaint: {
     labels: ['민원 ID', '제목', '작성자', '등록일'],
     Ids: ['ID', 'title', 'type', 'date'],
     minWidths: [80, 300, 110, 150],
+    formats: [undefined, undefined, undefined, undefined],
   },
 };
 
@@ -159,22 +185,9 @@ const columns = (type: string): Column[] => {
       label: label,
       minWidth: data.minWidths[index],
       align: label === '제목' ? undefined : 'center',
+      format: data.formats[index],
     };
   });
-
-  //   {
-  //     id: 'type',
-  //     label: `${labels[2]}`,
-  //     minWidth: 90,
-  //     align: 'center',
-  //     format: (value: boolean) => {
-  //       if (value === false) {
-  //         return '단지';
-  //       } else {
-  //         return '라인';
-  //       }
-  //     },
-  //   },
 };
 
 export default BoardTable;
