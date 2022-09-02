@@ -7,12 +7,11 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import { Button, FormControl } from '@mui/material';
-
-interface WritingData {
-  title: string;
-  boundary: string;
-  body: string;
-}
+import myAxios from '~/others/myAxios';
+import { Obj } from '~/others/integrateInterface';
+import { connect } from 'react-redux';
+import { RootState } from '~/others/store';
+import { useNavigate } from 'react-router-dom';
 
 interface SubmitTextByTypes {
   [key: string]: string;
@@ -20,110 +19,109 @@ interface SubmitTextByTypes {
 
 interface WritingProps {
   type: string;
+  profileAccessToken: string;
 }
 
-const Writing: React.FC<WritingProps> = ({ type }) => {
-  const [writingData, setWritingData] = useState<WritingData>({
-    title: '',
-    boundary: 'complex',
-    body: '',
-  });
-  const { title, boundary, body } = writingData;
+const Writing: React.FC<WritingProps> = ({ type, profileAccessToken }) => {
+  const navigation = useNavigate();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>, type: string) => {
-    switch (type) {
-      case 'title':
-        setWritingData({
-          title: event.target.value,
-          boundary,
-          body,
-        });
-        break;
-      case 'isLine':
-        setWritingData({
-          title,
-          boundary: event.target.value,
-          body,
-        });
-        break;
-      case 'body':
-        setWritingData({
-          title,
-          boundary,
-          body: event.target.value,
-        });
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handlePost = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitPost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(writingData);
+    const data = new FormData(event.currentTarget);
+    const body =
+      type === 'community'
+        ? {
+            title: data.get('title'),
+            content: data.get('content'),
+            category: data.get('category'),
+            range: data.get('type'),
+          }
+        : {
+            title: data.get('title'),
+            content: data.get('content'),
+          };
+    const res = await myAxios('post', `${APIbyType[type]}`, body, undefined, profileAccessToken);
+    navigation(`/${type}`);
   };
 
   return (
-    <>
-      <Box
-        component='form'
-        onSubmit={handlePost}
-        action='#'
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          maxWidth: '1200px',
+    <Box
+      component='form'
+      onSubmit={handleSubmitPost}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        maxWidth: '1200px',
+        width: '100%',
+        padding: '0 20px',
+        marginBottom: '30px',
+        '& .MuiTextField-root': {
+          m: 1,
           width: '100%',
-          padding: '0 20px',
-          marginBottom: '30px',
-          '& .MuiTextField-root': {
-            m: 1,
-            width: '100%',
-          },
-        }}
-        noValidate
-        autoComplete='off'
-      >
-        <TextField
-          label='제목'
-          placeholder='게시글 제목을 입력하세요.'
-          value={title}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event, 'title')}
-          variant='standard'
-        />
+        },
+      }}
+      autoComplete='off'
+    >
+      <TextField
+        name='title'
+        label='제목'
+        placeholder='게시글 제목을 입력하세요.'
+        required
+        variant='standard'
+      />
 
-        <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <FormLabel id='radioButtonsForTypeOfBoard' sx={{ m: 1, marginRight: '20px' }}>
-            게시글 유형
-          </FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby='radioButtonsForTypeOfBoard'
-            value={boundary}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event, 'isLine')}
-          >
-            <FormControlLabel value='complex' control={<Radio />} label='단지' />
-            <FormControlLabel value='line' control={<Radio />} label='라인' />
-          </RadioGroup>
-        </FormControl>
+      {type === 'community' ? (
+        <>
+          <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <FormLabel id='radioButtonsForTypeOfBoard' sx={{ m: 1, marginRight: '20px' }}>
+              게시글 유형
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby='radioButtonsForTypeOfBoard'
+              name='type'
+              defaultValue='ALL'
+            >
+              <FormControlLabel value='ALL' control={<Radio />} label='전체' />
+              <FormControlLabel value='LINE' control={<Radio />} label='라인' />
+            </RadioGroup>
+          </FormControl>
+          <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <FormLabel id='radioButtonsForCategory' sx={{ m: 1, marginRight: '20px' }}>
+              카테고리
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby='radioButtonsForCategory'
+              name='category'
+              defaultValue='PLAIN'
+            >
+              <FormControlLabel value='PLAIN' control={<Radio />} label='기본글' />
+              <FormControlLabel value='QNA' control={<Radio />} label='질문글' />
+              <FormControlLabel value='SELLING' control={<Radio />} label='팝니다' />
+              <FormControlLabel value='BUYING' control={<Radio />} label='삽니다' />
+            </RadioGroup>
+          </FormControl>
+        </>
+      ) : (
+        <></>
+      )}
+      <TextField
+        name='content'
+        label='내용'
+        placeholder='게시글 내용을 입력하세요.'
+        multiline
+        rows={12}
+        required
+        variant='standard'
+      />
 
-        <TextField
-          label='내용'
-          placeholder='게시글 내용을 입력하세요.'
-          multiline
-          rows={12}
-          value={body}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event, 'body')}
-          variant='standard'
-        />
-
-        <Box sx={{ justifyContent: 'right', display: 'flex' }}>
-          <Button sx={{ whiteSpace: 'nowrap', height: '40px' }} type='submit' variant='contained'>
-            {submitTextByTypes[type]}
-          </Button>
-        </Box>
+      <Box sx={{ justifyContent: 'right', display: 'flex' }}>
+        <Button sx={{ whiteSpace: 'nowrap', height: '40px' }} type='submit' variant='contained'>
+          {submitTextByTypes[type]}
+        </Button>
       </Box>
-    </>
+    </Box>
   );
 };
 
@@ -132,4 +130,15 @@ const submitTextByTypes: SubmitTextByTypes = {
   complaint: '민원 작성',
 };
 
-export default Writing;
+const APIbyType: Obj<string> = {
+  complaint: `api/v1/reports/new`,
+  community: `api/v1/communities/new`,
+};
+
+const mapStateToProps = (state: RootState) => {
+  return {
+    profileAccessToken: state.accessTokenReducer.profileAccessToken,
+  };
+};
+
+export default connect(mapStateToProps)(Writing);

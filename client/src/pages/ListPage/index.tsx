@@ -64,7 +64,7 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
       )}
       {type === 'complaint' || type === 'community' ? (
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'right', paddingRight: '20px' }}>
-          <Button component={Link} to={`/${type}/writting`} variant='contained'>
+          <Button component={Link} to={`/${type}/writing`} variant='contained'>
             {buttonTextByType[type]}
           </Button>
         </Box>
