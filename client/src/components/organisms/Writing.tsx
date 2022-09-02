@@ -18,11 +18,11 @@ interface SubmitTextByTypes {
   [key: string]: string;
 }
 
-interface WrittingProps {
+interface WritingProps {
   type: string;
 }
 
-const Writting: React.FC<WrittingProps> = ({ type }) => {
+const Writing: React.FC<WritingProps> = ({ type }) => {
   const [writingData, setWritingData] = useState<WritingData>({
     title: '',
     boundary: 'complex',
@@ -132,4 +132,4 @@ const submitTextByTypes: SubmitTextByTypes = {
   complaint: '민원 작성',
 };
 
-export default Writting;
+export default Writing;

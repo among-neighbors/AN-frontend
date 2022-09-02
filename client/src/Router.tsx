@@ -9,7 +9,7 @@ import HelpSideBar from './components/organisms/HelpSideBar';
 import { connect } from 'react-redux';
 import { RootState } from './others/store';
 import ViewPage from './pages/ViewPage';
-import WrittingPage from './pages/WrittingPage';
+import WritingPage from './pages/WritingPage';
 import { Navigate } from 'react-router-dom';
 import Checker from './components/organisms/Checker';
 
@@ -34,12 +34,12 @@ const Router = ({ state }: RouterProps) => {
               <Route path=':id' element={<ViewPage type='notice' />} />
             </Route>
             <Route path='/complaint' element={<ListPage type='complaint' />} />
-            <Route path='/complaint/writting' element={<WrittingPage type='complaint' />} />
+            <Route path='/complaint/writing' element={<WritingPage type='complaint' />} />
             <Route path='/complaint'>
               <Route path=':id' element={<ViewPage type='complaint' />} />
             </Route>
             <Route path='/community' element={<ListPage type='community' />} />
-            <Route path='/community/writting' element={<WrittingPage type='community' />} />
+            <Route path='/community/writing' element={<WritingPage type='community' />} />
             <Route path='/community'>
               <Route path=':id' element={<ViewPage type='community' />} />
             </Route>
