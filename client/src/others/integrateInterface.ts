@@ -1,4 +1,4 @@
-export interface Obj<T> {
+interface Obj<T> {
   [key: string]: T;
 }
 
@@ -7,22 +7,40 @@ interface CommonData {
   ID: string;
   title: string;
   writer: string;
+  date: string;
 }
 
-export type ColumnId = 'ID' | 'title' | 'type' | 'category' | 'writer' | 'date';
+type ColumnId = 'ID' | 'title' | 'type' | 'category' | 'writer' | 'date';
 
-export type Category = 'ALL' | 'QNA' | 'SELLING' | 'BUYING' | 'PLAIN';
+type Category = 'QNA' | 'SELLING' | 'BUYING' | 'PLAIN';
 
-export interface NoticeData extends CommonData {
+interface NoticeData extends CommonData {
   type: 'ALL' | 'LINE';
-  date: string;
 }
-export interface ComplaintData extends CommonData {
-  date: string;
-}
-export interface CommunityData extends CommonData {
+interface ComplaintData extends CommonData {}
+interface CommunityData extends CommonData {
   type: 'ALL' | 'LINE';
   category: Category;
 }
 
-export type TypeDataArray = NoticeData[] | ComplaintData[] | CommunityData[];
+const isNoticeData = (data: any): data is NoticeData => {
+  return data.category === undefined && data.type !== undefined;
+};
+
+const isCommunityData = (data: any): data is CommunityData => {
+  return data.category !== undefined;
+};
+
+type TypeDataArray = NoticeData[] | ComplaintData[] | CommunityData[];
+
+export {
+  Obj,
+  ColumnId,
+  Category,
+  NoticeData,
+  ComplaintData,
+  CommunityData,
+  TypeDataArray,
+  isNoticeData,
+  isCommunityData,
+};

@@ -17,6 +17,8 @@ import {
   TableDataProps,
   CommunityListData,
   NoticeListData,
+  isCommunityListData,
+  isNoticeListData,
 } from './interface';
 
 const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPageProps) => {
@@ -76,14 +78,6 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
       )}
     </Box>
   );
-};
-
-const isCommunityListData = (list: any): list is CommunityListData[] => {
-  return list[0].category !== undefined;
-};
-
-const isNoticeListData = (list: any): list is NoticeListData[] => {
-  return list[0].expiredDate !== undefined;
 };
 
 const handledDate = (createdDate: string): string => {

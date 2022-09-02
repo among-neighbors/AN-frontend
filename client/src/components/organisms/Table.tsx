@@ -9,14 +9,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Link } from 'react-router-dom';
 import { TableRowForMobile } from '../molecules/TableRow';
-import {
-  ComplaintData,
-  NoticeData,
-  CommunityData,
-  Obj,
-  ColumnId,
-  TypeDataArray,
-} from '~/others/integrateInterface';
+import { Obj, ColumnId, TypeDataArray } from '~/others/integrateInterface';
 
 interface Column {
   id: ColumnId;

@@ -38,6 +38,14 @@ interface ComplaintListData extends CommonListData {
   };
 }
 
+const isCommunityListData = (list: any): list is CommunityListData[] => {
+  return list[0].category !== undefined;
+};
+
+const isNoticeListData = (list: any): list is NoticeListData[] => {
+  return list[0].expiredDate !== undefined;
+};
+
 type ListDataArray = CommunityListData[] | NoticeListData[] | ComplaintListData[];
 
 interface TableDataProps {
@@ -53,4 +61,6 @@ export {
   CommunityListData,
   NoticeListData,
   ComplaintListData,
+  isCommunityListData,
+  isNoticeListData,
 };
