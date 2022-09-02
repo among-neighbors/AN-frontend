@@ -9,10 +9,17 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Link } from 'react-router-dom';
 import { TableRowForMobile } from '../molecules/TableRow';
-import { ComplaintData, NoticeData, CommunityData, Obj } from '~/others/integrateInterface';
+import {
+  ComplaintData,
+  NoticeData,
+  CommunityData,
+  Obj,
+  ColumnId,
+  TypeDataArray,
+} from '~/others/integrateInterface';
 
 interface Column {
-  id: 'ID' | 'title' | 'type' | 'writer' | 'date';
+  id: ColumnId;
   label: string;
   minWidth?: number;
   align?: 'center';
@@ -21,7 +28,7 @@ interface Column {
 
 interface TableProps {
   type: string;
-  rows: NoticeData[] | ComplaintData[] | CommunityData[];
+  rows: TypeDataArray;
   isFirstPage: boolean;
   isLastPage: boolean;
 }
@@ -51,7 +58,7 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
         <Table stickyHeader aria-label='sticky table'>
           <TableHead>
             <TableRow sx={{ display: { xs: 'none', sm: 'none', md: 'table-row' } }}>
-              {columns(labelsOfTypes[type]).map((column) => (
+              {columns(type).map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
@@ -63,7 +70,7 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+            {rows.map((row, index) => {
               return (
                 <React.Fragment key={index}>
                   <TableRow
@@ -74,7 +81,7 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
                     tabIndex={-1}
                     sx={{ display: { xs: 'none', sm: 'none', md: 'table-row' } }}
                   >
-                    {columns(labelsOfTypes[type]).map((column) => {
+                    {columns(type).map((column) => {
                       const value = row[column.id];
                       return (
                         <TableCell
@@ -120,42 +127,54 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
   );
 };
 
-const labelsOfTypes: Obj<string[]> = {
-  notice: ['공지 ID', '제목', '공지 유형', '작성자', '등록일'],
-  community: ['게시글 ID', '제목', '게시글 유형', '카테고리', '작성자', '등록일'],
-  complaint: ['민원 ID', '제목', '작성자', '등록일'],
+interface typeData {
+  labels: string[];
+  Ids: ColumnId[];
+  minWidths: number[];
+}
+
+const dataOfTypes: Obj<typeData> = {
+  notice: {
+    labels: ['공지 ID', '제목', '공지 유형', '작성자', '등록일'],
+    Ids: ['ID', 'title', 'type', 'writer', 'date'],
+    minWidths: [80, 300, 90, 110, 150],
+  },
+  community: {
+    labels: ['게시글 ID', '제목', '게시글 유형', '카테고리', '작성자', '등록일'],
+    Ids: ['ID', 'title', 'type', 'category', 'writer', 'date'],
+    minWidths: [80, 300, 90, 100, 110, 150],
+  },
+  complaint: {
+    labels: ['민원 ID', '제목', '작성자', '등록일'],
+    Ids: ['ID', 'title', 'type', 'date'],
+    minWidths: [80, 300, 110, 150],
+  },
 };
 
-const columns = (labels: string[]): Column[] => {
-  return [
-    { id: 'ID', label: `${labels[0]}`, minWidth: 80, align: 'center' },
-    { id: 'title', label: `${labels[1]}`, minWidth: 300 },
-    {
-      id: 'type',
-      label: `${labels[2]}`,
-      minWidth: 90,
-      align: 'center',
-      format: (value: boolean) => {
-        if (value === false) {
-          return '단지';
-        } else {
-          return '라인';
-        }
-      },
-    },
-    {
-      id: 'writer',
-      label: `${labels[3]}`,
-      minWidth: 110,
-      align: 'center',
-    },
-    {
-      id: 'date',
-      label: `${labels[4]}`,
-      minWidth: 150,
-      align: 'center',
-    },
-  ];
+const columns = (type: string): Column[] => {
+  const data = dataOfTypes[type];
+  return data.labels.map((label, index): Column => {
+    return {
+      id: data.Ids[index],
+      label: label,
+      minWidth: data.minWidths[index],
+      align: label === '제목' ? undefined : 'center',
+    };
+  });
+
+  //   {
+  //     id: 'type',
+  //     label: `${labels[2]}`,
+  //     minWidth: 90,
+  //     align: 'center',
+  //     format: (value: boolean) => {
+  //       if (value === false) {
+  //         return '단지';
+  //       } else {
+  //         return '라인';
+  //       }
+  //     },
+  //   },
 };
 
 export default BoardTable;

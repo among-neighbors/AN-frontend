@@ -1,15 +1,8 @@
 import { StyledTableRowForComment, StyledTableRowForMobile } from './styled';
-
-interface Data {
-  ID: string;
-  title: string;
-  type: boolean;
-  writer: string;
-  date: string;
-}
+import { ComplaintData, NoticeData, CommunityData } from '~/others/integrateInterface';
 
 interface TableRowForMobileProps {
-  row: Data;
+  row: NoticeData | ComplaintData | CommunityData;
 }
 
 const TableRowForMobile: React.FC<TableRowForMobileProps> = ({ row }) => {

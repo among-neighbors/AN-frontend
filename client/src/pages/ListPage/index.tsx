@@ -10,29 +10,24 @@ import myAxios from '~/others/myAxios';
 import { RootState } from '~/others/store';
 import { useLocation } from 'react-router-dom';
 import { parse } from 'query-string';
-import { ComplaintData, NoticeData, CommunityData, Obj } from '~/others/integrateInterface';
-
-interface ListPageProps {
-  type: string;
-  accountAccessToken: string;
-  isReadyForRequestAPI: boolean;
-}
-
-// rows type 관련 처리해야함.
+import { Obj, TypeDataArray } from '~/others/integrateInterface';
+import {
+  ListPageProps,
+  ListDataArray,
+  TableDataProps,
+  CommunityListData,
+  NoticeListData,
+} from './interface';
 
 const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPageProps) => {
   const location = useLocation();
-  const [tableData, setTableData] = useState<{
-    list: any[];
-    isFirstPage: boolean;
-    isLastPage: boolean;
-  }>({
+  const [tableData, setTableData] = useState<TableDataProps>({
     list: [],
     isFirstPage: false,
     isLastPage: false,
   });
   const { list, isFirstPage, isLastPage } = tableData;
-  const rows = handleList(list, type);
+  const rows = handleList(list);
 
   const getListData = async () => {
     const URLQueryData = parse(location.search);
@@ -51,7 +46,7 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
       true,
       accountAccessToken,
     );
-    console.log(res);
+    // console.log(res);
     setTableData(res.data.response);
   };
 
@@ -61,59 +56,67 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
   }, [isReadyForRequestAPI]);
 
   return (
-    <>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
-        <PageHeader type={type} />
-        {type === 'notice' || type === 'community' ? (
-          <TableNav type={type} isPageMove={false} />
-        ) : (
-          <></>
-        )}
-        {type === 'complaint' || type === 'community' ? (
-          <Box
-            sx={{ width: '100%', display: 'flex', justifyContent: 'right', paddingRight: '20px' }}
-          >
-            <Button component={Link} to={`/${type}/writting`} variant='contained'>
-              {buttonTextByType[type]}
-            </Button>
-          </Box>
-        ) : (
-          <></>
-        )}
-        <BoardTable type={type} rows={rows} isFirstPage={isFirstPage} isLastPage={isLastPage} />
-      </Box>
-    </>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
+      <PageHeader type={type} />
+      {type === 'notice' || type === 'community' ? (
+        <TableNav type={type} isPageMove={false} />
+      ) : (
+        <></>
+      )}
+      {type === 'complaint' || type === 'community' ? (
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'right', paddingRight: '20px' }}>
+          <Button component={Link} to={`/${type}/writting`} variant='contained'>
+            {buttonTextByType[type]}
+          </Button>
+        </Box>
+      ) : (
+        <></>
+      )}
+      <BoardTable type={type} rows={rows} isFirstPage={isFirstPage} isLastPage={isLastPage} />
+    </Box>
   );
 };
 
-const handleList = (list: any[], type: string) => {
-  return list.map(({ Id, title, category, range, writer, createdDate }) => {
-    const common = {
-      ID: Id,
+const isCommunityListData = (list: any): list is CommunityListData[] => {
+  return list[0].category !== undefined;
+};
+
+const isNoticeListData = (list: any): list is NoticeListData[] => {
+  return list[0].expiredDate !== undefined;
+};
+
+const handleList = (list: ListDataArray): TypeDataArray => {
+  if (isCommunityListData(list)) {
+    return list.map(({ id, title, createdDate, writer, range, category }) => {
+      return {
+        ID: id,
+        title,
+        type: range,
+        category,
+        writer: writer.name,
+        date: createdDate,
+      };
+    });
+  }
+  if (isNoticeListData(list)) {
+    return list.map(({ id, title, createdDate, writer, range }) => {
+      return {
+        ID: id,
+        title,
+        type: range,
+        writer,
+        date: createdDate,
+      };
+    });
+  }
+
+  return list.map(({ id, title, createdDate, writer }) => {
+    return {
+      ID: id,
       title,
+      date: createdDate,
+      writer: `${writer.lineName}동 ${writer.houseName}호`,
     };
-    switch (type) {
-      case 'notice':
-        return {
-          ...common,
-          type: range,
-          date: createdDate,
-          writer,
-        };
-      case 'complaint':
-        return {
-          ...common,
-          date: createdDate,
-          writer: `${writer.lineName}동 ${writer.houseName}호`,
-        };
-      case 'community':
-        return {
-          ...common,
-          type: range,
-          category,
-          writer: writer.name,
-        };
-    }
   });
 };
 
