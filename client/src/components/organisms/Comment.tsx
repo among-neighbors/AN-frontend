@@ -1,28 +1,27 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Table, TableBody, TableRow } from '@mui/material';
 import { TableRowForComment } from '../molecules/TableRow';
 import styled from 'styled-components';
-import { CommentData } from '~/others/integrateInterface';
+import { CommentData, Obj } from '~/others/integrateInterface';
+import { accessTokenState } from '~/others/store';
+import { useLocation } from 'react-router-dom';
+import myAxios from '~/others/myAxios';
 
 const CommentForm: React.FC = () => {
-  const [value, setValue] = React.useState('');
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-  };
-
-  const handlePost = (event: React.FormEvent<HTMLFormElement>) => {
+  const handlePostComment = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(value);
+    const data = new FormData(event.currentTarget);
+    console.log(data.get('comment'));
   };
 
   return (
     <Box
       component='form'
-      onSubmit={handlePost}
+      onSubmit={handlePostComment}
       action='#'
       sx={{
         display: 'flex',
@@ -35,16 +34,15 @@ const CommentForm: React.FC = () => {
           width: 'calc(100% - 130px)',
         },
       }}
-      noValidate
       autoComplete='off'
     >
       <TextField
         label='댓글 입력'
+        name='comment'
         multiline
         maxRows={4}
-        value={value}
-        onChange={handleChange}
         variant='standard'
+        required
       />
       <Button sx={{ whiteSpace: 'nowrap', height: '40px' }} type='submit' variant='outlined'>
         댓글 달기
@@ -53,50 +51,66 @@ const CommentForm: React.FC = () => {
   );
 };
 
-interface CommentsProp {
-  comments: CommentData[];
+interface CommentProps {
+  accessToken: accessTokenState;
 }
 
-const Comments: React.FC<CommentsProp> = ({ comments }) => {
-  React.useEffect(() => {}, []);
+const Comment: React.FC<CommentProps> = ({
+  accessToken: { accountAccessToken, profileAccessToken },
+}) => {
+  const location = useLocation();
+  const [comments, setComments] = useState<CommentData[] | null>([
+    {
+      writer: '홍길동',
+      comment: '댓글입니당~',
+      date: '2022.08.14',
+    },
+    {
+      writer: '홍길동',
+      comment: '댓글입니당하이댓글입니당하이댓글입니당하이',
+      date: '2022.08.14',
+    },
+  ]);
 
-  return (
-    <>
-      <Table>
-        <TableBody>
-          {comments.map((comment, index) => {
-            return (
-              <TableRow key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
-                <TableRowForComment commentData={comment} />
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </>
-  );
-};
+  const getComments = async (type: string, boardId: string) => {
+    const res = await myAxios(
+      'get',
+      `${commentAPIbyType[type]}${boardId}?page=1&count=500`,
+      null,
+      true,
+      accountAccessToken,
+    );
+    console.log(res);
+    setComments(res.data.response);
+  };
 
-const Comment: React.FC = () => {
+  useEffect(() => {
+    const [pre, type, boardId] = location.pathname.split('/');
+    getComments(type, boardId);
+  }, []);
   return (
     <CommentContainer className='comment'>
       <CommentForm />
-      <Comments
-        comments={[
-          {
-            writer: '홍길동',
-            comment: '댓글입니당~',
-            date: '2022.08.14',
-          },
-          {
-            writer: '홍길동',
-            comment: '댓글입니당하이댓글입니당하이댓글입니당하이',
-            date: '2022.08.14',
-          },
-        ]}
-      />
+      <Table>
+        <TableBody>
+          {comments &&
+            comments.map((comment, index) => {
+              return (
+                <TableRow key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <TableRowForComment commentData={comment} />
+                </TableRow>
+              );
+            })}
+        </TableBody>
+      </Table>
     </CommentContainer>
   );
+};
+
+const commentAPIbyType: Obj<string> = {
+  notice: `api/v1/comments/notices/`,
+  complaint: `api/v1/comments/reports/`,
+  community: `api/v1/comments/communities/`,
 };
 
 const CommentContainer = styled.div`

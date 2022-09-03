@@ -14,27 +14,32 @@ import {
 } from '~/others/integrateInterface';
 import { APIbyType } from '~/others/integrateVariable';
 import { connect } from 'react-redux';
-import { RootState } from '~/others/store';
+import { accessTokenState, RootState } from '~/others/store';
 
 interface ViewPageProps {
   type: string;
-  accountAccessToken: string;
+  accessToken: accessTokenState;
 }
 
-const ViewPage = ({ type, accountAccessToken }: ViewPageProps) => {
+const ViewPage = ({ type, accessToken }: ViewPageProps) => {
   const [viewData, setViewData] = useState<DeliverdTypePostData | null>(null);
   const [boardData, setBoardData] = useState<ProcessedTypePostData | null>(null);
   const location = useLocation();
 
   const getViewData = async (id: string) => {
-    const res = await myAxios('get', `${APIbyType[type]}/${id}`, null, true, accountAccessToken);
+    const res = await myAxios(
+      'get',
+      `${APIbyType[type]}/${id}`,
+      null,
+      true,
+      accessToken.accountAccessToken,
+    );
     setViewData(res.data.response);
   };
 
   useEffect(() => {
     const [pre, type, id] = location.pathname.split('/');
     getViewData(id);
-    console.log(pre, type, id);
   }, []);
 
   useEffect(() => {
@@ -78,14 +83,14 @@ const ViewPage = ({ type, accountAccessToken }: ViewPageProps) => {
       <PageHeader type={type} />
       {type === 'community' || type === 'notice' ? <TableNav type={type} /> : <></>}
       {boardData && <Board type={type} boardData={boardData} />}
-      {type === 'community' || type === 'complaint' ? <Comment /> : <></>}
+      {type === 'community' || type === 'complaint' ? <Comment accessToken={accessToken} /> : <></>}
     </Box>
   );
 };
 
 const mapStateToProps = (state: RootState) => {
   return {
-    accountAccessToken: state.accessTokenReducer.accountAccessToken,
+    accessToken: state.accessTokenReducer,
   };
 };
 

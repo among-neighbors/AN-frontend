@@ -132,6 +132,7 @@ const handleRefreshAccountAccessToken = (accessToken: string) => {
     accessToken,
   });
 };
+
 const handleRefreshProfileAccessToken = (accessToken: string) => {
   store.dispatch({
     type: ACTION_TO_REFRESH_PROFILE_ACCESS_TOKEN,
