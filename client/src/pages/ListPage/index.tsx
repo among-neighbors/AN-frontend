@@ -92,7 +92,7 @@ const handleList = (list: DeliverdTypePostDataArray): ProcessedTypePostDataArray
         id,
         title,
         content,
-        type: range,
+        range,
         category,
         writer: writer.name,
         date: handledDate(createdDate),
@@ -105,7 +105,7 @@ const handleList = (list: DeliverdTypePostDataArray): ProcessedTypePostDataArray
         id,
         title,
         content,
-        type: range,
+        range,
         writer,
         date: handledDate(createdDate),
       };

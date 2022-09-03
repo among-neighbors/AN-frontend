@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface BoardNavProps {
-  type: String;
+  type: string;
 }
 
 const BoardNav: React.FC<BoardNavProps> = ({ type }) => {

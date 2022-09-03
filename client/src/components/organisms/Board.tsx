@@ -6,7 +6,7 @@ import BoardNav from '../molecules/BoardNav';
 
 interface BoardProps {
   boardData: ProcessedTypePostData;
-  type: String;
+  type: string;
 }
 
 const Board: React.FC<BoardProps> = ({ boardData, type }) => {
@@ -38,7 +38,7 @@ const Board: React.FC<BoardProps> = ({ boardData, type }) => {
             },
           }}
         >
-          {boardData.type && <p>{`유형 : ${rangeByType[boardData.type]}`}</p>}
+          {boardData.range && <p>{`유형 : ${rangeByType[boardData.range]}`}</p>}
           {boardData.category && <p>{`카테고리 : ${categoryByType[boardData.category]}`}</p>}
           <p>{`작성자 : ${boardData.writer}`}</p>
           <p>{`등록일 : ${boardData.date}`}</p>

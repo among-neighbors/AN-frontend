@@ -10,23 +10,23 @@ interface ProcessedCommonPostData extends Obj<string> {
   date: string;
 }
 
-type ColumnId = 'id' | 'title' | 'type' | 'category' | 'writer' | 'date';
+type ColumnId = 'id' | 'title' | 'range' | 'category' | 'writer' | 'date';
 
 type Range = 'ALL' | 'LINE';
 
 type Category = 'QNA' | 'SELLING' | 'BUYING' | 'PLAIN';
 
 interface ProcessedNoticePostData extends ProcessedCommonPostData {
-  type: Range;
+  range: Range;
 }
 interface ProcessedComplaintPostData extends ProcessedCommonPostData {}
 interface ProcessedCommunityPostData extends ProcessedCommonPostData {
-  type: Range;
+  range: Range;
   category: Category;
 }
 
 const isProcessedNoticePostData = (data: any): data is ProcessedNoticePostData => {
-  return data.category === undefined && data.type !== undefined;
+  return data.category === undefined && data.range !== undefined;
 };
 
 const isProcessedCommunityPostData = (data: any): data is ProcessedCommunityPostData => {

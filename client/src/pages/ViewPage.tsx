@@ -50,7 +50,7 @@ const ViewPage = ({ type, accountAccessToken }: ViewPageProps) => {
       setBoardData({
         ...commonViewData,
         writer,
-        type: range,
+        range,
       });
       return;
     }
@@ -60,7 +60,7 @@ const ViewPage = ({ type, accountAccessToken }: ViewPageProps) => {
       setBoardData({
         ...commonViewData,
         writer: `${writer.lineName}동 ${writer.houseName}호 ${writer.name}`,
-        type: range,
+        range,
         category,
       });
       return;

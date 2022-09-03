@@ -29,7 +29,7 @@ const Writing: React.FC<WritingProps> = ({ type, profileAccessToken }) => {
             title: data.get('title'),
             content: data.get('content'),
             category: data.get('category'),
-            range: data.get('type'),
+            range: data.get('range'),
           }
         : {
             title: data.get('title'),
@@ -68,13 +68,13 @@ const Writing: React.FC<WritingProps> = ({ type, profileAccessToken }) => {
       {type === 'community' ? (
         <>
           <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <FormLabel id='radioButtonsForTypeOfBoard' sx={{ m: 1, marginRight: '20px' }}>
+            <FormLabel id='radioButtonsForRangeOfBoard' sx={{ m: 1, marginRight: '20px' }}>
               게시글 유형
             </FormLabel>
             <RadioGroup
               row
-              aria-labelledby='radioButtonsForTypeOfBoard'
-              name='type'
+              aria-labelledby='radioButtonsForRangeOfBoard'
+              name='range'
               defaultValue='ALL'
             >
               <FormControlLabel value='ALL' control={<Radio />} label='전체' />
