@@ -69,7 +69,7 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
   useInterval(checkProfileLogin, profileAccessToken === '' ? null : TIME_FOR_REFRESH_TOKEN);
 
   if (accountKey && profileKey && accountAccessToken !== '' && profileAccessToken === '') {
-    return <ProfileHome token={accountAccessToken} />;
+    return <ProfileHome accountAccessToken={accountAccessToken} />;
   }
   return <></>;
 };

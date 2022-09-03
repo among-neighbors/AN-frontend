@@ -9,7 +9,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Link } from 'react-router-dom';
 import { TableRowForMobile } from '../molecules/TableRow';
-import { Obj, ColumnId, TypeDataArray } from '~/others/integrateInterface';
+import { Obj, ColumnId, ProcessedTypePostDataArray } from '~/others/integrateInterface';
 import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -25,7 +25,7 @@ interface Column {
 
 interface TableProps {
   type: string;
-  rows: TypeDataArray;
+  rows: ProcessedTypePostDataArray;
   isFirstPage: boolean;
   isLastPage: boolean;
 }
@@ -74,7 +74,7 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
                 <React.Fragment key={index}>
                   <TableRow
                     component={Link}
-                    to={`${row.ID}`}
+                    to={`${row.id}`}
                     style={{ textDecoration: 'none' }}
                     hover
                     tabIndex={-1}
@@ -95,7 +95,7 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
                   </TableRow>
                   <TableRow
                     component={Link}
-                    to={`${row.ID}`}
+                    to={`${row.id}`}
                     style={{ textDecoration: 'none' }}
                     hover
                     tabIndex={-1}
@@ -133,7 +133,7 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
 
 interface typeData {
   labels: string[];
-  Ids: ColumnId[];
+  ids: ColumnId[];
   minWidths: number[];
   formats: (Function | undefined)[];
 }
@@ -141,13 +141,13 @@ interface typeData {
 const dataOfTypes: Obj<typeData> = {
   notice: {
     labels: ['공지 ID', '제목', '공지 유형', '작성자', '등록일'],
-    Ids: ['ID', 'title', 'type', 'writer', 'date'],
+    ids: ['id', 'title', 'type', 'writer', 'date'],
     minWidths: [80, 300, 90, 110, 150],
-    formats: [undefined, undefined, undefined, undefined, undefined],
+    formats: [],
   },
   community: {
     labels: ['게시글 ID', '제목', '게시글 유형', '카테고리', '작성자', '등록일'],
-    Ids: ['ID', 'title', 'type', 'category', 'writer', 'date'],
+    ids: ['id', 'title', 'type', 'category', 'writer', 'date'],
     minWidths: [80, 300, 90, 100, 110, 150],
     formats: [
       undefined,
@@ -170,15 +170,13 @@ const dataOfTypes: Obj<typeData> = {
             return '기본글';
         }
       },
-      undefined,
-      undefined,
     ],
   },
   complaint: {
     labels: ['민원 ID', '제목', '작성자', '등록일'],
-    Ids: ['ID', 'title', 'type', 'date'],
+    ids: ['id', 'title', 'type', 'date'],
     minWidths: [80, 300, 110, 150],
-    formats: [undefined, undefined, undefined, undefined],
+    formats: [],
   },
 };
 
@@ -186,7 +184,7 @@ const columns = (type: string): Column[] => {
   const data = dataOfTypes[type];
   return data.labels.map((label, index): Column => {
     return {
-      id: data.Ids[index],
+      id: data.ids[index],
       label: label,
       minWidth: data.minWidths[index],
       align: label === '제목' ? undefined : 'center',

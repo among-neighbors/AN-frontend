@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Radio from '@mui/material/Radio';
@@ -12,10 +11,6 @@ import { Obj } from '~/others/integrateInterface';
 import { connect } from 'react-redux';
 import { RootState } from '~/others/store';
 import { useNavigate } from 'react-router-dom';
-
-interface SubmitTextByTypes {
-  [key: string]: string;
-}
 
 interface WritingProps {
   type: string;
@@ -40,7 +35,7 @@ const Writing: React.FC<WritingProps> = ({ type, profileAccessToken }) => {
             title: data.get('title'),
             content: data.get('content'),
           };
-    const res = await myAxios('post', `${APIbyType[type]}`, body, undefined, profileAccessToken);
+    const res = await myAxios('post', `${NewAPIbyType[type]}`, body, undefined, profileAccessToken);
     navigation(`/${type}`);
   };
 
@@ -125,12 +120,12 @@ const Writing: React.FC<WritingProps> = ({ type, profileAccessToken }) => {
   );
 };
 
-const submitTextByTypes: SubmitTextByTypes = {
+const submitTextByTypes: Obj<string> = {
   community: '글 작성',
   complaint: '민원 작성',
 };
 
-const APIbyType: Obj<string> = {
+const NewAPIbyType: Obj<string> = {
   complaint: `api/v1/reports/new`,
   community: `api/v1/communities/new`,
 };

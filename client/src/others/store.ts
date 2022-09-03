@@ -1,4 +1,5 @@
 import { combineReducers, createStore } from 'redux';
+import { Obj } from './integrateInterface';
 
 const ACTION_FROM_NOTICE = 'actionToNotice',
   ACTION_FROM_COMMUNITY = 'actionToCommunity';
@@ -11,8 +12,7 @@ const ACTION_TO_REFRESH_ACCOUNT_ACCESS_TOKEN = 'actionToRefreshAccountAccessToke
 
 const ACTION_TO_GET_READY_FOR_REQUEST_API = 'actionToGetReadyForRequestAPI';
 
-interface TableNavState {
-  [key: string]: number;
+interface TableNavState extends Obj<number> {
   notice: number;
   community: number;
 }

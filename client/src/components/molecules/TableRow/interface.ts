@@ -1,13 +1,7 @@
-import { ComplaintData, NoticeData, CommunityData } from '~/others/integrateInterface';
+import { Comment, ProcessedTypePostData } from '~/others/integrateInterface';
 
 interface TableRowForMobileProps {
-  row: NoticeData | ComplaintData | CommunityData;
-}
-
-interface Comment {
-  writer: string;
-  comment: string;
-  date: string;
+  row: ProcessedTypePostData;
 }
 
 interface TableRowForCommentProps {

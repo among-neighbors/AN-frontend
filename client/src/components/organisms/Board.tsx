@@ -1,11 +1,11 @@
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { TypeData } from '~/others/integrateInterface';
+import { ProcessedTypePostData } from '~/others/integrateInterface';
 import { rangeByType, categoryByType } from '~/others/integrateVariable';
 import BoardNav from '../molecules/BoardNav';
 
 interface BoardProps {
-  boardData: TypeData;
+  boardData: ProcessedTypePostData;
   type: String;
 }
 

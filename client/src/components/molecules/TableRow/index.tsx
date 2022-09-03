@@ -1,25 +1,28 @@
 import { StyledTableRowForComment, StyledTableRowForMobile } from './styled';
-import { isNoticeData, isCommunityData, Obj } from '~/others/integrateInterface';
+import {
+  isProcessedNoticePostData,
+  isProcessedCommunityPostData,
+} from '~/others/integrateInterface';
 import { TableRowForMobileProps, TableRowForCommentProps } from './interface';
-import { categoryByType } from '~/others/integrateVariable';
+import { categoryByType, rangeByType } from '~/others/integrateVariable';
 
 const TableRowForMobile: React.FC<TableRowForMobileProps> = ({ row }) => {
-  if (isNoticeData(row)) {
+  if (isProcessedNoticePostData(row)) {
     return (
       <StyledTableRowForMobile>
         <div>{row.title}</div>
-        <p>{`${row.ID} | ${row.type === 'ALL' ? '전체' : '라인'} | ${row.writer} | ${row.date}`}</p>
+        <p>{`${row.id} | ${rangeByType[row.type]} | ${row.writer} | ${row.date}`}</p>
       </StyledTableRowForMobile>
     );
   }
 
-  if (isCommunityData(row)) {
+  if (isProcessedCommunityPostData(row)) {
     return (
       <StyledTableRowForMobile>
         <div>{row.title}</div>
-        <p>{`${row.ID} | ${row.type === 'ALL' ? '전체' : '라인'} | ${
-          categoryByType[row.category]
-        } | ${row.writer} | ${row.date}`}</p>
+        <p>{`${row.id} | ${rangeByType[row.type]} | ${categoryByType[row.category]} | ${
+          row.writer
+        } | ${row.date}`}</p>
       </StyledTableRowForMobile>
     );
   }
@@ -28,7 +31,7 @@ const TableRowForMobile: React.FC<TableRowForMobileProps> = ({ row }) => {
   return (
     <StyledTableRowForMobile>
       <div>{row.title}</div>
-      <p>{`${row.ID} | ${row.writer} | ${row.date}`}</p>
+      <p>{`${row.id} | ${row.writer} | ${row.date}`}</p>
     </StyledTableRowForMobile>
   );
 };

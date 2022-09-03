@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Obj } from './integrateInterface';
 
 interface myAxiosFunc {
   (
@@ -11,9 +12,7 @@ interface myAxiosFunc {
 }
 
 interface myAxiosOption {
-  headers: {
-    [key: string]: string;
-  };
+  headers: Obj<string>;
   withCredentials: boolean;
 }
 

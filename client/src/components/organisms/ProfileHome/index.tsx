@@ -16,7 +16,7 @@ import NewProfileForm from '../NewProfileForm';
 import myAxios from '~/others/myAxios';
 
 interface ProfileHomeProps {
-  token: string;
+  accountAccessToken: string;
 }
 
 interface ProfileData {
@@ -24,7 +24,7 @@ interface ProfileData {
   name: string;
 }
 
-const ProfileHome: React.FC<ProfileHomeProps> = ({ token }) => {
+const ProfileHome: React.FC<ProfileHomeProps> = ({ accountAccessToken }) => {
   const [profileList, setProfileList] = useState<ProfileData[]>([]);
   const [isProfileHome, setIsProfileHome] = useState(true);
   const [test, setTest] = useState(false);
@@ -33,8 +33,8 @@ const ProfileHome: React.FC<ProfileHomeProps> = ({ token }) => {
     setIsProfileHome(false);
   };
 
-  const getProfileList = async (token: string) => {
-    const res = await myAxios('get', 'api/v1/accounts/profiles', null, true, token);
+  const getProfileList = async () => {
+    const res = await myAxios('get', 'api/v1/accounts/profiles', null, true, accountAccessToken);
     console.log(res, '프로필 목록');
     setProfileList(res.data.response.profiles);
   };
@@ -42,7 +42,7 @@ const ProfileHome: React.FC<ProfileHomeProps> = ({ token }) => {
   useEffect(() => {
     if (!isProfileHome) return;
     try {
-      getProfileList(token);
+      getProfileList();
     } catch (err) {
       console.log(err);
     }
@@ -59,7 +59,7 @@ const ProfileHome: React.FC<ProfileHomeProps> = ({ token }) => {
         <Profiles
           profileList={profileList}
           handleOpenNewProfile={handleOpenNewProfile}
-          token={token}
+          accountAccessToken={accountAccessToken}
         />
       ) : (
         <NewProfileForm setIsProfileHome={setIsProfileHome} />
@@ -71,10 +71,14 @@ const ProfileHome: React.FC<ProfileHomeProps> = ({ token }) => {
 interface ProfilesProps {
   profileList: ProfileData[];
   handleOpenNewProfile: () => void;
-  token: string;
+  accountAccessToken: string;
 }
 
-const Profiles: React.FC<ProfilesProps> = ({ profileList, handleOpenNewProfile, token }) => {
+const Profiles: React.FC<ProfilesProps> = ({
+  profileList,
+  handleOpenNewProfile,
+  accountAccessToken,
+}) => {
   const [isSelectedProfile, setIsSelectedProfile] = useState(false);
   const [selectedProfileData, setSelectedProfileData] = useState<ProfileData>({
     profileId: 0,
@@ -104,7 +108,7 @@ const Profiles: React.FC<ProfilesProps> = ({ profileList, handleOpenNewProfile, 
       profileId: selectedProfileData.profileId,
       pin: data.get('pin'),
     };
-    const res = await myAxios('post', 'api/v1/auth/profiles/login', body, true, token);
+    const res = await myAxios('post', 'api/v1/auth/profiles/login', body, true, accountAccessToken);
     handleRefreshProfileAccessToken(res.data.response.accessToken);
   };
 

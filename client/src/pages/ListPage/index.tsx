@@ -12,11 +12,11 @@ import { useLocation } from 'react-router-dom';
 import { parse } from 'query-string';
 import {
   Obj,
-  TypeDataArray,
-  ListDataArray,
+  ProcessedTypePostDataArray,
+  DeliverdTypePostDataArray,
   TableDataProps,
-  isCommunityListArrayData,
-  isNoticeListArrayData,
+  isDeliveredCommunityPostDataArray,
+  isDeliveredNoticePostDataArray,
 } from '~/others/integrateInterface';
 import { ListPageProps } from './interface';
 import { APIbyType } from '~/others/integrateVariable';
@@ -80,16 +80,16 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
   );
 };
 
-const handledDate = (createdDate: string): string => {
+const handledDate = (createdDate: string) => {
   return createdDate.substring(0, 10);
 };
 
-const handleList = (list: ListDataArray): TypeDataArray | null => {
+const handleList = (list: DeliverdTypePostDataArray): ProcessedTypePostDataArray | null => {
   if (list.length === 0) return null;
-  if (isCommunityListArrayData(list)) {
+  if (isDeliveredCommunityPostDataArray(list)) {
     return list.map(({ id, title, content, createdDate, writer, range, category }) => {
       return {
-        ID: id,
+        id,
         title,
         content,
         type: range,
@@ -99,10 +99,10 @@ const handleList = (list: ListDataArray): TypeDataArray | null => {
       };
     });
   }
-  if (isNoticeListArrayData(list)) {
+  if (isDeliveredNoticePostDataArray(list)) {
     return list.map(({ id, title, content, createdDate, writer, range }) => {
       return {
-        ID: id,
+        id,
         title,
         content,
         type: range,
@@ -114,7 +114,7 @@ const handleList = (list: ListDataArray): TypeDataArray | null => {
 
   return list.map(({ id, title, content, createdDate, writer }) => {
     return {
-      ID: id,
+      id,
       title,
       content,
       date: handledDate(createdDate),

@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import { Table, TableBody, TableRow } from '@mui/material';
 import { TableRowForComment } from '../molecules/TableRow';
 import styled from 'styled-components';
+import { Comment } from '~/others/integrateInterface';
 
 const CommentForm: React.FC = () => {
   const [value, setValue] = React.useState('');
@@ -51,12 +52,6 @@ const CommentForm: React.FC = () => {
     </Box>
   );
 };
-
-interface Comment {
-  writer: string;
-  comment: string;
-  date: string;
-}
 
 interface CommentsProp {
   comments: Comment[];

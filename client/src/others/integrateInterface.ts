@@ -2,117 +2,137 @@ interface Obj<T> {
   [key: string]: T;
 }
 
-interface CommonData {
-  [key: string]: string;
-  ID: string;
+interface ProcessedCommonPostData extends Obj<string> {
+  id: string;
   title: string;
   content: string;
   writer: string;
   date: string;
 }
 
-type ColumnId = 'ID' | 'title' | 'type' | 'category' | 'writer' | 'date';
+type ColumnId = 'id' | 'title' | 'type' | 'category' | 'writer' | 'date';
+
+type Range = 'ALL' | 'LINE';
 
 type Category = 'QNA' | 'SELLING' | 'BUYING' | 'PLAIN';
 
-interface NoticeData extends CommonData {
-  type: 'ALL' | 'LINE';
+interface ProcessedNoticePostData extends ProcessedCommonPostData {
+  type: Range;
 }
-interface ComplaintData extends CommonData {}
-interface CommunityData extends CommonData {
-  type: 'ALL' | 'LINE';
+interface ProcessedComplaintPostData extends ProcessedCommonPostData {}
+interface ProcessedCommunityPostData extends ProcessedCommonPostData {
+  type: Range;
   category: Category;
 }
 
-const isNoticeData = (data: any): data is NoticeData => {
+const isProcessedNoticePostData = (data: any): data is ProcessedNoticePostData => {
   return data.category === undefined && data.type !== undefined;
 };
 
-const isCommunityData = (data: any): data is CommunityData => {
+const isProcessedCommunityPostData = (data: any): data is ProcessedCommunityPostData => {
   return data.category !== undefined;
 };
 
-type TypeData = NoticeData | ComplaintData | CommunityData;
+type ProcessedTypePostData =
+  | ProcessedNoticePostData
+  | ProcessedComplaintPostData
+  | ProcessedCommunityPostData;
 
-type TypeDataArray = NoticeData[] | ComplaintData[] | CommunityData[];
+type ProcessedTypePostDataArray =
+  | ProcessedNoticePostData[]
+  | ProcessedComplaintPostData[]
+  | ProcessedCommunityPostData[];
 
-interface CommonListData {
+interface DeliveredCommonPostData {
   id: string;
   title: string;
   content: string;
   createdDate: string;
 }
 
-interface CommunityListData extends CommonListData {
+interface DeliveredCommunityPostData extends DeliveredCommonPostData {
   writer: {
     name: string;
     lineName: string;
     houseName: string;
   };
-  range: 'ALL' | 'LINE';
+  range: Range;
   category: Category;
   like: number;
 }
 
-interface NoticeListData extends CommonListData {
+interface DeliveredNoticePostData extends DeliveredCommonPostData {
   writer: string;
-  range: 'ALL' | 'LINE';
+  range: Range;
   expiredDate: string;
   releaseLine: string;
 }
 
-interface ComplaintListData extends CommonListData {
+interface DeliveredComplaintPostData extends DeliveredCommonPostData {
   writer: {
     lineName: string;
     houseName: string;
   };
 }
 
-const isCommunityListData = (data: any): data is CommunityListData => {
-  return data.category !== undefined;
+const isDeliveredCommunityPostData = (post: any): post is DeliveredCommunityPostData => {
+  return post.category !== undefined;
 };
 
-const isNoticeListData = (data: any): data is NoticeListData => {
-  return data.expiredDate !== undefined;
+const isDeliveredNoticePostData = (post: any): post is DeliveredNoticePostData => {
+  return post.expiredDate !== undefined;
 };
 
-const isCommunityListArrayData = (list: any): list is CommunityListData[] => {
-  return list[0].category !== undefined;
+const isDeliveredCommunityPostDataArray = (array: any): array is DeliveredCommunityPostData[] => {
+  return array[0].category !== undefined;
 };
 
-const isNoticeListArrayData = (list: any): list is NoticeListData[] => {
-  return list[0].expiredDate !== undefined;
+const isDeliveredNoticePostDataArray = (array: any): array is DeliveredNoticePostData[] => {
+  return array[0].expiredDate !== undefined;
 };
 
-type ListData = CommunityListData | NoticeListData | ComplaintListData;
+type DeliverdTypePostData =
+  | DeliveredCommunityPostData
+  | DeliveredNoticePostData
+  | DeliveredComplaintPostData;
 
-type ListDataArray = CommunityListData[] | NoticeListData[] | ComplaintListData[];
+type DeliverdTypePostDataArray =
+  | DeliveredCommunityPostData[]
+  | DeliveredNoticePostData[]
+  | DeliveredComplaintPostData[];
 
 interface TableDataProps {
   isFirstPage: boolean;
   isLastPage: boolean;
-  list: ListDataArray;
+  list: DeliverdTypePostDataArray;
+}
+
+interface Comment {
+  writer: string;
+  comment: string;
+  date: string;
 }
 
 export {
   Obj,
   ColumnId,
   Category,
-  NoticeData,
-  ComplaintData,
-  CommunityData,
-  TypeData,
-  TypeDataArray,
-  isNoticeData,
-  isCommunityData,
-  ListData,
-  ListDataArray,
+  ProcessedNoticePostData,
+  ProcessedComplaintPostData,
+  ProcessedCommunityPostData,
+  ProcessedTypePostData,
+  ProcessedTypePostDataArray,
+  isProcessedNoticePostData,
+  isProcessedCommunityPostData,
+  DeliverdTypePostData,
+  DeliverdTypePostDataArray,
   TableDataProps,
-  CommunityListData,
-  NoticeListData,
-  ComplaintListData,
-  isCommunityListData,
-  isNoticeListData,
-  isCommunityListArrayData,
-  isNoticeListArrayData,
+  DeliveredCommunityPostData,
+  DeliveredNoticePostData,
+  DeliveredComplaintPostData,
+  isDeliveredCommunityPostData,
+  isDeliveredNoticePostData,
+  isDeliveredCommunityPostDataArray,
+  isDeliveredNoticePostDataArray,
+  Comment,
 };

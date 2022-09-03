@@ -7,10 +7,10 @@ import PageHeader from '~/components/organisms/PageHeader';
 import { useLocation } from 'react-router-dom';
 import myAxios from '~/others/myAxios';
 import {
-  isCommunityListData,
-  isNoticeListData,
-  ListData,
-  TypeData,
+  isDeliveredCommunityPostData,
+  isDeliveredNoticePostData,
+  DeliverdTypePostData,
+  ProcessedTypePostData,
 } from '~/others/integrateInterface';
 import { APIbyType } from '~/others/integrateVariable';
 import { connect } from 'react-redux';
@@ -22,8 +22,8 @@ interface ViewPageProps {
 }
 
 const ViewPage = ({ type, accountAccessToken }: ViewPageProps) => {
-  const [viewData, setViewData] = useState<ListData | null>(null);
-  const [boardData, setBoardData] = useState<TypeData | null>(null);
+  const [viewData, setViewData] = useState<DeliverdTypePostData | null>(null);
+  const [boardData, setBoardData] = useState<ProcessedTypePostData | null>(null);
   const location = useLocation();
 
   const getViewData = async (id: string) => {
@@ -39,40 +39,37 @@ const ViewPage = ({ type, accountAccessToken }: ViewPageProps) => {
 
   useEffect(() => {
     if (!viewData) return;
-    if (isNoticeListData(viewData)) {
-      const { id, title, content, createdDate, writer, range, expiredDate, releaseLine } = viewData;
+    const commonViewData = {
+      id: viewData.id,
+      title: viewData.title,
+      content: viewData.content,
+      date: viewData.createdDate,
+    };
+    if (isDeliveredNoticePostData(viewData)) {
+      const { writer, range, expiredDate, releaseLine } = viewData;
       setBoardData({
-        ID: id,
-        title,
-        content,
+        ...commonViewData,
         writer,
-        date: createdDate,
         type: range,
       });
       return;
     }
 
-    if (isCommunityListData(viewData)) {
-      const { id, title, content, createdDate, writer, range, category, like } = viewData;
+    if (isDeliveredCommunityPostData(viewData)) {
+      const { writer, range, category, like } = viewData;
       setBoardData({
-        ID: id,
-        title,
-        content,
+        ...commonViewData,
         writer: `${writer.lineName}동 ${writer.houseName}호 ${writer.name}`,
-        date: createdDate,
         type: range,
         category,
       });
       return;
     }
 
-    const { id, title, content, createdDate, writer } = viewData;
+    const { writer } = viewData;
     setBoardData({
-      ID: id,
-      title,
-      content,
+      ...commonViewData,
       writer: `${writer.lineName}동 ${writer.houseName}호`,
-      date: createdDate,
     });
   }, [viewData]);
 
