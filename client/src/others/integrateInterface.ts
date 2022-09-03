@@ -107,7 +107,7 @@ interface TableDataProps {
   list: DeliverdTypePostDataArray;
 }
 
-interface Comment {
+interface CommentData {
   writer: string;
   comment: string;
   date: string;
@@ -134,5 +134,5 @@ export {
   isDeliveredNoticePostData,
   isDeliveredCommunityPostDataArray,
   isDeliveredNoticePostDataArray,
-  Comment,
+  CommentData,
 };

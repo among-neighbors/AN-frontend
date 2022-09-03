@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { Table, TableBody, TableRow } from '@mui/material';
 import { TableRowForComment } from '../molecules/TableRow';
 import styled from 'styled-components';
-import { Comment } from '~/others/integrateInterface';
+import { CommentData } from '~/others/integrateInterface';
 
 const CommentForm: React.FC = () => {
   const [value, setValue] = React.useState('');
@@ -54,7 +54,7 @@ const CommentForm: React.FC = () => {
 };
 
 interface CommentsProp {
-  comments: Comment[];
+  comments: CommentData[];
 }
 
 const Comments: React.FC<CommentsProp> = ({ comments }) => {

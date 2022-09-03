@@ -1,11 +1,11 @@
-import { Comment, ProcessedTypePostData } from '~/others/integrateInterface';
+import { CommentData, ProcessedTypePostData } from '~/others/integrateInterface';
 
 interface TableRowForMobileProps {
   row: ProcessedTypePostData;
 }
 
 interface TableRowForCommentProps {
-  commentData: Comment;
+  commentData: CommentData;
 }
 
 export { TableRowForMobileProps, TableRowForCommentProps };
