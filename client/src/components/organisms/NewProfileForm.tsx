@@ -50,6 +50,8 @@ const NewProfileForm: React.FC<NewProfileFormProps> = ({
         gender: sex,
       };
       const res = await myAxios('post', 'api/v1/auth/profiles/new', body, true, accountAccessToken);
+      console.log(res, '프로필 생성');
+      console.log(accountAccessToken);
       setIsProfileHome(true);
     } catch (err) {
       console.log(err);

@@ -121,7 +121,7 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
           }}
           rowsPerPageOptions={[10]}
           component='div'
-          count={isLastPage ? 20 - (page === '1' ? 10 : 0) : 21 - (page === '1' ? 10 : 0)}
+          count={isLastPage ? 20 - (isFirstPage ? 10 : 0) : 21 - (isFirstPage ? 10 : 0)}
           rowsPerPage={10}
           page={isFirstPage ? 0 : 1}
           onPageChange={handleChangePage}

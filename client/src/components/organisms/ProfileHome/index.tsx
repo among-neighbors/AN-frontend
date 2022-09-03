@@ -35,6 +35,7 @@ const ProfileHome: React.FC<ProfileHomeProps> = ({ token }) => {
 
   const getProfileList = async (token: string) => {
     const res = await myAxios('get', 'api/v1/accounts/profiles', null, true, token);
+    console.log(res, '프로필 목록');
     setProfileList(res.data.response.profiles);
   };
 

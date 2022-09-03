@@ -1,6 +1,7 @@
 import { StyledTableRowForComment, StyledTableRowForMobile } from './styled';
 import { isNoticeData, isCommunityData, Obj } from '~/others/integrateInterface';
 import { TableRowForMobileProps, TableRowForCommentProps } from './interface';
+import { categoryByType } from '~/others/integrateVariable';
 
 const TableRowForMobile: React.FC<TableRowForMobileProps> = ({ row }) => {
   if (isNoticeData(row)) {
@@ -40,13 +41,6 @@ const TableRowForComment: React.FC<TableRowForCommentProps> = ({ commentData }) 
       <p>{`${writer} | ${date}`}</p>
     </StyledTableRowForComment>
   );
-};
-
-const categoryByType: Obj<string> = {
-  QNA: '질문글',
-  SELLING: '팝니다',
-  BUYING: '삽니다',
-  PLAIN: '기본글',
 };
 
 export { TableRowForMobile, TableRowForComment };

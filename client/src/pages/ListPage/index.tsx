@@ -10,16 +10,16 @@ import myAxios from '~/others/myAxios';
 import { RootState } from '~/others/store';
 import { useLocation } from 'react-router-dom';
 import { parse } from 'query-string';
-import { Obj, TypeDataArray } from '~/others/integrateInterface';
 import {
-  ListPageProps,
+  Obj,
+  TypeDataArray,
   ListDataArray,
   TableDataProps,
-  CommunityListData,
-  NoticeListData,
-  isCommunityListData,
-  isNoticeListData,
-} from './interface';
+  isCommunityListArrayData,
+  isNoticeListArrayData,
+} from '~/others/integrateInterface';
+import { ListPageProps } from './interface';
+import { APIbyType } from '~/others/integrateVariable';
 
 const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPageProps) => {
   const location = useLocation();
@@ -86,11 +86,12 @@ const handledDate = (createdDate: string): string => {
 
 const handleList = (list: ListDataArray): TypeDataArray | null => {
   if (list.length === 0) return null;
-  if (isCommunityListData(list)) {
-    return list.map(({ id, title, createdDate, writer, range, category }) => {
+  if (isCommunityListArrayData(list)) {
+    return list.map(({ id, title, content, createdDate, writer, range, category }) => {
       return {
         ID: id,
         title,
+        content,
         type: range,
         category,
         writer: writer.name,
@@ -98,11 +99,12 @@ const handleList = (list: ListDataArray): TypeDataArray | null => {
       };
     });
   }
-  if (isNoticeListData(list)) {
-    return list.map(({ id, title, createdDate, writer, range }) => {
+  if (isNoticeListArrayData(list)) {
+    return list.map(({ id, title, content, createdDate, writer, range }) => {
       return {
         ID: id,
         title,
+        content,
         type: range,
         writer,
         date: handledDate(createdDate),
@@ -110,20 +112,15 @@ const handleList = (list: ListDataArray): TypeDataArray | null => {
     });
   }
 
-  return list.map(({ id, title, createdDate, writer }) => {
+  return list.map(({ id, title, content, createdDate, writer }) => {
     return {
       ID: id,
       title,
+      content,
       date: handledDate(createdDate),
       writer: `${writer.lineName}동 ${writer.houseName}호`,
     };
   });
-};
-
-const APIbyType: Obj<string> = {
-  notice: `api/v1/notices`,
-  complaint: `api/v1/reports`,
-  community: `api/v1/communities`,
 };
 
 const buttonTextByType: Obj<string> = {
