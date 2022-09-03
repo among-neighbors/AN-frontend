@@ -147,6 +147,7 @@ const getReadyForRequestAPI = () => {
 
 export {
   store,
+  TableNavState,
   handleTableNav,
   handleHelpSideBar,
   closeHelpSideBar,

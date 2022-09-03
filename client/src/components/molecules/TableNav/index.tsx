@@ -1,31 +1,45 @@
 import { connect } from 'react-redux';
 import { Button } from '@mui/material';
-import { handleTableNav, RootState } from '~/others/store';
+import { handleTableNav, RootState, TableNavState } from '~/others/store';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/system';
 import { clickedStyleOfTableNavButton, nonClickedStyleOfTableNavButton } from './styled';
+import { Obj } from '~/others/integrateInterface';
+import { useLocation } from 'react-router-dom';
+import { parse } from 'query-string';
 
 interface TableNavProps {
   type: string;
-  state: RootState;
+  tableNavReducer: TableNavState;
   isPageMove?: boolean;
 }
 
-const TableNav: React.FC<TableNavProps> = ({ type, state, isPageMove = true }) => {
-  const tableNav = tableList.find((table) => table.type === type);
-  if (tableNav === undefined) return <></>;
+const TableNav: React.FC<TableNavProps> = ({ type, tableNavReducer, isPageMove = true }) => {
+  if (!tableListByType[type]) return <></>;
+
+  const location = useLocation();
+  const handledQuery = (index: number): string => {
+    const queryObj = Object(parse(location.search));
+    queryObj['range'] = queryByType[type][index];
+    return new URLSearchParams(queryObj).toString();
+  };
+
   return (
     <Box sx={{ display: 'flex', margin: '10px 0 25px 0', gap: '1px' }}>
-      {tableNav.navList.map((kind, index) => {
+      {tableListByType[type].map((kind, index) => {
         return (
           <Button
             onClick={() => {
-              handleTableNav(tableNav.type === 'notice' ? true : false, index);
+              handleTableNav(type === 'notice' ? true : false, index);
             }}
             component={Link}
-            to={isPageMove ? `/${type}` : ``}
+            to={
+              isPageMove
+                ? `/${type}?range=${queryByType[type][index]}`
+                : `/${type}?${handledQuery(index)}`
+            }
             sx={
-              state.tableNavReducer[type] === index
+              tableNavReducer[type] === index
                 ? clickedStyleOfTableNavButton
                 : nonClickedStyleOfTableNavButton
             }
@@ -40,20 +54,19 @@ const TableNav: React.FC<TableNavProps> = ({ type, state, isPageMove = true }) =
   );
 };
 
-const tableList = [
-  {
-    type: 'notice',
-    navList: ['통합 공지', '단지 공지', '라인 공지'],
-  },
-  {
-    type: 'community',
-    navList: ['통합 게시글', '단지 게시글', '라인 게시글', '내 글 목록'],
-  },
-];
+const tableListByType: Obj<string[]> = {
+  notice: ['통합 공지', '라인 공지'],
+  community: ['통합 게시글', '라인 게시글', '내 글 목록'],
+};
+
+const queryByType: Obj<string[]> = {
+  notice: ['ALL', 'LINE'],
+  community: ['ALL', 'LINE', 'MY'],
+};
 
 const mapStateToProps = (state: RootState) => {
   return {
-    state,
+    tableNavReducer: state.tableNavReducer,
   };
 };
 
