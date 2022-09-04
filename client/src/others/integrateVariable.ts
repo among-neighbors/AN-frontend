@@ -18,4 +18,17 @@ const categoryByType: Obj<string> = {
   PLAIN: '기본글',
 };
 
-export { APIbyType, rangeByType, categoryByType };
+const ColorsByProfileIndex = [
+  '#fff',
+  '#E7602A',
+  '#EE8933',
+  '#E1BA75',
+  '#6F8A6A',
+  '#265431',
+  '#1F4C73',
+  '#3B82BF',
+  '#F2AE30',
+  '#D98D62',
+];
+
+export { APIbyType, rangeByType, categoryByType, ColorsByProfileIndex };

@@ -28,6 +28,7 @@ const SignIn: React.FC<SignInProps> = ({ setIsSignUp }) => {
         passwd: data.get('password'),
       };
       const res = await myAxios('post', 'api/v1/auth/accounts/login', body, true);
+
       handleRefreshAccountAccessToken(res.data.response.accessToken);
       navigate('/');
     } catch (err) {

@@ -22,6 +22,7 @@ interface ProfileHomeProps {
 interface ProfileData {
   profileId: number;
   name: string;
+  colorIndex: number;
 }
 
 const ProfileHome: React.FC<ProfileHomeProps> = ({ accountAccessToken }) => {
@@ -35,7 +36,7 @@ const ProfileHome: React.FC<ProfileHomeProps> = ({ accountAccessToken }) => {
 
   const getProfileList = async () => {
     const res = await myAxios('get', 'api/v1/accounts/profiles', null, true, accountAccessToken);
-    setProfileList(res.data.response.profiles);
+    setProfileList(res.data.response.list);
   };
 
   useEffect(() => {
@@ -82,13 +83,15 @@ const Profiles: React.FC<ProfilesProps> = ({
   const [selectedProfileData, setSelectedProfileData] = useState<ProfileData>({
     profileId: 0,
     name: '',
+    colorIndex: 0,
   });
 
-  const selectProfile = ({ profileId, name }: ProfileData) => {
+  const selectProfile = ({ profileId, name, colorIndex }: ProfileData) => {
     setIsSelectedProfile(true);
     setSelectedProfileData({
       profileId,
       name,
+      colorIndex,
     });
   };
 
@@ -97,6 +100,7 @@ const Profiles: React.FC<ProfilesProps> = ({
     setSelectedProfileData({
       profileId: 0,
       name: '',
+      colorIndex: 0,
     });
   };
 
@@ -119,7 +123,9 @@ const Profiles: React.FC<ProfilesProps> = ({
             <SquareImg src='../../../public/img/back.png' length='60px' />
           </ProfileHomeButton>
           <SelectedProfileContainer onSubmit={handleSubmitProfileLogin}>
-            <SelectedProfile>{selectedProfileData.name}</SelectedProfile>
+            <SelectedProfile index={selectedProfileData.colorIndex}>
+              {selectedProfileData.name}
+            </SelectedProfile>
             <TextField
               margin='normal'
               required
@@ -151,9 +157,13 @@ const Profiles: React.FC<ProfilesProps> = ({
         </>
       ) : (
         <ProfileListContainer>
-          {profileList.map(({ profileId, name }, index) => {
+          {profileList?.map(({ profileId, name }, index) => {
             return (
-              <Profile key={index} onClick={() => selectProfile({ profileId, name })}>
+              <Profile
+                key={index}
+                index={index + 1}
+                onClick={() => selectProfile({ profileId, name, colorIndex: index + 1 })}
+              >
                 {name}
               </Profile>
             );

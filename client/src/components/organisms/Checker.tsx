@@ -53,9 +53,9 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
   useEffect(() => {
     if (!accountKey || !profileKey) return;
     getReadyForRequestAPI();
-    // if (accountAccessToken !== '' && profileAccessToken === '') {
-    //   navigate('/');
-    // }
+    if (accountAccessToken !== '' && profileAccessToken === '') {
+      navigate('/');
+    }
     if (accountAccessToken === '' && profileAccessToken === '') {
       const isAllowPath = allowPath.some((path) => location.pathname === path);
       if (!isAllowPath) navigate('/sign');
@@ -68,9 +68,9 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
   useInterval(checkAccountLogin, accountAccessToken === '' ? null : TIME_FOR_REFRESH_TOKEN);
   useInterval(checkProfileLogin, profileAccessToken === '' ? null : TIME_FOR_REFRESH_TOKEN);
 
-  // if (accountKey && profileKey && accountAccessToken !== '' && profileAccessToken === '') {
-  //   return <ProfileHome accountAccessToken={accountAccessToken} />;
-  // }
+  if (accountKey && profileKey && accountAccessToken !== '' && profileAccessToken === '') {
+    return <ProfileHome accountAccessToken={accountAccessToken} />;
+  }
   return <></>;
 };
 

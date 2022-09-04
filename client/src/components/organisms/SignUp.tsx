@@ -19,31 +19,12 @@ interface SignUpProps {
 
 interface SignUpFormBaseData {
   email: string;
-  lineName: string;
-  houseName: string;
+  // lineName: string;
+  // houseName: string;
 }
 
 const SignUp: React.FC<SignUpProps> = ({ setIsSignUp }) => {
   const [signUpFormBaseData, setSignUpFormBaseData] = useState<SignUpFormBaseData | null>(null);
-  const handleEmailSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    try {
-      const body = {
-        email: data.get('email'),
-        code: data.get('code'),
-      };
-      console.log(body);
-      setSignUpFormBaseData({
-        email: 'cdt9473@gmail.com',
-        lineName: '101',
-        houseName: '101',
-      });
-      // const res = await myAxios('post', 'api/v1/auth/verify-code', body);
-    } catch (err) {
-      alert(err);
-    }
-  };
 
   return (
     <ThemeProvider theme={signUpTheme}>
@@ -78,12 +59,13 @@ const SignUp: React.FC<SignUpProps> = ({ setIsSignUp }) => {
             }}
             color='primary'
           >
-            <SquareImg src='../../../public/img/icon.png' length='50px' />
+            <SquareImg src='../../../public/img/iconRed.png' length='50px' />
             이웃사이
           </Typography>
-          {(signUpFormBaseData && <SignUpForm baseData={signUpFormBaseData} />) ?? (
-            <EmailForm handleEmailSubmit={handleEmailSubmit} />
-          )}
+
+          {(signUpFormBaseData && (
+            <SignUpForm baseData={signUpFormBaseData} setIsSignUp={setIsSignUp} />
+          )) ?? <EmailForm setSignUpFormBaseData={setSignUpFormBaseData} />}
           <Grid container>
             <Grid item>
               <Typography
@@ -104,10 +86,41 @@ const SignUp: React.FC<SignUpProps> = ({ setIsSignUp }) => {
 };
 
 interface EmailFormProps {
-  handleEmailSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  setSignUpFormBaseData: React.Dispatch<React.SetStateAction<SignUpFormBaseData | null>>;
 }
 
-const EmailForm: React.FC<EmailFormProps> = ({ handleEmailSubmit }) => {
+const EmailForm: React.FC<EmailFormProps> = ({ setSignUpFormBaseData }) => {
+  const [isSendEmail, setIsSendEmail] = useState(false);
+
+  const sendEmailCode = async (email: string) => {
+    const res = await myAxios('post', `api/v1/mail/code/resend`, {
+      email,
+    });
+    // 성공시
+    setIsSendEmail(true);
+  };
+
+  const checkEmailCode = async (email: string, code: string) => {
+    const res = await myAxios('post', `api/v1/auth/verify-code`, {
+      email,
+      code,
+    });
+    // 성공시
+    setSignUpFormBaseData({ email });
+  };
+
+  const handleEmailSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const email = data.get('email')?.toString() ?? '';
+    const code = data.get('code')?.toString() ?? '';
+    if (!data.get('code')) {
+      await sendEmailCode(email);
+    } else {
+      await checkEmailCode(email, code);
+    }
+  };
+
   return (
     <Box component='form' onSubmit={handleEmailSubmit} noValidate sx={{ mt: 1 }}>
       <TextField
@@ -119,22 +132,25 @@ const EmailForm: React.FC<EmailFormProps> = ({ handleEmailSubmit }) => {
         name='email'
         autoComplete='email'
         autoFocus
+        InputProps={{ readOnly: isSendEmail ? true : false }}
       />
-      <TextField
-        margin='normal'
-        required
-        fullWidth
-        name='code'
-        label='인증 코드'
-        type='code'
-        id='code'
-        autoComplete='code'
-      />
-      <Typography component='h5' variant='caption' color='primary'>
+      {isSendEmail && (
+        <TextField
+          margin='normal'
+          required
+          fullWidth
+          name='code'
+          label='인증 코드'
+          type='code'
+          id='code'
+          autoComplete='code'
+        />
+      )}
+      {/* <Typography component='h5' variant='caption' color='primary'>
         관리자가 이메일 인증 요청을 보내야 회원가입이 진행됩니다.
-      </Typography>
+      </Typography> */}
       <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-        이메일 인증
+        인증 메일 보내기
       </Button>
     </Box>
   );
@@ -142,13 +158,45 @@ const EmailForm: React.FC<EmailFormProps> = ({ handleEmailSubmit }) => {
 
 interface SignUpFormProps {
   baseData: SignUpFormBaseData;
+  setIsSignUp: Dispatch<SetStateAction<boolean>>;
 }
 
-const SignUpForm: React.FC<SignUpFormProps> = ({ baseData }) => {
-  const handleSignUpSubmit = (event: React.FormEvent<HTMLFormElement>) => {};
+const SignUpForm: React.FC<SignUpFormProps> = ({ baseData, setIsSignUp }) => {
+  const handleSignUpSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const joinData = {
+      email: data.get('email') ?? '',
+      username: data.get('username') ?? '',
+      lineName: data.get('lineName') ?? '',
+      houseName: data.get('houseName') ?? '',
+      passwd: data.get('passwd') ?? '',
+      rePasswd: data.get('rePasswd') ?? '',
+    };
+    const { email, username, lineName, houseName, passwd, rePasswd } = joinData;
+
+    const passwdRegex = /(?=.*\d)(?=.*[a-z]).{8,}$/;
+    if (!passwdRegex.test(passwd.toString())) return;
+    if (passwd !== rePasswd) return;
+
+    const body = {
+      email,
+      username,
+      lineName,
+      houseName,
+      passwd,
+    };
+
+    try {
+      const res = await myAxios('post', `api/v1/auth/accounts/new`, body);
+      setIsSignUp(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
-    <Box component='form' onSubmit={handleSignUpSubmit} noValidate sx={{ mt: 1 }}>
+    <Box component='form' onSubmit={handleSignUpSubmit} sx={{ mt: 1 }}>
       <TextField
         margin='normal'
         required
@@ -157,23 +205,65 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ baseData }) => {
         label='이메일'
         name='email'
         autoComplete='email'
+        defaultValue={baseData.email}
+        InputProps={{ readOnly: true }}
+      />
+      <TextField
+        margin='normal'
+        required
+        fullWidth
+        name='username'
+        label='사용자명'
+        type='username'
+        id='username'
+        autoComplete='username'
         autoFocus
       />
       <TextField
         margin='normal'
         required
         fullWidth
-        name='code'
-        label='인증 코드'
-        type='code'
-        id='code'
-        autoComplete='code'
+        name='lineName'
+        label='동'
+        type='lineName'
+        id='lineName'
+        autoComplete='lineName'
       />
-      <Typography component='h5' variant='caption' color='primary'>
+      <TextField
+        margin='normal'
+        required
+        fullWidth
+        name='houseName'
+        label='호수'
+        type='houseName'
+        id='houseName'
+        autoComplete='houseName'
+      />
+      <TextField
+        margin='normal'
+        required
+        fullWidth
+        name='passwd'
+        label='비밀번호'
+        type='password'
+        id='passwd'
+        autoComplete='passwd'
+      />
+      <TextField
+        margin='normal'
+        required
+        fullWidth
+        name='rePasswd'
+        label='비밀번호'
+        type='password'
+        id='rePasswd'
+        autoComplete='rePasswd'
+      />
+      {/* <Typography component='h5' variant='caption' color='primary'>
         관리자가 이메일 인증 요청을 보내야 회원가입이 진행됩니다.
-      </Typography>
+      </Typography> */}
       <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-        이메일 인증
+        회원가입
       </Button>
     </Box>
   );
