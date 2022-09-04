@@ -14,9 +14,10 @@ interface CommentFormProps {
   type: string;
   accessToken: accessTokenState;
   boardId: string;
+  getComments: (type: string, boardId: string) => Promise<void>;
 }
 
-const CommentForm: React.FC<CommentFormProps> = ({ type, accessToken, boardId }) => {
+const CommentForm: React.FC<CommentFormProps> = ({ type, accessToken, boardId, getComments }) => {
   const handlePostComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -33,6 +34,7 @@ const CommentForm: React.FC<CommentFormProps> = ({ type, accessToken, boardId })
       accessToken.profileAccessToken,
     );
     (event.target as HTMLFormElement).reset();
+    getComments(type, boardId);
   };
 
   return (
@@ -94,7 +96,12 @@ const Comment: React.FC<CommentProps> = ({ type, accessToken, boardId }) => {
   }, []);
   return (
     <CommentContainer className='comment'>
-      <CommentForm type={type} boardId={boardId} accessToken={accessToken} />
+      <CommentForm
+        type={type}
+        getComments={getComments}
+        boardId={boardId}
+        accessToken={accessToken}
+      />
       <Table>
         <TableBody>
           {comments &&

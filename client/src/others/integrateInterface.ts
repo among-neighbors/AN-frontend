@@ -108,9 +108,14 @@ interface TableDataProps {
 }
 
 interface CommentData {
-  writer: string;
-  comment: string;
-  date: string;
+  id: number;
+  writer: {
+    name: string;
+    houseName: string;
+    lineName: string;
+  };
+  text: string;
+  createdDate: string;
 }
 
 export {

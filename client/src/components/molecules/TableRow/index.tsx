@@ -4,7 +4,7 @@ import {
   isProcessedCommunityPostData,
 } from '~/others/integrateInterface';
 import { TableRowForMobileProps, TableRowForCommentProps } from './interface';
-import { stringByRange, stringByCategory } from '~/others/integrateVariable';
+import { stringByRange, stringByCategory, handledDate } from '~/others/integrateVariable';
 
 const TableRowForMobile: React.FC<TableRowForMobileProps> = ({ row }) => {
   if (isProcessedNoticePostData(row)) {
@@ -37,11 +37,16 @@ const TableRowForMobile: React.FC<TableRowForMobileProps> = ({ row }) => {
 };
 
 const TableRowForComment: React.FC<TableRowForCommentProps> = ({ commentData }) => {
-  const { comment, writer, date } = commentData;
+  const {
+    id,
+    writer: { name, houseName, lineName },
+    text,
+    createdDate,
+  } = commentData;
   return (
     <StyledTableRowForComment>
-      <div>{comment}</div>
-      <p>{`${writer} | ${date}`}</p>
+      <div>{text}</div>
+      <p>{`${lineName}동 ${houseName}호  ${name} | ${handledDate(createdDate)}`}</p>
     </StyledTableRowForComment>
   );
 };
