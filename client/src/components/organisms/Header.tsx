@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,20 +17,29 @@ import { Link } from 'react-router-dom';
 import { shadowCssForMUI } from '~/others/cssLibrary';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
-import { handleHelpSideBar, RootState } from '~/others/store';
+import {
+  accessTokenState,
+  handleHelpSideBar,
+  handleRefreshAccountAccessToken,
+  handleRefreshProfileAccessToken,
+  RootState,
+} from '~/others/store';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import myAxios from '~/others/myAxios';
 
 interface HeaderProps {
   isReadyForRequestAPI: boolean;
-  accountAccessToken: string;
+  accessToken: accessTokenState;
 }
 
-const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accountAccessToken }) => {
+const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken }) => {
+  const { accountAccessToken, profileAccessToken } = accessToken;
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [anchorElHelpCall, setAnchorElHelpCall] = React.useState<null | HTMLElement>(null);
+  const [profileName, setProfileName] = useState('');
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -55,7 +65,29 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accountAccessToke
     setAnchorElHelpCall(null);
   };
 
-  const handleLogOutAndRedirect = () => {};
+  const handleLogOutAndRedirect = async () => {
+    handleCloseUserMenu();
+    await myAxios('get', `api/v1/auth/profiles/logout`, null, true, profileAccessToken);
+    await myAxios('get', `api/v1/auth/accounts/logout`, null, true, accountAccessToken);
+    handleRefreshAccountAccessToken('');
+    handleRefreshProfileAccessToken('');
+  };
+
+  const handleChangeProfile = async () => {
+    handleCloseUserMenu();
+    await myAxios('get', `api/v1/auth/profiles/logout`, null, true, profileAccessToken);
+    handleRefreshProfileAccessToken('');
+  };
+
+  const getProfileName = async () => {
+    const res = await myAxios('get', `api/v1/profiles/me`, null, true, profileAccessToken);
+    setProfileName(res.data.response.name);
+  };
+
+  useEffect(() => {
+    if (profileAccessToken === '') return;
+    getProfileName();
+  }, [profileAccessToken]);
 
   return (
     <AppBar position='fixed' sx={{ height: '70px' }}>
@@ -292,7 +324,7 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accountAccessToke
                 <Box sx={{ flexGrow: 0 }}>
                   <Tooltip title='Open settings'>
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar alt='x' src='/static/images/avatar/2.jpg' />
+                      <Avatar>{`${profileName}`.substr(0, 2)}</Avatar>
                     </IconButton>
                   </Tooltip>
                   <Menu
@@ -321,6 +353,9 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accountAccessToke
                       }}
                     >
                       <Typography textAlign='center'>도움 리스트</Typography>
+                    </MenuItem>
+                    <MenuItem onClick={handleChangeProfile}>
+                      <Typography textAlign='center'>프로필 전환</Typography>
                     </MenuItem>
                     <MenuItem onClick={handleLogOutAndRedirect}>
                       <Typography textAlign='center'>로그아웃</Typography>
@@ -356,7 +391,7 @@ const pages: {
 const mapStateToProps = (state: RootState) => {
   return {
     isReadyForRequestAPI: state.readyForRequestAPIReducer,
-    accountAccessToken: state.accessTokenReducer.accountAccessToken,
+    accessToken: state.accessTokenReducer,
   };
 };
 
