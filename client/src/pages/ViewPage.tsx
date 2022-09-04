@@ -85,8 +85,8 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
       <PageHeader type={type} />
       {type === 'community' || type === 'notice' ? <TableNav type={type} /> : <></>}
       {boardData && <Board type={type} boardData={boardData} />}
-      {isReadyForRequestAPI && (type === 'community' || type === 'complaint') ? (
-        <Comment accessToken={accessToken} />
+      {boardData && (type === 'community' || type === 'complaint') ? (
+        <Comment type={type} boardId={boardData.id} accessToken={accessToken} />
       ) : (
         <></>
       )}

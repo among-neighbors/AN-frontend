@@ -8,15 +8,31 @@ import { TableRowForComment } from '../molecules/TableRow';
 import styled from 'styled-components';
 import { CommentData, Obj } from '~/others/integrateInterface';
 import { accessTokenState } from '~/others/store';
-import { useLocation } from 'react-router-dom';
 import myAxios from '~/others/myAxios';
 
-const CommentForm: React.FC = () => {
+interface CommentFormProps {
+  type: string;
+  accessToken: accessTokenState;
+  boardId: string;
+}
+
+const CommentForm: React.FC<CommentFormProps> = ({ type, accessToken, boardId }) => {
   const handlePostComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const comment = data.get('comment')?.toString() ?? '';
-    // const res = myAxios('post', `/api/v1/comments/`, body, undefined);
+    const body = {
+      boardId,
+      text: comment,
+    };
+    const res = await myAxios(
+      'post',
+      `${commentAPIbyType[type]}`,
+      body,
+      undefined,
+      accessToken.profileAccessToken,
+    );
+    (event.target as HTMLFormElement).reset();
   };
 
   return (
@@ -53,13 +69,13 @@ const CommentForm: React.FC = () => {
 };
 
 interface CommentProps {
+  type: string;
   accessToken: accessTokenState;
+  boardId: string;
 }
 
-const Comment: React.FC<CommentProps> = ({
-  accessToken: { accountAccessToken, profileAccessToken },
-}) => {
-  const location = useLocation();
+const Comment: React.FC<CommentProps> = ({ type, accessToken, boardId }) => {
+  const { accountAccessToken, profileAccessToken } = accessToken;
   const [comments, setComments] = useState<CommentData[] | null>(null);
 
   const getComments = async (type: string, boardId: string) => {
@@ -74,12 +90,11 @@ const Comment: React.FC<CommentProps> = ({
   };
 
   useEffect(() => {
-    const [pre, type, boardId] = location.pathname.split('/');
     getComments(type, boardId);
   }, []);
   return (
     <CommentContainer className='comment'>
-      <CommentForm />
+      <CommentForm type={type} boardId={boardId} accessToken={accessToken} />
       <Table>
         <TableBody>
           {comments &&
