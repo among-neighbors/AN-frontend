@@ -19,9 +19,10 @@ import { accessTokenState, RootState } from '~/others/store';
 interface ViewPageProps {
   type: string;
   accessToken: accessTokenState;
+  isReadyForRequestAPI: boolean;
 }
 
-const ViewPage = ({ type, accessToken }: ViewPageProps) => {
+const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) => {
   const [viewData, setViewData] = useState<DeliverdTypePostData | null>(null);
   const [boardData, setBoardData] = useState<ProcessedTypePostData | null>(null);
   const location = useLocation();
@@ -38,9 +39,10 @@ const ViewPage = ({ type, accessToken }: ViewPageProps) => {
   };
 
   useEffect(() => {
+    if (!isReadyForRequestAPI) return;
     const [pre, type, id] = location.pathname.split('/');
     getViewData(id);
-  }, []);
+  }, [isReadyForRequestAPI]);
 
   useEffect(() => {
     if (!viewData) return;
@@ -83,7 +85,11 @@ const ViewPage = ({ type, accessToken }: ViewPageProps) => {
       <PageHeader type={type} />
       {type === 'community' || type === 'notice' ? <TableNav type={type} /> : <></>}
       {boardData && <Board type={type} boardData={boardData} />}
-      {type === 'community' || type === 'complaint' ? <Comment accessToken={accessToken} /> : <></>}
+      {isReadyForRequestAPI && (type === 'community' || type === 'complaint') ? (
+        <Comment accessToken={accessToken} />
+      ) : (
+        <></>
+      )}
     </Box>
   );
 };
@@ -91,6 +97,7 @@ const ViewPage = ({ type, accessToken }: ViewPageProps) => {
 const mapStateToProps = (state: RootState) => {
   return {
     accessToken: state.accessTokenReducer,
+    isReadyForRequestAPI: state.readyForRequestAPIReducer,
   };
 };
 

@@ -20,7 +20,7 @@ interface ProfileHomeProps {
 }
 
 interface ProfileData {
-  profileId: number;
+  id: number;
   name: string;
   colorIndex: number;
 }
@@ -28,7 +28,7 @@ interface ProfileData {
 const ProfileHome: React.FC<ProfileHomeProps> = ({ accountAccessToken }) => {
   const [profileList, setProfileList] = useState<ProfileData[]>([]);
   const [isProfileHome, setIsProfileHome] = useState(true);
-  const [test, setTest] = useState(false);
+  const [opacity, setOpacity] = useState(0);
 
   const handleOpenNewProfile = () => {
     setIsProfileHome(false);
@@ -49,12 +49,11 @@ const ProfileHome: React.FC<ProfileHomeProps> = ({ accountAccessToken }) => {
   }, [isProfileHome]);
 
   useEffect(() => {
-    // console.log(test);
-    setTest(true);
-  }, [test]);
+    setOpacity(1);
+  }, [opacity]);
 
   return (
-    <ProfileHomeContainer id='test' test={test ? 1 : 0}>
+    <ProfileHomeContainer opacity={opacity}>
       {isProfileHome ? (
         <Profiles
           profileList={profileList}
@@ -81,15 +80,15 @@ const Profiles: React.FC<ProfilesProps> = ({
 }) => {
   const [isSelectedProfile, setIsSelectedProfile] = useState(false);
   const [selectedProfileData, setSelectedProfileData] = useState<ProfileData>({
-    profileId: 0,
+    id: 0,
     name: '',
     colorIndex: 0,
   });
 
-  const selectProfile = ({ profileId, name, colorIndex }: ProfileData) => {
+  const selectProfile = ({ id, name, colorIndex }: ProfileData) => {
     setIsSelectedProfile(true);
     setSelectedProfileData({
-      profileId,
+      id,
       name,
       colorIndex,
     });
@@ -98,7 +97,7 @@ const Profiles: React.FC<ProfilesProps> = ({
   const goToProfileHome = () => {
     setIsSelectedProfile(false);
     setSelectedProfileData({
-      profileId: 0,
+      id: 0,
       name: '',
       colorIndex: 0,
     });
@@ -108,7 +107,7 @@ const Profiles: React.FC<ProfilesProps> = ({
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const body = {
-      profileId: selectedProfileData.profileId,
+      profileId: selectedProfileData.id,
       pin: data.get('pin'),
     };
     const res = await myAxios('post', 'api/v1/auth/profiles/login', body, true, accountAccessToken);
@@ -157,12 +156,12 @@ const Profiles: React.FC<ProfilesProps> = ({
         </>
       ) : (
         <ProfileListContainer>
-          {profileList?.map(({ profileId, name }, index) => {
+          {profileList?.map(({ id, name }, index) => {
             return (
               <Profile
                 key={index}
                 index={index + 1}
-                onClick={() => selectProfile({ profileId, name, colorIndex: index + 1 })}
+                onClick={() => selectProfile({ id, name, colorIndex: index + 1 })}
               >
                 {name}
               </Profile>

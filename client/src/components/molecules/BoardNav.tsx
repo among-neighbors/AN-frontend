@@ -24,7 +24,7 @@ const BoardNav: React.FC<BoardNavProps> = ({ type }) => {
       >
         목록
       </Link>
-      <Link
+      {/* <Link
         to='/'
         style={{
           height: '40px',
@@ -53,7 +53,7 @@ const BoardNav: React.FC<BoardNavProps> = ({ type }) => {
       >
         다음 글
         <ArrowForwardIcon fontSize='small' />
-      </Link>
+      </Link> */}
     </BoardNavContainer>
   );
 };

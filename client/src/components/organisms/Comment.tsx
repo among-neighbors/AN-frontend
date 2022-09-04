@@ -12,10 +12,11 @@ import { useLocation } from 'react-router-dom';
 import myAxios from '~/others/myAxios';
 
 const CommentForm: React.FC = () => {
-  const handlePostComment = (event: React.FormEvent<HTMLFormElement>) => {
+  const handlePostComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data.get('comment'));
+    const comment = data.get('comment')?.toString() ?? '';
+    // const res = myAxios('post', `/api/v1/comments/`, body, undefined);
   };
 
   return (
@@ -59,18 +60,7 @@ const Comment: React.FC<CommentProps> = ({
   accessToken: { accountAccessToken, profileAccessToken },
 }) => {
   const location = useLocation();
-  const [comments, setComments] = useState<CommentData[] | null>([
-    {
-      writer: '홍길동',
-      comment: '댓글입니당~',
-      date: '2022.08.14',
-    },
-    {
-      writer: '홍길동',
-      comment: '댓글입니당하이댓글입니당하이댓글입니당하이',
-      date: '2022.08.14',
-    },
-  ]);
+  const [comments, setComments] = useState<CommentData[] | null>(null);
 
   const getComments = async (type: string, boardId: string) => {
     const res = await myAxios(
@@ -80,8 +70,7 @@ const Comment: React.FC<CommentProps> = ({
       true,
       accountAccessToken,
     );
-    console.log(res);
-    setComments(res.data.response);
+    setComments(res.data.response.list);
   };
 
   useEffect(() => {

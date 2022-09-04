@@ -16,7 +16,7 @@ const ProfileHomeButton = styled.button`
 `;
 
 interface ProfileHomeContainerProps {
-  test: number;
+  opacity: number;
 }
 
 const ProfileHomeContainer = styled.div<ProfileHomeContainerProps>`
@@ -30,7 +30,7 @@ const ProfileHomeContainer = styled.div<ProfileHomeContainerProps>`
   height: 100vh;
   background: rgba(0, 0, 0, 0.9);
   z-index: 1101;
-  opacity: ${(props) => (props.test ? '1' : '0')};
+  opacity: ${(props) => (Boolean(props.opacity) ? '1' : '0')};
   transition: 1s;
 `;
 
