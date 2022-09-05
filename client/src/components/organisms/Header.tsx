@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,12 +17,29 @@ import { Link } from 'react-router-dom';
 import { shadowCssForMUI } from '~/others/cssLibrary';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
-import { handleHelpSideBar } from '~/others/store';
+import {
+  accessTokenState,
+  handleHelpSideBar,
+  handleRefreshAccountAccessToken,
+  handleRefreshProfileAccessToken,
+  RootState,
+} from '~/others/store';
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import myAxios from '~/others/myAxios';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isReadyForRequestAPI: boolean;
+  accessToken: accessTokenState;
+}
+
+const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken }) => {
+  const { accountAccessToken, profileAccessToken } = accessToken;
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [anchorElHelpCall, setAnchorElHelpCall] = React.useState<null | HTMLElement>(null);
+  const [profileName, setProfileName] = useState('');
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -47,7 +65,29 @@ const Header: React.FC = () => {
     setAnchorElHelpCall(null);
   };
 
-  const handleLogOutAndRedirect = () => {};
+  const handleLogOutAndRedirect = async () => {
+    handleCloseUserMenu();
+    await myAxios('get', `api/v1/auth/profiles/logout`, null, true, profileAccessToken);
+    await myAxios('get', `api/v1/auth/accounts/logout`, null, true, accountAccessToken);
+    handleRefreshAccountAccessToken('');
+    handleRefreshProfileAccessToken('');
+  };
+
+  const handleChangeProfile = async () => {
+    handleCloseUserMenu();
+    await myAxios('get', `api/v1/auth/profiles/logout`, null, true, profileAccessToken);
+    handleRefreshProfileAccessToken('');
+  };
+
+  const getProfileName = async () => {
+    const res = await myAxios('get', `api/v1/profiles/me`, null, true, profileAccessToken);
+    setProfileName(res.data.response.name);
+  };
+
+  useEffect(() => {
+    if (profileAccessToken === '') return;
+    getProfileName();
+  }, [profileAccessToken]);
 
   return (
     <AppBar position='fixed' sx={{ height: '70px' }}>
@@ -169,149 +209,161 @@ const Header: React.FC = () => {
             ))}
           </Box>
 
-          <Box
-            sx={{
-              display: {
-                xs: 'none',
-                sm: 'flex',
-              },
-              '& .helpCallBtn:hover': {
-                background: '#fff',
-              },
-              '& .helpListBtn:hover': {
-                background: '#ff1000',
-                zIndex: 2,
-              },
-            }}
-          >
-            <IconButton
-              onClick={handleOpenHelpCallModal}
-              className='helpCallBtn'
-              sx={{
-                zIndex: 1,
-                background: '#fff',
-                width: '40px',
-                height: '40px',
-              }}
-            >
-              <Avatar
-                className='nonHover'
-                sx={{
-                  width: '28px',
-                  height: '28px',
-                }}
-                src='../../../public/img/sirenRed.png'
-              />
-              <Avatar
-                className='hover'
-                sx={{
-                  width: '28px',
-                  height: '28px',
-                  display: 'none',
-                }}
-                src='../../../public/img/sirenWhite.png'
-              />
-            </IconButton>
-            <IconButton
-              onClick={handleHelpSideBar}
-              className='helpListBtn'
-              sx={{
-                position: 'relative',
-                left: '-15px',
-                background: '#f11000',
-                color: '#fff',
-                width: '40px',
-                height: '40px',
-              }}
-            >
-              +3
-            </IconButton>
-          </Box>
-
-          <Menu
-            anchorEl={anchorElHelpCall}
-            open={Boolean(anchorElHelpCall)}
-            onClose={handleCloseHelpCallModal}
-            sx={{
-              mt: '10px',
-              '& ul': {
-                padding: 0,
-              },
-            }}
-          >
-            <Box sx={{ width: '320px', height: '130px', ...shadowCssForMUI }}>
-              <Typography
-                sx={{
-                  display: 'flex',
-                  fontSize: '15px',
-                  lineHeight: '28px',
-                  height: '85px',
-                  alignItems: 'center',
-                  paddingLeft: '20px',
-                }}
-              >
-                도움 요청 시 라인 내 입주민에게
-                <br /> 도움 요청을 알립니다.
-              </Typography>
-              <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Button
-                  variant='outlined'
-                  color='inherit'
-                  sx={{ height: '32px' }}
-                  startIcon={<ArrowBack />}
+          {isReadyForRequestAPI &&
+            (accountAccessToken === '' ? (
+              <Button onClick={() => navigate('/sign')} variant='outlined' color='inherit'>
+                로그인
+              </Button>
+            ) : (
+              <>
+                <Box
+                  sx={{
+                    display: {
+                      xs: 'none',
+                      sm: 'flex',
+                    },
+                    '& .helpCallBtn:hover': {
+                      background: '#fff',
+                    },
+                    '& .helpListBtn:hover': {
+                      background: '#ff1000',
+                      zIndex: 2,
+                    },
+                  }}
                 >
-                  돌아가기
-                </Button>
-                <Button
-                  variant='contained'
-                  color='error'
-                  sx={{ height: '32px' }}
-                  endIcon={<ArrowForward />}
-                >
-                  동의 후 도움 요청
-                </Button>
-              </Box>
-            </Box>
-          </Menu>
+                  <IconButton
+                    onClick={handleOpenHelpCallModal}
+                    className='helpCallBtn'
+                    sx={{
+                      zIndex: 1,
+                      background: '#fff',
+                      width: '40px',
+                      height: '40px',
+                    }}
+                  >
+                    <Avatar
+                      className='nonHover'
+                      sx={{
+                        width: '28px',
+                        height: '28px',
+                      }}
+                      src='../../../public/img/sirenRed.png'
+                    />
+                    <Avatar
+                      className='hover'
+                      sx={{
+                        width: '28px',
+                        height: '28px',
+                        display: 'none',
+                      }}
+                      src='../../../public/img/sirenWhite.png'
+                    />
+                  </IconButton>
+                  <IconButton
+                    onClick={handleHelpSideBar}
+                    className='helpListBtn'
+                    sx={{
+                      position: 'relative',
+                      left: '-15px',
+                      background: '#f11000',
+                      color: '#fff',
+                      width: '40px',
+                      height: '40px',
+                    }}
+                  >
+                    +3
+                  </IconButton>
+                </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title='Open settings'>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='x' src='/static/images/avatar/2.jpg' />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id='menu-appbar'
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem onClick={handleOpenHelpCallModal}>
-                <Typography textAlign='center'>도움 요청</Typography>
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleHelpSideBar();
-                  handleCloseUserMenu();
-                }}
-              >
-                <Typography textAlign='center'>도움 리스트</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleLogOutAndRedirect}>
-                <Typography textAlign='center'>로그아웃</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
+                <Menu
+                  anchorEl={anchorElHelpCall}
+                  open={Boolean(anchorElHelpCall)}
+                  onClose={handleCloseHelpCallModal}
+                  sx={{
+                    mt: '10px',
+                    '& ul': {
+                      padding: 0,
+                    },
+                  }}
+                >
+                  <Box sx={{ width: '320px', height: '130px', ...shadowCssForMUI }}>
+                    <Typography
+                      sx={{
+                        display: 'flex',
+                        fontSize: '15px',
+                        lineHeight: '28px',
+                        height: '85px',
+                        alignItems: 'center',
+                        paddingLeft: '20px',
+                      }}
+                    >
+                      도움 요청 시 라인 내 입주민에게
+                      <br /> 도움 요청을 알립니다.
+                    </Typography>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+                      <Button
+                        variant='outlined'
+                        color='inherit'
+                        sx={{ height: '32px' }}
+                        startIcon={<ArrowBack />}
+                      >
+                        돌아가기
+                      </Button>
+                      <Button
+                        variant='contained'
+                        color='error'
+                        sx={{ height: '32px' }}
+                        endIcon={<ArrowForward />}
+                      >
+                        동의 후 도움 요청
+                      </Button>
+                    </Box>
+                  </Box>
+                </Menu>
+
+                <Box sx={{ flexGrow: 0 }}>
+                  <Tooltip title='Open settings'>
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar>{`${profileName}`.substr(0, 2)}</Avatar>
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: '45px' }}
+                    id='menu-appbar'
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    <MenuItem onClick={handleOpenHelpCallModal}>
+                      <Typography textAlign='center'>도움 요청</Typography>
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        handleHelpSideBar();
+                        handleCloseUserMenu();
+                      }}
+                    >
+                      <Typography textAlign='center'>도움 리스트</Typography>
+                    </MenuItem>
+                    <MenuItem onClick={handleChangeProfile}>
+                      <Typography textAlign='center'>프로필 전환</Typography>
+                    </MenuItem>
+                    <MenuItem onClick={handleLogOutAndRedirect}>
+                      <Typography textAlign='center'>로그아웃</Typography>
+                    </MenuItem>
+                  </Menu>
+                </Box>
+              </>
+            ))}
         </Toolbar>
       </Container>
     </AppBar>
@@ -336,4 +388,11 @@ const pages: {
   },
 ];
 
-export default Header;
+const mapStateToProps = (state: RootState) => {
+  return {
+    isReadyForRequestAPI: state.readyForRequestAPIReducer,
+    accessToken: state.accessTokenReducer,
+  };
+};
+
+export default connect(mapStateToProps)(Header);
