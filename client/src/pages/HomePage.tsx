@@ -2,7 +2,11 @@ import { useEffect } from 'react';
 
 const HomePage = () => {
   useEffect(() => {}, []);
-  return <></>;
+  return (
+    <>
+      <div></div>
+    </>
+  );
 };
 
 export default HomePage;

@@ -127,7 +127,7 @@ const submitTextByTypes: Obj<string> = {
 
 const NewAPIbyType: Obj<string> = {
   complaint: `api/v1/reports/new`,
-  community: `api/v1/communities/new`,
+  community: `api/v1/communities`,
 };
 
 const mapStateToProps = (state: RootState) => {

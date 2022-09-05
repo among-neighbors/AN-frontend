@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -12,7 +13,11 @@ import { useNavigate } from 'react-router';
 import { handleRefreshAccountAccessToken } from '~/others/store';
 import myAxios from '~/others/myAxios';
 
-const SignIn: React.FC = () => {
+interface SignInProps {
+  setIsSignUp: Dispatch<SetStateAction<boolean>>;
+}
+
+const SignIn: React.FC<SignInProps> = ({ setIsSignUp }) => {
   const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -23,6 +28,7 @@ const SignIn: React.FC = () => {
         passwd: data.get('password'),
       };
       const res = await myAxios('post', 'api/v1/auth/accounts/login', body, true);
+
       handleRefreshAccountAccessToken(res.data.response.accessToken);
       navigate('/');
     } catch (err) {
@@ -91,8 +97,14 @@ const SignIn: React.FC = () => {
           </Button>
           <Grid container>
             <Grid item>
-              <Typography component='h5' variant='body2' color='primary'>
-                회원가입은 관리자를 통해 가능합니다.
+              <Typography
+                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                component='h5'
+                variant='body2'
+                color='primary'
+                onClick={() => setIsSignUp(true)}
+              >
+                계정이 없으신가요? 회원가입
               </Typography>
             </Grid>
           </Grid>

@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import styled from 'styled-components';
 import { shadowCSSForStyledComponent } from '~/others/cssLibrary';
+import { ColorsByProfileIndex } from '~/others/integrateVariable';
 
 const ProfileHomeButton = styled.button`
   position: absolute;
@@ -15,7 +16,7 @@ const ProfileHomeButton = styled.button`
 `;
 
 interface ProfileHomeContainerProps {
-  test: number;
+  opacity: number;
 }
 
 const ProfileHomeContainer = styled.div<ProfileHomeContainerProps>`
@@ -29,7 +30,7 @@ const ProfileHomeContainer = styled.div<ProfileHomeContainerProps>`
   height: 100vh;
   background: rgba(0, 0, 0, 0.9);
   z-index: 1101;
-  opacity: ${(props) => (props.test ? '1' : '0')};
+  opacity: ${(props) => (Boolean(props.opacity) ? '1' : '0')};
   transition: 1s;
 `;
 
@@ -55,7 +56,11 @@ const ProfileListContainer = styled.div`
 
 const ProfileLoginButton = styled(Button)``;
 
-const Profile = styled.div`
+interface ProfileProps {
+  index?: number;
+}
+
+const Profile = styled.div<ProfileProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,6 +69,8 @@ const Profile = styled.div`
   background: #fff;
   font-size: 30px;
   padding: 30px;
+  color: #fff;
+  background: ${(props) => ColorsByProfileIndex[props.index ?? 0]};
   cursor: pointer;
   text-align: center;
   ${shadowCSSForStyledComponent}

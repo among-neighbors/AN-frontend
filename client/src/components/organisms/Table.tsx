@@ -25,7 +25,7 @@ interface Column {
 
 interface TableProps {
   type: string;
-  rows: ProcessedTypePostDataArray;
+  rows: ProcessedTypePostDataArray | null;
   isFirstPage: boolean;
   isLastPage: boolean;
 }
@@ -69,7 +69,7 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => {
+            {rows?.map((row, index) => {
               return (
                 <React.Fragment key={index}>
                   <TableRow

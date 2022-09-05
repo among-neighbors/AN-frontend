@@ -6,16 +6,33 @@ const APIbyType: Obj<string> = {
   community: `api/v1/communities`,
 };
 
-const rangeByType: Obj<string> = {
+const stringByRange: Obj<string> = {
   ALL: '전체',
   LINE: '라인',
 };
 
-const categoryByType: Obj<string> = {
+const stringByCategory: Obj<string> = {
   QNA: '질문글',
   SELLING: '팝니다',
   BUYING: '삽니다',
   PLAIN: '기본글',
 };
 
-export { APIbyType, rangeByType, categoryByType };
+const handledDate = (createdDate: string) => {
+  return createdDate.substring(0, 10);
+};
+
+const ColorsByProfileIndex = [
+  '#fff',
+  '#E7602A',
+  '#EE8933',
+  '#E1BA75',
+  '#6F8A6A',
+  '#265431',
+  '#1F4C73',
+  '#3B82BF',
+  '#F2AE30',
+  '#D98D62',
+];
+
+export { APIbyType, stringByRange, handledDate, stringByCategory, ColorsByProfileIndex };

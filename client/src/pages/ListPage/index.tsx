@@ -19,7 +19,7 @@ import {
   isDeliveredNoticePostDataArray,
 } from '~/others/integrateInterface';
 import { ListPageProps } from './interface';
-import { APIbyType } from '~/others/integrateVariable';
+import { APIbyType, handledDate } from '~/others/integrateVariable';
 
 const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPageProps) => {
   const location = useLocation();
@@ -48,6 +48,7 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
       true,
       accountAccessToken,
     );
+    console.log(`${APIbyType[type]}${querys[type]}`);
     setTableData(res.data.response);
   };
 
@@ -73,15 +74,9 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
       ) : (
         <></>
       )}
-      {rows && (
-        <BoardTable type={type} rows={rows} isFirstPage={isFirstPage} isLastPage={isLastPage} />
-      )}
+      <BoardTable type={type} rows={rows} isFirstPage={isFirstPage} isLastPage={isLastPage} />
     </Box>
   );
-};
-
-const handledDate = (createdDate: string) => {
-  return createdDate.substring(0, 10);
 };
 
 const handleList = (list: DeliverdTypePostDataArray): ProcessedTypePostDataArray | null => {

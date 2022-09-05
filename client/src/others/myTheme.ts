@@ -52,4 +52,14 @@ const theme = (isHelpSideBar: boolean) => {
   });
 };
 
+export const signUpTheme = () => {
+  return createTheme({
+    palette: {
+      primary: {
+        main: '#b53d00',
+      },
+    },
+  });
+};
+
 export default theme;

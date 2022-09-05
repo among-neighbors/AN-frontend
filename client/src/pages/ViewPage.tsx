@@ -14,28 +14,35 @@ import {
 } from '~/others/integrateInterface';
 import { APIbyType } from '~/others/integrateVariable';
 import { connect } from 'react-redux';
-import { RootState } from '~/others/store';
+import { accessTokenState, RootState } from '~/others/store';
 
 interface ViewPageProps {
   type: string;
-  accountAccessToken: string;
+  accessToken: accessTokenState;
+  isReadyForRequestAPI: boolean;
 }
 
-const ViewPage = ({ type, accountAccessToken }: ViewPageProps) => {
+const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) => {
   const [viewData, setViewData] = useState<DeliverdTypePostData | null>(null);
   const [boardData, setBoardData] = useState<ProcessedTypePostData | null>(null);
   const location = useLocation();
 
   const getViewData = async (id: string) => {
-    const res = await myAxios('get', `${APIbyType[type]}/${id}`, null, true, accountAccessToken);
+    const res = await myAxios(
+      'get',
+      `${APIbyType[type]}/${id}`,
+      null,
+      true,
+      accessToken.accountAccessToken,
+    );
     setViewData(res.data.response);
   };
 
   useEffect(() => {
+    if (!isReadyForRequestAPI) return;
     const [pre, type, id] = location.pathname.split('/');
     getViewData(id);
-    console.log(pre, type, id);
-  }, []);
+  }, [isReadyForRequestAPI]);
 
   useEffect(() => {
     if (!viewData) return;
@@ -78,14 +85,19 @@ const ViewPage = ({ type, accountAccessToken }: ViewPageProps) => {
       <PageHeader type={type} />
       {type === 'community' || type === 'notice' ? <TableNav type={type} /> : <></>}
       {boardData && <Board type={type} boardData={boardData} />}
-      {type === 'community' || type === 'complaint' ? <Comment /> : <></>}
+      {boardData && (type === 'community' || type === 'complaint') ? (
+        <Comment type={type} boardId={boardData.id} accessToken={accessToken} />
+      ) : (
+        <></>
+      )}
     </Box>
   );
 };
 
 const mapStateToProps = (state: RootState) => {
   return {
-    accountAccessToken: state.accessTokenReducer.accountAccessToken,
+    accessToken: state.accessTokenReducer,
+    isReadyForRequestAPI: state.readyForRequestAPIReducer,
   };
 };
 
