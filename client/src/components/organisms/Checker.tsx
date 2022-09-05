@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import useInterval from 'use-interval';
 import {
   accessTokenState,
+  getReadyForRequestAPI,
   handleRefreshAccountAccessToken,
   handleRefreshProfileAccessToken,
   RootState,
@@ -51,9 +52,10 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
 
   useEffect(() => {
     if (!accountKey || !profileKey) return;
-    if (accountAccessToken !== '' && profileAccessToken === '') {
-      navigate('/');
-    }
+    getReadyForRequestAPI();
+    // if (accountAccessToken !== '' && profileAccessToken === '') {
+    //   navigate('/');
+    // }
     if (accountAccessToken === '' && profileAccessToken === '') {
       const isAllowPath = allowPath.some((path) => location.pathname === path);
       if (!isAllowPath) navigate('/sign');
@@ -66,9 +68,9 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
   useInterval(checkAccountLogin, accountAccessToken === '' ? null : TIME_FOR_REFRESH_TOKEN);
   useInterval(checkProfileLogin, profileAccessToken === '' ? null : TIME_FOR_REFRESH_TOKEN);
 
-  if (accountKey && profileKey && accountAccessToken !== '' && profileAccessToken === '') {
-    return <ProfileHome token={accountAccessToken} />;
-  }
+  // if (accountKey && profileKey && accountAccessToken !== '' && profileAccessToken === '') {
+  //   return <ProfileHome accountAccessToken={accountAccessToken} />;
+  // }
   return <></>;
 };
 

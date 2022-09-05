@@ -9,43 +9,40 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Link } from 'react-router-dom';
 import { TableRowForMobile } from '../molecules/TableRow';
+import { Obj, ColumnId, ProcessedTypePostDataArray } from '~/others/integrateInterface';
+import { Box } from '@mui/system';
+import { Typography } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { parse } from 'query-string';
 
 interface Column {
-  id: 'ID' | 'title' | 'type' | 'writer' | 'date';
+  id: ColumnId;
   label: string;
   minWidth?: number;
   align?: 'center';
-  format?: (value: boolean) => string;
-}
-
-interface Data {
-  ID: string;
-  title: string;
-  type: boolean;
-  writer: string;
-  date: string;
+  format?: Function;
 }
 
 interface TableProps {
   type: string;
-  rows: Data[];
+  rows: ProcessedTypePostDataArray;
+  isFirstPage: boolean;
+  isLastPage: boolean;
 }
 
-interface LabelObj {
-  [key: string]: string[];
-}
-
-const BoardTable: React.FC<TableProps> = ({ type, rows }) => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const queryObj = Object(parse(location.search));
+  const page = queryObj.page ?? '1';
 
   const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+    queryObj['page'] = (Number(page) + newPage - (page === '1' ? 0 : 1)).toString();
+    const queryStr = new URLSearchParams(queryObj).toString();
+    navigate({
+      pathname: location.pathname,
+      search: queryStr,
+    });
   };
 
   return (
@@ -60,7 +57,7 @@ const BoardTable: React.FC<TableProps> = ({ type, rows }) => {
         <Table stickyHeader aria-label='sticky table'>
           <TableHead>
             <TableRow sx={{ display: { xs: 'none', sm: 'none', md: 'table-row' } }}>
-              {columns(labelsOfTypes[type]).map((column) => (
+              {columns(type).map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
@@ -72,18 +69,18 @@ const BoardTable: React.FC<TableProps> = ({ type, rows }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+            {rows.map((row, index) => {
               return (
                 <React.Fragment key={index}>
                   <TableRow
                     component={Link}
-                    to={`${row.ID}`}
+                    to={`${row.id}`}
                     style={{ textDecoration: 'none' }}
                     hover
                     tabIndex={-1}
                     sx={{ display: { xs: 'none', sm: 'none', md: 'table-row' } }}
                   >
-                    {columns(labelsOfTypes[type]).map((column) => {
+                    {columns(type).map((column) => {
                       const value = row[column.id];
                       return (
                         <TableCell
@@ -91,16 +88,14 @@ const BoardTable: React.FC<TableProps> = ({ type, rows }) => {
                           align={column.align}
                           style={{ whiteSpace: 'nowrap' }}
                         >
-                          {column.format && typeof value === 'boolean'
-                            ? column.format(value)
-                            : value}
+                          {column.format ? column.format(value) : value}
                         </TableCell>
                       );
                     })}
                   </TableRow>
                   <TableRow
                     component={Link}
-                    to={`${row.ID}`}
+                    to={`${row.id}`}
                     style={{ textDecoration: 'none' }}
                     hover
                     tabIndex={-1}
@@ -116,55 +111,86 @@ const BoardTable: React.FC<TableProps> = ({ type, rows }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10]}
-        component='div'
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'right' }}>
+        <Typography>{page} page</Typography>
+        <TablePagination
+          sx={{
+            '& div > p': {
+              display: 'none',
+            },
+          }}
+          rowsPerPageOptions={[10]}
+          component='div'
+          count={isLastPage ? 20 - (isFirstPage ? 10 : 0) : 21 - (isFirstPage ? 10 : 0)}
+          rowsPerPage={10}
+          page={isFirstPage ? 0 : 1}
+          onPageChange={handleChangePage}
+        />
+      </Box>
     </Paper>
   );
 };
 
-const labelsOfTypes: LabelObj = {
-  notice: ['공지 ID', '제목', '공지 유형', '작성자', '등록일'],
-  community: ['게시글 ID', '제목', '게시글 유형', '작성자', '등록일'],
-  complaint: ['민원 ID', '제목', '민원 유형', '작성자', '등록일'],
-};
+interface TypeInfoData {
+  labels: string[];
+  ids: ColumnId[];
+  minWidths: number[];
+  formats: (Function | undefined)[];
+}
 
-const columns = (labels: string[]): Column[] => {
-  return [
-    { id: 'ID', label: `${labels[0]}`, minWidth: 80, align: 'center' },
-    { id: 'title', label: `${labels[1]}`, minWidth: 300 },
-    {
-      id: 'type',
-      label: `${labels[2]}`,
-      minWidth: 90,
-      align: 'center',
-      format: (value: boolean) => {
-        if (value === false) {
-          return '단지';
-        } else {
-          return '라인';
+const dataOfTypes: Obj<TypeInfoData> = {
+  notice: {
+    labels: ['공지 ID', '제목', '공지 유형', '작성자', '등록일'],
+    ids: ['id', 'title', 'range', 'writer', 'date'],
+    minWidths: [80, 300, 90, 110, 150],
+    formats: [],
+  },
+  community: {
+    labels: ['게시글 ID', '제목', '게시글 유형', '카테고리', '작성자', '등록일'],
+    ids: ['id', 'title', 'range', 'category', 'writer', 'date'],
+    minWidths: [80, 300, 90, 100, 110, 150],
+    formats: [
+      undefined,
+      undefined,
+      (value: string) => {
+        if (value === 'ALL') return '전체';
+        return '라인';
+      },
+      (value: string) => {
+        switch (value) {
+          case 'ALL':
+            return '전체';
+          case 'QNA':
+            return '질문글';
+          case 'SELLING':
+            return '팝니다';
+          case 'BUYING':
+            return '삽니다';
+          case 'PLAIN':
+            return '기본글';
         }
       },
-    },
-    {
-      id: 'writer',
-      label: `${labels[3]}`,
-      minWidth: 110,
-      align: 'center',
-    },
-    {
-      id: 'date',
-      label: `${labels[4]}`,
-      minWidth: 150,
-      align: 'center',
-    },
-  ];
+    ],
+  },
+  complaint: {
+    labels: ['민원 ID', '제목', '작성자', '등록일'],
+    ids: ['id', 'title', 'range', 'date'],
+    minWidths: [80, 300, 110, 150],
+    formats: [],
+  },
+};
+
+const columns = (type: string): Column[] => {
+  const data = dataOfTypes[type];
+  return data.labels.map((label, index): Column => {
+    return {
+      id: data.ids[index],
+      label: label,
+      minWidth: data.minWidths[index],
+      align: label === '제목' ? undefined : 'center',
+      format: data.formats[index],
+    };
+  });
 };
 
 export default BoardTable;

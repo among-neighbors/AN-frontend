@@ -1,35 +1,40 @@
 import { StyledTableRowForComment, StyledTableRowForMobile } from './styled';
-
-interface Data {
-  ID: string;
-  title: string;
-  type: boolean;
-  writer: string;
-  date: string;
-}
-
-interface TableRowForMobileProps {
-  row: Data;
-}
+import {
+  isProcessedNoticePostData,
+  isProcessedCommunityPostData,
+} from '~/others/integrateInterface';
+import { TableRowForMobileProps, TableRowForCommentProps } from './interface';
+import { categoryByType, rangeByType } from '~/others/integrateVariable';
 
 const TableRowForMobile: React.FC<TableRowForMobileProps> = ({ row }) => {
+  if (isProcessedNoticePostData(row)) {
+    return (
+      <StyledTableRowForMobile>
+        <div>{row.title}</div>
+        <p>{`${row.id} | ${rangeByType[row.type]} | ${row.writer} | ${row.date}`}</p>
+      </StyledTableRowForMobile>
+    );
+  }
+
+  if (isProcessedCommunityPostData(row)) {
+    return (
+      <StyledTableRowForMobile>
+        <div>{row.title}</div>
+        <p>{`${row.id} | ${rangeByType[row.type]} | ${categoryByType[row.category]} | ${
+          row.writer
+        } | ${row.date}`}</p>
+      </StyledTableRowForMobile>
+    );
+  }
+
+  // Complaint
   return (
     <StyledTableRowForMobile>
       <div>{row.title}</div>
-      <p>{`${row.ID} | ${row.type ? '라인' : '단지'} | ${row.writer} | ${row.date}`}</p>
+      <p>{`${row.id} | ${row.writer} | ${row.date}`}</p>
     </StyledTableRowForMobile>
   );
 };
-
-interface Comment {
-  writer: string;
-  comment: string;
-  date: string;
-}
-
-interface TableRowForCommentProps {
-  commentData: Comment;
-}
 
 const TableRowForComment: React.FC<TableRowForCommentProps> = ({ commentData }) => {
   const { comment, writer, date } = commentData;

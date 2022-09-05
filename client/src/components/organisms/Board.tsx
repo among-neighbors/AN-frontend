@@ -1,23 +1,15 @@
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { ProcessedTypePostData } from '~/others/integrateInterface';
+import { rangeByType, categoryByType } from '~/others/integrateVariable';
 import BoardNav from '../molecules/BoardNav';
 
-interface Data {
-  ID: string;
-  title: string;
-  body: string;
-  type: boolean;
-  writer: string;
-  date: string;
-}
-
 interface BoardProps {
-  row: Data | null;
-  type: String;
+  boardData: ProcessedTypePostData;
+  type: string;
 }
 
-const Board: React.FC<BoardProps> = ({ row, type }) => {
-  if (!row) return <></>;
+const Board: React.FC<BoardProps> = ({ boardData, type }) => {
   return (
     <Box sx={{ maxWidth: '1200px', width: '100%' }}>
       <Box
@@ -31,7 +23,7 @@ const Board: React.FC<BoardProps> = ({ row, type }) => {
         }}
       >
         <Typography variant='h5' sx={{ padding: '11px 10px', height: '50px' }}>
-          {row.title}
+          {boardData.title}
         </Typography>
         <Box
           sx={{
@@ -46,9 +38,10 @@ const Board: React.FC<BoardProps> = ({ row, type }) => {
             },
           }}
         >
-          <p>{`유형 : ${row.type ? '라인' : '단지'}`}</p>
-          <p>{`작성자 : ${row.writer}`}</p>
-          <p>{`등록일 : ${row.date}`}</p>
+          {boardData.range && <p>{`유형 : ${rangeByType[boardData.range]}`}</p>}
+          {boardData.category && <p>{`카테고리 : ${categoryByType[boardData.category]}`}</p>}
+          <p>{`작성자 : ${boardData.writer}`}</p>
+          <p>{`등록일 : ${boardData.date}`}</p>
         </Box>
       </Box>
       <Box
@@ -61,7 +54,7 @@ const Board: React.FC<BoardProps> = ({ row, type }) => {
           marginBottom: '5px',
         }}
       >
-        {row.body.split('\n').map((str, index) => {
+        {boardData.body.split('\n').map((str, index) => {
           return (
             <Typography
               key={index}

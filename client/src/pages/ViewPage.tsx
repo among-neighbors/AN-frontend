@@ -4,53 +4,89 @@ import TableNav from '~/components/molecules/TableNav';
 import Board from '~/components/organisms/Board';
 import Comment from '~/components/organisms/Comment';
 import PageHeader from '~/components/organisms/PageHeader';
-
-interface Data {
-  ID: string;
-  title: string;
-  body: string;
-  type: boolean;
-  writer: string;
-  date: string;
-}
+import { useLocation } from 'react-router-dom';
+import myAxios from '~/others/myAxios';
+import {
+  isDeliveredCommunityPostData,
+  isDeliveredNoticePostData,
+  DeliverdTypePostData,
+  ProcessedTypePostData,
+} from '~/others/integrateInterface';
+import { APIbyType } from '~/others/integrateVariable';
+import { connect } from 'react-redux';
+import { RootState } from '~/others/store';
 
 interface ViewPageProps {
   type: string;
+  accountAccessToken: string;
 }
 
-const ViewPage = ({ type }: ViewPageProps) => {
-  const [row, setRow] = useState<Data | null>(null);
+const ViewPage = ({ type, accountAccessToken }: ViewPageProps) => {
+  const [viewData, setViewData] = useState<DeliverdTypePostData | null>(null);
+  const [boardData, setBoardData] = useState<ProcessedTypePostData | null>(null);
+  const location = useLocation();
+
+  const getViewData = async (id: string) => {
+    const res = await myAxios('get', `${APIbyType[type]}/${id}`, null, true, accountAccessToken);
+    setViewData(res.data.response);
+  };
+
   useEffect(() => {
-    function createData(
-      ID: string,
-      title: string,
-      body: string,
-      type: boolean,
-      writer: string,
-      date: string,
-    ): Data {
-      return { ID, title, body, type, writer, date };
+    const [pre, type, id] = location.pathname.split('/');
+    getViewData(id);
+    console.log(pre, type, id);
+  }, []);
+
+  useEffect(() => {
+    if (!viewData) return;
+    const commonViewData = {
+      id: viewData.id,
+      title: viewData.title,
+      content: viewData.content,
+      date: viewData.createdDate,
+    };
+    if (isDeliveredNoticePostData(viewData)) {
+      const { writer, range, expiredDate, releaseLine } = viewData;
+      setBoardData({
+        ...commonViewData,
+        writer,
+        range,
+      });
+      return;
     }
 
-    const row = createData(
-      '0',
-      '해윙~ 제목입니다',
-      '해윙~ 글 내용입니다.',
-      true,
-      '홍길동',
-      '2022.08.14',
-    );
-    setRow(row);
-  }, []);
+    if (isDeliveredCommunityPostData(viewData)) {
+      const { writer, range, category, like } = viewData;
+      setBoardData({
+        ...commonViewData,
+        writer: `${writer.lineName}동 ${writer.houseName}호 ${writer.name}`,
+        range,
+        category,
+      });
+      return;
+    }
+
+    const { writer } = viewData;
+    setBoardData({
+      ...commonViewData,
+      writer: `${writer.lineName}동 ${writer.houseName}호`,
+    });
+  }, [viewData]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <PageHeader type={type} />
       {type === 'community' || type === 'notice' ? <TableNav type={type} /> : <></>}
-      <Board type={type} row={row} />
+      {boardData && <Board type={type} boardData={boardData} />}
       {type === 'community' || type === 'complaint' ? <Comment /> : <></>}
     </Box>
   );
 };
 
-export default ViewPage;
+const mapStateToProps = (state: RootState) => {
+  return {
+    accountAccessToken: state.accessTokenReducer.accountAccessToken,
+  };
+};
+
+export default connect(mapStateToProps)(ViewPage);
