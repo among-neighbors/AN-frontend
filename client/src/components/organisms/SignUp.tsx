@@ -93,7 +93,8 @@ const EmailForm: React.FC<EmailFormProps> = ({ setSignUpFormBaseData }) => {
   const [isSendEmail, setIsSendEmail] = useState(false);
 
   const sendEmailCode = async (email: string) => {
-    const res = await myAxios('post', `api/v1/mail/code/resend`, {
+    // const res =
+    await myAxios('post', `api/v1/mail/code/resend`, {
       email,
     });
     // 성공시
@@ -101,7 +102,8 @@ const EmailForm: React.FC<EmailFormProps> = ({ setSignUpFormBaseData }) => {
   };
 
   const checkEmailCode = async (email: string, code: string) => {
-    const res = await myAxios('post', `api/v1/auth/verify-code`, {
+    // const res =
+    await myAxios('post', `api/v1/auth/verify-code`, {
       email,
       code,
     });
@@ -188,7 +190,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ baseData, setIsSignUp }) => {
     };
 
     try {
-      const res = await myAxios('post', `api/v1/auth/accounts/new`, body);
+      // const res =
+      await myAxios('post', `api/v1/auth/accounts/new`, body);
       setIsSignUp(false);
     } catch (err) {
       console.log(err);

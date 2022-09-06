@@ -38,7 +38,6 @@ const TableRowForMobile: React.FC<TableRowForMobileProps> = ({ row }) => {
 
 const TableRowForComment: React.FC<TableRowForCommentProps> = ({ commentData }) => {
   const {
-    id,
     writer: { name, houseName, lineName },
     text,
     createdDate,

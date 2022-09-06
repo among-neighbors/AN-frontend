@@ -37,6 +37,7 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
   const page = queryObj.page ?? '1';
 
   const handleChangePage = (event: unknown, newPage: number) => {
+    event;
     queryObj['page'] = (Number(page) + newPage - (page === '1' ? 0 : 1)).toString();
     const queryStr = new URLSearchParams(queryObj).toString();
     navigate({
