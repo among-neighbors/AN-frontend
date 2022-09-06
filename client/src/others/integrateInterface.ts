@@ -58,6 +58,7 @@ interface DeliveredCommonPostData {
 
 interface DeliveredCommunityPostData extends DeliveredCommonPostData {
   writer: {
+    id: number;
     name: string;
     lineName: string;
     houseName: string;
@@ -69,7 +70,10 @@ interface DeliveredCommunityPostData extends DeliveredCommonPostData {
 }
 
 interface DeliveredNoticePostData extends DeliveredCommonPostData {
-  writer: string;
+  writer: {
+    id: number;
+    name: string;
+  };
   scope: Scope;
   expiredDate: string;
   releaseLine: string;

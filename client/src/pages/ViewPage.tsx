@@ -58,7 +58,7 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
       const { writer, scope } = viewData;
       setBoardData({
         ...commonViewData,
-        writer,
+        writer: writer.name,
         scope,
       });
       return;
@@ -68,7 +68,9 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
       const { writer, scope, category } = viewData;
       setBoardData({
         ...commonViewData,
-        writer: `${writer.lineName}동 ${writer.houseName}호 ${writer.name}`,
+        writer: `${writer.lineName === '000' ? `` : `${writer.lineName}동 ${writer.houseName}호 `}${
+          writer.name
+        }`,
         scope,
         category,
       });

@@ -48,7 +48,6 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
       true,
       accountAccessToken,
     );
-    console.log(`${APIbyType[type]}${querys[type]}`);
     setTableData(res.data.response);
   };
 
@@ -101,7 +100,7 @@ const handleList = (list: DeliverdTypePostDataArray): ProcessedTypePostDataArray
         title,
         content,
         scope,
-        writer,
+        writer: writer.name,
         date: handledDate(createdDate),
       };
     });
