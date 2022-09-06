@@ -26,7 +26,8 @@ const CommentForm: React.FC<CommentFormProps> = ({ type, accessToken, boardId, g
       boardId,
       text: comment,
     };
-    const res = await myAxios(
+    // const res =
+    await myAxios(
       'post',
       `${commentAPIbyType[type]}`,
       body,
@@ -77,7 +78,7 @@ interface CommentProps {
 }
 
 const Comment: React.FC<CommentProps> = ({ type, accessToken, boardId }) => {
-  const { accountAccessToken, profileAccessToken } = accessToken;
+  const { accountAccessToken } = accessToken;
   const [comments, setComments] = useState<CommentData[] | null>(null);
 
   const getComments = async (type: string, boardId: string) => {

@@ -41,6 +41,8 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
   useEffect(() => {
     if (!isReadyForRequestAPI) return;
     const [pre, type, id] = location.pathname.split('/');
+    pre;
+    type;
     getViewData(id);
   }, [isReadyForRequestAPI]);
 
@@ -53,7 +55,7 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
       date: viewData.createdDate,
     };
     if (isDeliveredNoticePostData(viewData)) {
-      const { writer, scope, expiredDate, releaseLine } = viewData;
+      const { writer, scope } = viewData;
       setBoardData({
         ...commonViewData,
         writer,
@@ -63,7 +65,7 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
     }
 
     if (isDeliveredCommunityPostData(viewData)) {
-      const { writer, scope, category, like } = viewData;
+      const { writer, scope, category } = viewData;
       setBoardData({
         ...commonViewData,
         writer: `${writer.lineName}동 ${writer.houseName}호 ${writer.name}`,

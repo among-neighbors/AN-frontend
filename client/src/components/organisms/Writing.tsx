@@ -35,7 +35,8 @@ const Writing: React.FC<WritingProps> = ({ type, profileAccessToken }) => {
             title: data.get('title'),
             content: data.get('content'),
           };
-    const res = await myAxios('post', `${NewAPIbyType[type]}`, body, undefined, profileAccessToken);
+    // const res =
+    await myAxios('post', `${NewAPIbyType[type]}`, body, undefined, profileAccessToken);
     navigation(`/${type}`);
   };
 
