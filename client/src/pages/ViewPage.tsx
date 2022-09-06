@@ -53,21 +53,21 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
       date: viewData.createdDate,
     };
     if (isDeliveredNoticePostData(viewData)) {
-      const { writer, range, expiredDate, releaseLine } = viewData;
+      const { writer, scope, expiredDate, releaseLine } = viewData;
       setBoardData({
         ...commonViewData,
         writer,
-        range,
+        scope,
       });
       return;
     }
 
     if (isDeliveredCommunityPostData(viewData)) {
-      const { writer, range, category, like } = viewData;
+      const { writer, scope, category, like } = viewData;
       setBoardData({
         ...commonViewData,
         writer: `${writer.lineName}동 ${writer.houseName}호 ${writer.name}`,
-        range,
+        scope,
         category,
       });
       return;

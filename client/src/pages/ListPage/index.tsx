@@ -33,11 +33,11 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
 
   const getListData = async () => {
     const URLQueryData = parse(location.search);
-    const { page, range, category } = URLQueryData;
+    const { page, scope, category } = URLQueryData;
     const querys: Obj<string> = {
-      notice: `?page=${page ?? 1}&count=10&range=${range ?? 'ALL'}`,
+      notice: `?page=${page ?? 1}&count=10&scope=${scope ?? 'ALL'}`,
       complaint: `?page=${page ?? 1}&count=10`,
-      community: `?page=${page ?? 1}&count=10&range=${range ?? 'ALL'}&category=${
+      community: `?page=${page ?? 1}&count=10&scope=${scope ?? 'ALL'}&category=${
         category ?? 'ALL'
       }`,
     };
@@ -82,12 +82,12 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
 const handleList = (list: DeliverdTypePostDataArray): ProcessedTypePostDataArray | null => {
   if (list.length === 0) return null;
   if (isDeliveredCommunityPostDataArray(list)) {
-    return list.map(({ id, title, content, createdDate, writer, range, category }) => {
+    return list.map(({ id, title, content, createdDate, writer, scope, category }) => {
       return {
         id,
         title,
         content,
-        range,
+        scope,
         category,
         writer: writer.name,
         date: handledDate(createdDate),
@@ -95,12 +95,12 @@ const handleList = (list: DeliverdTypePostDataArray): ProcessedTypePostDataArray
     });
   }
   if (isDeliveredNoticePostDataArray(list)) {
-    return list.map(({ id, title, content, createdDate, writer, range }) => {
+    return list.map(({ id, title, content, createdDate, writer, scope }) => {
       return {
         id,
         title,
         content,
-        range,
+        scope,
         writer,
         date: handledDate(createdDate),
       };

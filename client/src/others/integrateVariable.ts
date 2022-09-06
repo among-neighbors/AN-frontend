@@ -6,7 +6,7 @@ const APIbyType: Obj<string> = {
   community: `api/v1/communities`,
 };
 
-const stringByRange: Obj<string> = {
+const stringByScope: Obj<string> = {
   ALL: '전체',
   LINE: '라인',
 };
@@ -35,4 +35,4 @@ const ColorsByProfileIndex = [
   '#D98D62',
 ];
 
-export { APIbyType, stringByRange, handledDate, stringByCategory, ColorsByProfileIndex };
+export { APIbyType, stringByScope, handledDate, stringByCategory, ColorsByProfileIndex };

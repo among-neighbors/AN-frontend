@@ -141,13 +141,13 @@ interface TypeInfoData {
 const dataOfTypes: Obj<TypeInfoData> = {
   notice: {
     labels: ['공지 ID', '제목', '공지 유형', '작성자', '등록일'],
-    ids: ['id', 'title', 'range', 'writer', 'date'],
+    ids: ['id', 'title', 'scope', 'writer', 'date'],
     minWidths: [80, 300, 90, 110, 150],
     formats: [],
   },
   community: {
     labels: ['게시글 ID', '제목', '게시글 유형', '카테고리', '작성자', '등록일'],
-    ids: ['id', 'title', 'range', 'category', 'writer', 'date'],
+    ids: ['id', 'title', 'scope', 'category', 'writer', 'date'],
     minWidths: [80, 300, 90, 100, 110, 150],
     formats: [
       undefined,
@@ -174,7 +174,7 @@ const dataOfTypes: Obj<TypeInfoData> = {
   },
   complaint: {
     labels: ['민원 ID', '제목', '작성자', '등록일'],
-    ids: ['id', 'title', 'range', 'date'],
+    ids: ['id', 'title', 'scope', 'date'],
     minWidths: [80, 300, 110, 150],
     formats: [],
   },
