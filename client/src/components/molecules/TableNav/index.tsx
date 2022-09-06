@@ -20,7 +20,7 @@ const TableNav: React.FC<TableNavProps> = ({ type, tableNavReducer, isPageMove =
   const location = useLocation();
   const handledQuery = (index: number): string => {
     const queryObj = Object(parse(location.search));
-    queryObj['range'] = queryByType[type][index];
+    queryObj['scope'] = queryByType[type][index];
     queryObj['page'] = 1;
     return new URLSearchParams(queryObj).toString();
   };
@@ -36,7 +36,7 @@ const TableNav: React.FC<TableNavProps> = ({ type, tableNavReducer, isPageMove =
             component={Link}
             to={
               isPageMove
-                ? `/${type}?range=${queryByType[type][index]}`
+                ? `/${type}?scope=${queryByType[type][index]}`
                 : `/${type}?${handledQuery(index)}`
             }
             sx={
