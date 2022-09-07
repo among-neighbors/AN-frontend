@@ -117,6 +117,7 @@ interface TableDataProps {
 interface CommentData {
   id: number;
   writer: {
+    id: number;
     name: string;
     houseName: string;
     lineName: string;

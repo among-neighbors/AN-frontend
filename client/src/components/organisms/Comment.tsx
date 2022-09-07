@@ -7,8 +7,9 @@ import { Table, TableBody, TableRow } from '@mui/material';
 import { TableRowForComment } from '../molecules/TableRow';
 import styled from 'styled-components';
 import { CommentData, Obj } from '~/others/integrateInterface';
-import { accessTokenState } from '~/others/store';
+import { accessTokenState, ProfileState, RootState } from '~/others/store';
 import myAxios from '~/others/myAxios';
+import { connect } from 'react-redux';
 
 interface CommentFormProps {
   type: string;
@@ -75,10 +76,11 @@ interface CommentProps {
   type: string;
   accessToken: accessTokenState;
   boardId: string;
+  profileData: ProfileState;
 }
 
-const Comment: React.FC<CommentProps> = ({ type, accessToken, boardId }) => {
-  const { accountAccessToken } = accessToken;
+const Comment: React.FC<CommentProps> = ({ type, accessToken, boardId, profileData }) => {
+  const { accountAccessToken, profileAccessToken } = accessToken;
   const [comments, setComments] = useState<CommentData[] | null>(null);
 
   const getComments = async (type: string, boardId: string) => {
@@ -90,6 +92,17 @@ const Comment: React.FC<CommentProps> = ({ type, accessToken, boardId }) => {
       accountAccessToken,
     );
     setComments(res.data.response.list);
+  };
+
+  const handleDeleteComment = async (commentId: number) => {
+    await myAxios(
+      'delete',
+      `${commentAPIbyType[type]}${commentId}`,
+      null,
+      true,
+      profileAccessToken,
+    );
+    getComments(type, boardId);
   };
 
   useEffect(() => {
@@ -110,6 +123,15 @@ const Comment: React.FC<CommentProps> = ({ type, accessToken, boardId }) => {
               return (
                 <TableRow key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
                   <TableRowForComment commentData={comment} />
+                  {profileData.id === comment.writer.id && (
+                    <Button
+                      onClick={() => handleDeleteComment(comment.id)}
+                      variant='text'
+                      sx={{ color: 'red' }}
+                    >
+                      X
+                    </Button>
+                  )}
                 </TableRow>
               );
             })}
@@ -131,4 +153,10 @@ const CommentContainer = styled.div`
   height: 200px;
 `;
 
-export default Comment;
+const mapStateToProps = (state: RootState) => {
+  return {
+    profileData: state.profileReducer,
+  };
+};
+
+export default connect(mapStateToProps)(Comment);
