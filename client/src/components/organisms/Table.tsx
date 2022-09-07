@@ -83,6 +83,8 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
                   >
                     {columns(type).map((column) => {
                       const value = row[column.id];
+                      console.log(column.id);
+                      console.log(value);
                       return (
                         <TableCell
                           key={column.id}
@@ -144,7 +146,14 @@ const dataOfTypes: Obj<TypeInfoData> = {
     labels: ['공지 ID', '제목', '공지 유형', '작성자', '등록일'],
     ids: ['id', 'title', 'scope', 'writer', 'date'],
     minWidths: [80, 300, 90, 110, 150],
-    formats: [],
+    formats: [
+      undefined,
+      undefined,
+      (value: string) => {
+        if (value === 'ALL') return '전체';
+        return '라인';
+      },
+    ],
   },
   community: {
     labels: ['게시글 ID', '제목', '게시글 유형', '카테고리', '작성자', '등록일'],
@@ -175,7 +184,7 @@ const dataOfTypes: Obj<TypeInfoData> = {
   },
   complaint: {
     labels: ['민원 ID', '제목', '작성자', '등록일'],
-    ids: ['id', 'title', 'scope', 'date'],
+    ids: ['id', 'title', 'writer', 'date'],
     minWidths: [80, 300, 110, 150],
     formats: [],
   },
