@@ -29,6 +29,7 @@ interface RootState {
   tableNavReducer: TableNavState;
   accessTokenReducer: accessTokenState;
   readyForRequestAPIReducer: boolean;
+  profileReducer: ProfileState;
 }
 
 interface ProfileState {
@@ -195,4 +196,5 @@ export {
   handlePutProfile,
   RootState,
   accessTokenState,
+  ProfileState,
 };

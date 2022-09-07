@@ -10,7 +10,7 @@ import { Button, FormControl } from '@mui/material';
 import myAxios from '~/others/myAxios';
 import { Obj } from '~/others/integrateInterface';
 import { connect } from 'react-redux';
-import { accessTokenState, RootState } from '~/others/store';
+import { accessTokenState, ProfileState, RootState } from '~/others/store';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { parse } from 'query-string';
 import { APIbyType } from '~/others/integrateVariable';
@@ -19,9 +19,15 @@ interface WritingProps {
   type: string;
   accessToken: accessTokenState;
   isReadyForRequestAPI: boolean;
+  profileData: ProfileState;
 }
 
-const Writing: React.FC<WritingProps> = ({ type, accessToken, isReadyForRequestAPI }) => {
+const Writing: React.FC<WritingProps> = ({
+  type,
+  accessToken,
+  isReadyForRequestAPI,
+  profileData,
+}) => {
   const { accountAccessToken, profileAccessToken } = accessToken;
   const navigation = useNavigate();
   const location = useLocation();
@@ -65,8 +71,7 @@ const Writing: React.FC<WritingProps> = ({ type, accessToken, isReadyForRequestA
       true,
       accountAccessToken,
     );
-    const profileRes = await myAxios('get', `api/v1/profiles/me`, null, true, profileAccessToken);
-    if (profileRes.data.response.id !== boardRes.data.response.writer.id) navigation(-1);
+    if (profileData.id !== boardRes.data.response.writer.id) navigation(-1);
     const { title, content, category, scope } = boardRes.data.response;
     setIsPUT(true);
     setTitle(title);
@@ -193,6 +198,7 @@ const mapStateToProps = (state: RootState) => {
   return {
     accessToken: state.accessTokenReducer,
     isReadyForRequestAPI: state.readyForRequestAPIReducer,
+    profileData: state.profileReducer,
   };
 };
 

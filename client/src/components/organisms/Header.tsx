@@ -20,6 +20,7 @@ import ArrowForward from '@mui/icons-material/ArrowForward';
 import {
   accessTokenState,
   handleHelpSideBar,
+  handlePutProfile,
   handleRefreshAccountAccessToken,
   handleRefreshProfileAccessToken,
   RootState,
@@ -79,14 +80,21 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken }) =>
     handleRefreshProfileAccessToken('');
   };
 
-  const getProfileName = async () => {
+  const getProfile = async () => {
     const res = await myAxios('get', `api/v1/profiles/me`, null, true, profileAccessToken);
-    setProfileName(res.data.response.name);
+    const { id, name, lineName, houseName } = res.data.response;
+    handlePutProfile({
+      id,
+      name,
+      lineName,
+      houseName,
+    });
+    setProfileName(name);
   };
 
   useEffect(() => {
     if (profileAccessToken === '') return;
-    getProfileName();
+    getProfile();
   }, [profileAccessToken]);
 
   return (
