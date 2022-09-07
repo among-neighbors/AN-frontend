@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
-import { Button } from '@mui/material';
+import { Button, Menu, MenuItem } from '@mui/material';
 import { handleTableNav, RootState, TableNavState } from '~/others/store';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/system';
 import { clickedStyleOfTableNavButton, nonClickedStyleOfTableNavButton } from './styled';
 import { Obj } from '~/others/integrateInterface';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { parse } from 'query-string';
+import React, { useState } from 'react';
 
 interface TableNavProps {
   type: string;
@@ -51,7 +52,58 @@ const TableNav: React.FC<TableNavProps> = ({ type, tableNavReducer, isPageMove =
           </Button>
         );
       })}
+      {type === 'community' && <Category type={type} />}
     </Box>
+  );
+};
+
+interface CategoryProps {
+  type: string;
+}
+
+const Category: React.FC<CategoryProps> = ({ type }) => {
+  const [anchorElCategory, setAnchorElCategory] = useState<null | HTMLElement>(null);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handledQuery = (category: string): string => {
+    const queryObj = Object(parse(location.search));
+    queryObj['category'] = category;
+    return new URLSearchParams(queryObj).toString();
+  };
+
+  const handleOpenCategoryMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElCategory(event.currentTarget);
+  };
+
+  const handleCloseCategoryMenu = () => {
+    setAnchorElCategory(null);
+  };
+
+  const navigateTo = (category: string) => {
+    const search = handledQuery(category);
+    navigate({ pathname: `/${type}`, search });
+    handleCloseCategoryMenu();
+  };
+
+  return (
+    <>
+      <Button sx={nonClickedStyleOfTableNavButton} onClick={handleOpenCategoryMenu}>
+        카테고리
+      </Button>
+      <Menu
+        open={Boolean(anchorElCategory)}
+        onClose={handleCloseCategoryMenu}
+        anchorEl={anchorElCategory}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        {Object.entries(MenuItemsByCategory).map(([category, name]) => {
+          return <MenuItem onClick={() => navigateTo(category)}>{name}</MenuItem>;
+        })}
+      </Menu>
+    </>
   );
 };
 
@@ -63,6 +115,14 @@ const tableListByType: Obj<string[]> = {
 const queryByType: Obj<string[]> = {
   notice: ['ALL', 'LINE'],
   community: ['ALL', 'LINE'],
+};
+
+const MenuItemsByCategory: Obj<string> = {
+  ALL: '전체',
+  PLAIN: '기본글',
+  QNA: '질문글',
+  BUYING: '삽니다',
+  SELLING: '팝니다',
 };
 
 const mapStateToProps = (state: RootState) => {

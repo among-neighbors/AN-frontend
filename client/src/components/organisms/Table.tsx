@@ -83,8 +83,6 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
                   >
                     {columns(type).map((column) => {
                       const value = row[column.id];
-                      console.log(column.id);
-                      console.log(value);
                       return (
                         <TableCell
                           key={column.id}
