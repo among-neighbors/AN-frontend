@@ -1,16 +1,22 @@
+import { Button } from '@mui/material';
+import { Box } from '@mui/system';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Bool } from '~/others/integrateInterface';
 
 interface BoardNavProps {
   type: string;
+  isMine?: Bool;
+  boardId?: string;
 }
 
-const BoardNav: React.FC<BoardNavProps> = ({ type }) => {
+const BoardNav: React.FC<BoardNavProps> = ({ type, isMine, boardId }) => {
   return (
     <BoardNavContainer>
-      <Link
+      <Box
+        component={Link}
         to={`/${type}`}
-        style={{
+        sx={{
           width: '70px',
           height: '40px',
           color: '#000',
@@ -21,37 +27,39 @@ const BoardNav: React.FC<BoardNavProps> = ({ type }) => {
         }}
       >
         목록
-      </Link>
-      {/* <Link
-        to='/'
-        style={{
-          height: '40px',
-          color: '#000',
-          textDecoration: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '5px',
-        }}
-      >
-        <ArrowBackIcon fontSize='small' />
-        이전 글
-      </Link>
-      <Link
-        to='/'
-        style={{
-          height: '40px',
-          color: '#000',
-          textDecoration: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '5px',
-        }}
-      >
-        다음 글
-        <ArrowForwardIcon fontSize='small' />
-      </Link> */}
+      </Box>
+      {isMine === 'true' && (
+        <>
+          <Box
+            component={Link}
+            to={`/${type}/writing?id=${boardId}`}
+            sx={{
+              width: '70px',
+              height: '40px',
+              color: '#000',
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            수정
+          </Box>
+          <Button
+            sx={{
+              width: '70px',
+              height: '40px',
+              color: '#000',
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            삭제
+          </Button>
+        </>
+      )}
     </BoardNavContainer>
   );
 };
@@ -61,7 +69,7 @@ const BoardNavContainer = styled.div`
   display: flex;
   justify-content: right;
   padding-right: 30px;
-  gap: 30px;
+  gap: 10px;
 `;
 
 export default BoardNav;

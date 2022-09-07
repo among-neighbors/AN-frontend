@@ -55,17 +55,18 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
       date: viewData.createdDate,
     };
     if (isDeliveredNoticePostData(viewData)) {
-      const { writer, scope } = viewData;
+      const { writer, scope, isMine } = viewData;
       setBoardData({
         ...commonViewData,
         writer: writer.name,
         scope,
+        isMine: Boolean(isMine) ? 'true' : 'false',
       });
       return;
     }
 
     if (isDeliveredCommunityPostData(viewData)) {
-      const { writer, scope, category } = viewData;
+      const { writer, scope, category, isMine } = viewData;
       setBoardData({
         ...commonViewData,
         writer: `${writer.lineName === '000' ? `` : `${writer.lineName}동 ${writer.houseName}호 `}${
@@ -73,6 +74,7 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
         }`,
         scope,
         category,
+        isMine: Boolean(isMine) ? 'true' : 'false',
       });
       return;
     }

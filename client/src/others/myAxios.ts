@@ -36,6 +36,8 @@ const myAxios: myAxiosFunc = async (
       return await axios.get(`${serverURL}${path}`, option);
     case 'post':
       return await axios.post(`${serverURL}${path}`, body, option);
+    case 'put':
+      return await axios.put(`${serverURL}${path}`, body, option);
     default:
       return;
   }

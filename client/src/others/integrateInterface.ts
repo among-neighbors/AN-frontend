@@ -128,6 +128,7 @@ interface CommentData {
   };
   text: string;
   createdDate: string;
+  isMine: Bool;
 }
 
 export {
@@ -152,4 +153,6 @@ export {
   isDeliveredCommunityPostDataArray,
   isDeliveredNoticePostDataArray,
   CommentData,
+  Bool,
+  Scope,
 };
