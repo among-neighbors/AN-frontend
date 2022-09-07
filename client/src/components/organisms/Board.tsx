@@ -1,15 +1,20 @@
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { ProcessedTypePostData } from '~/others/integrateInterface';
+import {
+  isProcessedCommunityPostData,
+  isProcessedNoticePostData,
+  ProcessedTypePostData,
+} from '~/others/integrateInterface';
 import { stringByScope, stringByCategory, handledDate } from '~/others/integrateVariable';
 import BoardNav from '../molecules/BoardNav';
 
 interface BoardProps {
   boardData: ProcessedTypePostData;
   type: string;
+  writerId: number;
 }
 
-const Board: React.FC<BoardProps> = ({ boardData, type }) => {
+const Board: React.FC<BoardProps> = ({ boardData, type, writerId }) => {
   return (
     <Box sx={{ maxWidth: '1200px', width: '100%' }}>
       <Box
@@ -69,7 +74,11 @@ const Board: React.FC<BoardProps> = ({ boardData, type }) => {
           );
         })}
       </Box>
-      <BoardNav type={type} />
+      {isProcessedCommunityPostData(boardData) || isProcessedNoticePostData(boardData) ? (
+        <BoardNav type={type} boardId={boardData.id} writerId={writerId} />
+      ) : (
+        <BoardNav type={type} writerId={writerId} />
+      )}
     </Box>
   );
 };

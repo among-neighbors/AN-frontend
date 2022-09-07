@@ -23,6 +23,7 @@ interface ViewPageProps {
 }
 
 const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) => {
+  const [writerId, setWriterId] = useState<number>();
   const [viewData, setViewData] = useState<DeliverdTypePostData | null>(null);
   const [boardData, setBoardData] = useState<ProcessedTypePostData | null>(null);
   const location = useLocation();
@@ -54,6 +55,7 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
       content: viewData.content,
       date: viewData.createdDate,
     };
+    setWriterId(viewData.writer.id);
     if (isDeliveredNoticePostData(viewData)) {
       const { writer, scope } = viewData;
       setBoardData({
@@ -88,7 +90,7 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <PageHeader type={type} />
       {type === 'community' || type === 'notice' ? <TableNav type={type} /> : <></>}
-      {boardData && <Board type={type} boardData={boardData} />}
+      {boardData && writerId && <Board type={type} boardData={boardData} writerId={writerId} />}
       {boardData && (type === 'community' || type === 'complaint') ? (
         <Comment type={type} boardId={boardData.id} accessToken={accessToken} />
       ) : (

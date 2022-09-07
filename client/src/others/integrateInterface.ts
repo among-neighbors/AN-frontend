@@ -16,11 +16,8 @@ type Scope = 'ALL' | 'LINE';
 
 type Category = 'QNA' | 'SELLING' | 'BUYING' | 'PLAIN';
 
-type Bool = 'true' | 'false';
-
 interface ProcessedNoticePostData extends ProcessedCommonPostData {
   scope: Scope;
-  isMine: Bool;
 }
 
 interface ProcessedComplaintPostData extends ProcessedCommonPostData {}
@@ -28,7 +25,6 @@ interface ProcessedComplaintPostData extends ProcessedCommonPostData {}
 interface ProcessedCommunityPostData extends ProcessedCommonPostData {
   scope: Scope;
   category: Category;
-  isMine: Bool;
 }
 
 const isProcessedNoticePostData = (data: any): data is ProcessedNoticePostData => {
@@ -66,7 +62,6 @@ interface DeliveredCommunityPostData extends DeliveredCommonPostData {
   scope: Scope;
   category: Category;
   like: number;
-  isMine: boolean;
 }
 
 interface DeliveredNoticePostData extends DeliveredCommonPostData {
@@ -77,11 +72,11 @@ interface DeliveredNoticePostData extends DeliveredCommonPostData {
   scope: Scope;
   expiredDate: string;
   releaseLine: string;
-  isMine: boolean;
 }
 
 interface DeliveredComplaintPostData extends DeliveredCommonPostData {
   writer: {
+    id: number;
     lineName: string;
     houseName: string;
   };
@@ -122,6 +117,7 @@ interface TableDataProps {
 interface CommentData {
   id: number;
   writer: {
+    id: number;
     name: string;
     houseName: string;
     lineName: string;
@@ -152,4 +148,5 @@ export {
   isDeliveredCommunityPostDataArray,
   isDeliveredNoticePostDataArray,
   CommentData,
+  Scope,
 };
