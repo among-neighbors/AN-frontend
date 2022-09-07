@@ -23,6 +23,7 @@ interface ViewPageProps {
 }
 
 const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) => {
+  const [writerId, setWriterId] = useState<number>();
   const [viewData, setViewData] = useState<DeliverdTypePostData | null>(null);
   const [boardData, setBoardData] = useState<ProcessedTypePostData | null>(null);
   const location = useLocation();
@@ -54,19 +55,19 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
       content: viewData.content,
       date: viewData.createdDate,
     };
+    setWriterId(viewData.writer.id);
     if (isDeliveredNoticePostData(viewData)) {
-      const { writer, scope, isMine } = viewData;
+      const { writer, scope } = viewData;
       setBoardData({
         ...commonViewData,
         writer: writer.name,
         scope,
-        isMine: Boolean(isMine) ? 'true' : 'false',
       });
       return;
     }
 
     if (isDeliveredCommunityPostData(viewData)) {
-      const { writer, scope, category, isMine } = viewData;
+      const { writer, scope, category } = viewData;
       setBoardData({
         ...commonViewData,
         writer: `${writer.lineName === '000' ? `` : `${writer.lineName}동 ${writer.houseName}호 `}${
@@ -74,7 +75,6 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
         }`,
         scope,
         category,
-        isMine: Boolean(isMine) ? 'true' : 'false',
       });
       return;
     }
@@ -90,7 +90,7 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <PageHeader type={type} />
       {type === 'community' || type === 'notice' ? <TableNav type={type} /> : <></>}
-      {boardData && <Board type={type} boardData={boardData} />}
+      {boardData && writerId && <Board type={type} boardData={boardData} writerId={writerId} />}
       {boardData && (type === 'community' || type === 'complaint') ? (
         <Comment type={type} boardId={boardData.id} accessToken={accessToken} />
       ) : (

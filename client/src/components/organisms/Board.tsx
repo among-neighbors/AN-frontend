@@ -11,9 +11,10 @@ import BoardNav from '../molecules/BoardNav';
 interface BoardProps {
   boardData: ProcessedTypePostData;
   type: string;
+  writerId: number;
 }
 
-const Board: React.FC<BoardProps> = ({ boardData, type }) => {
+const Board: React.FC<BoardProps> = ({ boardData, type, writerId }) => {
   return (
     <Box sx={{ maxWidth: '1200px', width: '100%' }}>
       <Box
@@ -74,9 +75,9 @@ const Board: React.FC<BoardProps> = ({ boardData, type }) => {
         })}
       </Box>
       {isProcessedCommunityPostData(boardData) || isProcessedNoticePostData(boardData) ? (
-        <BoardNav type={type} isMine={boardData.isMine} boardId={boardData.id} />
+        <BoardNav type={type} boardId={boardData.id} writerId={writerId} />
       ) : (
-        <BoardNav type={type} />
+        <BoardNav type={type} writerId={writerId} />
       )}
     </Box>
   );

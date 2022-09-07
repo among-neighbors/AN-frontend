@@ -3,20 +3,26 @@ import { Box } from '@mui/system';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Bool } from '~/others/integrateInterface';
 import { APIbyType } from '~/others/integrateVariable';
 import myAxios from '~/others/myAxios';
-import { accessTokenState, RootState } from '~/others/store';
+import { accessTokenState, ProfileState, RootState } from '~/others/store';
 import { useNavigate } from 'react-router-dom';
 
 interface BoardNavProps {
   type: string;
-  isMine?: Bool;
   boardId?: string;
   accessToken: accessTokenState;
+  profileData: ProfileState;
+  writerId: number;
 }
 
-const BoardNav: React.FC<BoardNavProps> = ({ type, isMine, boardId, accessToken }) => {
+const BoardNav: React.FC<BoardNavProps> = ({
+  type,
+  boardId,
+  accessToken,
+  profileData,
+  writerId,
+}) => {
   const navigate = useNavigate();
   const handleDeletePost = async () => {
     await myAxios(
@@ -46,7 +52,7 @@ const BoardNav: React.FC<BoardNavProps> = ({ type, isMine, boardId, accessToken 
       >
         목록
       </Box>
-      {isMine === 'true' && (
+      {writerId === profileData.id && (
         <>
           <Box
             component={Link}
@@ -94,6 +100,7 @@ const BoardNavContainer = styled.div`
 const mapStateToProps = (state: RootState) => {
   return {
     accessToken: state.accessTokenReducer,
+    profileData: state.profileReducer,
   };
 };
 
