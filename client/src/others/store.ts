@@ -12,6 +12,8 @@ const ACTION_TO_REFRESH_ACCOUNT_ACCESS_TOKEN = 'actionToRefreshAccountAccessToke
 
 const ACTION_TO_GET_READY_FOR_REQUEST_API = 'actionToGetReadyForRequestAPI';
 
+const ACTION_TO_PUT_PROFILE = 'actionToPutProfile';
+
 interface TableNavState extends Obj<number> {
   notice: number;
   community: number;
@@ -27,7 +29,35 @@ interface RootState {
   tableNavReducer: TableNavState;
   accessTokenReducer: accessTokenState;
   readyForRequestAPIReducer: boolean;
+  profileReducer: ProfileState;
 }
+
+interface ProfileState {
+  id: number;
+  name: string;
+  lineName: string;
+  houseName: string;
+}
+
+const profileReducer = (
+  state: ProfileState = {
+    id: -1,
+    name: '',
+    lineName: '',
+    houseName: '',
+  },
+  action: {
+    type: string;
+    profileData: ProfileState;
+  },
+) => {
+  switch (action.type) {
+    case ACTION_TO_PUT_PROFILE:
+      return { ...action.profileData };
+    default:
+      return state;
+  }
+};
 
 const tableNavReducer = (
   state: TableNavState = {
@@ -103,6 +133,7 @@ const rootReducer = combineReducers({
   helpSideBarReducer,
   accessTokenReducer,
   readyForRequestAPIReducer,
+  profileReducer,
 });
 
 const store = createStore(rootReducer);
@@ -146,6 +177,13 @@ const getReadyForRequestAPI = () => {
   });
 };
 
+const handlePutProfile = (profileData: ProfileState) => {
+  store.dispatch({
+    type: ACTION_TO_PUT_PROFILE,
+    profileData,
+  });
+};
+
 export {
   store,
   TableNavState,
@@ -155,6 +193,8 @@ export {
   handleRefreshAccountAccessToken,
   handleRefreshProfileAccessToken,
   getReadyForRequestAPI,
+  handlePutProfile,
   RootState,
   accessTokenState,
+  ProfileState,
 };

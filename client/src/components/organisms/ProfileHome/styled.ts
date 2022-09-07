@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { shadowCSSForStyledComponent } from '~/others/cssLibrary';
 import { ColorsByProfileIndex } from '~/others/integrateVariable';
 
@@ -19,6 +19,15 @@ interface ProfileHomeContainerProps {
   opacity: number;
 }
 
+const myOpacity = keyframes`
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 1;
+  }
+`;
+
 const ProfileHomeContainer = styled.div<ProfileHomeContainerProps>`
   display: flex;
   align-items: center;
@@ -30,8 +39,12 @@ const ProfileHomeContainer = styled.div<ProfileHomeContainerProps>`
   height: 100vh;
   background: rgba(0, 0, 0, 0.9);
   z-index: 1101;
-  opacity: ${(props) => (Boolean(props.opacity) ? '1' : '0')};
   transition: 1s;
+  ${(props) =>
+    Boolean(props.opacity) &&
+    css`
+      animation: ${myOpacity} 1s forwards;
+    `}
 `;
 
 const SelectedProfileContainer = styled.form`

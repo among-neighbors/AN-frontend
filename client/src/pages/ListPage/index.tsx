@@ -105,7 +105,6 @@ const handleList = (list: DeliverdTypePostDataArray): ProcessedTypePostDataArray
       };
     });
   }
-
   return list.map(({ id, title, content, createdDate, writer }) => {
     return {
       id,

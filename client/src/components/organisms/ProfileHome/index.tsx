@@ -53,7 +53,7 @@ const ProfileHome: React.FC<ProfileHomeProps> = ({ accountAccessToken }) => {
   }, [opacity]);
 
   return (
-    <ProfileHomeContainer opacity={opacity}>
+    <ProfileHomeContainer opacity={opacity} key={opacity.toString()}>
       {isProfileHome ? (
         <Profiles
           profileList={profileList}
