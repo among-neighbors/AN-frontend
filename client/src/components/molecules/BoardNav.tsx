@@ -1,16 +1,34 @@
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Bool } from '~/others/integrateInterface';
+import { APIbyType } from '~/others/integrateVariable';
+import myAxios from '~/others/myAxios';
+import { accessTokenState, RootState } from '~/others/store';
+import { useNavigate } from 'react-router-dom';
 
 interface BoardNavProps {
   type: string;
   isMine?: Bool;
   boardId?: string;
+  accessToken: accessTokenState;
 }
 
-const BoardNav: React.FC<BoardNavProps> = ({ type, isMine, boardId }) => {
+const BoardNav: React.FC<BoardNavProps> = ({ type, isMine, boardId, accessToken }) => {
+  const navigate = useNavigate();
+  const handleDeletePost = async () => {
+    await myAxios(
+      'delete',
+      `${APIbyType[type]}/${boardId}`,
+      null,
+      true,
+      accessToken.profileAccessToken,
+    );
+    navigate(`/${type}`);
+  };
+
   return (
     <BoardNavContainer>
       <Box
@@ -46,6 +64,7 @@ const BoardNav: React.FC<BoardNavProps> = ({ type, isMine, boardId }) => {
             수정
           </Box>
           <Button
+            onClick={handleDeletePost}
             sx={{
               width: '70px',
               height: '40px',
@@ -72,4 +91,10 @@ const BoardNavContainer = styled.div`
   gap: 10px;
 `;
 
-export default BoardNav;
+const mapStateToProps = (state: RootState) => {
+  return {
+    accessToken: state.accessTokenReducer,
+  };
+};
+
+export default connect(mapStateToProps)(BoardNav);

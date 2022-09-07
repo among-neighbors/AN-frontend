@@ -8,7 +8,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import { Button, FormControl } from '@mui/material';
 import myAxios from '~/others/myAxios';
-import { Category, Obj, Scope } from '~/others/integrateInterface';
+import { Obj } from '~/others/integrateInterface';
 import { connect } from 'react-redux';
 import { accessTokenState, RootState } from '~/others/store';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -19,16 +19,6 @@ interface WritingProps {
   type: string;
   accessToken: accessTokenState;
   isReadyForRequestAPI: boolean;
-}
-
-interface CommonWrittenData {
-  title: string;
-  content: string;
-  boardId: number;
-  scope: string;
-}
-interface CommunityWrittenData extends CommonWrittenData {
-  category: string;
 }
 
 const Writing: React.FC<WritingProps> = ({ type, accessToken, isReadyForRequestAPI }) => {
@@ -60,7 +50,7 @@ const Writing: React.FC<WritingProps> = ({ type, accessToken, isReadyForRequestA
           };
 
     if (isPUT) {
-      await myAxios('put', `${NewAPIbyType[type]}/${boardId}`, body, undefined, profileAccessToken);
+      await myAxios('put', `${APIbyType[type]}/${boardId}`, body, undefined, profileAccessToken);
     } else {
       await myAxios('post', `${NewAPIbyType[type]}`, body, undefined, profileAccessToken);
     }
@@ -91,7 +81,7 @@ const Writing: React.FC<WritingProps> = ({ type, accessToken, isReadyForRequestA
     if (!isReadyForRequestAPI) return;
     const query = parse(location.search);
     if (!query.id) return;
-    setBoardId(query.id);
+    setBoardId(query.id.toString());
     getWrittenData(Number(query.id));
   }, [isReadyForRequestAPI]);
 

@@ -38,6 +38,8 @@ const myAxios: myAxiosFunc = async (
       return await axios.post(`${serverURL}${path}`, body, option);
     case 'put':
       return await axios.put(`${serverURL}${path}`, body, option);
+    case 'delete':
+      return await axios.delete(`${serverURL}${path}`, option);
     default:
       return;
   }
