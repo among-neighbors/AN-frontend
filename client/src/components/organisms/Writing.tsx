@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Radio from '@mui/material/Radio';
@@ -31,7 +31,6 @@ const Writing: React.FC<WritingProps> = ({
   const { accountAccessToken, profileAccessToken } = accessToken;
   const navigation = useNavigate();
   const location = useLocation();
-  const form = useRef();
   const [boardId, setBoardId] = useState<string>();
   const [title, setTitle] = useState<string>();
   const [content, setContent] = useState<string>();
@@ -107,7 +106,6 @@ const Writing: React.FC<WritingProps> = ({
         },
       }}
       autoComplete='off'
-      ref={form}
     >
       <TextField
         name='title'
