@@ -2,6 +2,7 @@
   "name": "vite-react-ts-eslint-prettier",
   "private": true,
   "version": "0.0.0",
+  "homepage": "/user",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
