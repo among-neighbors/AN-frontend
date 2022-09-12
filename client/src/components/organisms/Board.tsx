@@ -23,7 +23,7 @@ const Board: React.FC<BoardProps> = ({ boardData, type, writerId }) => {
           display: 'flex',
           flexDirection: 'column',
           width: '100%',
-          height: '80px',
+          minHeight: '80px',
           borderTop: 'solid #666 3px',
         }}
       >
@@ -37,9 +37,12 @@ const Board: React.FC<BoardProps> = ({ boardData, type, writerId }) => {
             maxWidth: '600px',
             padding: '0 12px',
             justifyContent: 'space-between',
+            flexWrap: 'wrap',
             '& p': {
               color: '#666',
               fontSize: '14px',
+              whiteSpace: 'nowrap',
+              marginBottom: '3px',
             },
           }}
         >

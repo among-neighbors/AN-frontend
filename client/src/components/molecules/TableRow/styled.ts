@@ -28,6 +28,7 @@ const StyledTableRowForMobile = styled(DefaultTableRow)`
 
 const StyledTableRowForComment = styled(DefaultTableRow)`
   max-width: 1100px;
+  padding-right: 60px;
   & > div {
     margin: 15px 0;
   }
