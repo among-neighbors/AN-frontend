@@ -1,4 +1,6 @@
 import { Button } from '@mui/material';
+import { client } from '~/components/organisms/HelpCallConnectSocket';
+import { closeHelpCallBox } from '~/others/store';
 import { HelpCallBoxInner, HelpFinBoxContainer, HelpCallBoxContainer } from './styled';
 
 interface HelpFinBoxProps {
@@ -22,6 +24,13 @@ const HelpFinBox: React.FC<HelpFinBoxProps> = ({ targetHouse, acceptHouse, myHou
 };
 
 const HelpCallBox: React.FC<HelpCallBoxProps> = ({ targetHouse, myHouseLine }) => {
+  const acceptHelpCall = () => {
+    client.publish({
+      destination: '/pub/accept',
+      body: JSON.stringify({ target: targetHouse }),
+    });
+  };
+
   return (
     <>
       <HelpCallBoxContainer>
@@ -32,10 +41,16 @@ const HelpCallBox: React.FC<HelpCallBoxProps> = ({ targetHouse, myHouseLine }) =
               color='inherit'
               sx={{ color: '#000', width: '88px', height: '26px' }}
               variant='outlined'
+              onClick={() => closeHelpCallBox(targetHouse)}
             >
               거절
             </Button>
-            <Button color='success' sx={{ width: '160px', height: '30px' }} variant='contained'>
+            <Button
+              color='success'
+              sx={{ width: '160px', height: '30px' }}
+              variant='contained'
+              onClick={acceptHelpCall}
+            >
               수락
             </Button>
           </div>

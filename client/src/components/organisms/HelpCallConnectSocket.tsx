@@ -16,6 +16,8 @@ interface HelpCallConnectSocket {
 }
 
 const BROKER_URL = 'wss://neighbor42.com:8181/an-ws';
+export const client = Stomp.client(BROKER_URL);
+client.debug = () => {};
 
 const HelpCallConnectSocket: React.FC<HelpCallConnectSocket> = ({
   accountToken,
@@ -54,8 +56,6 @@ const HelpCallConnectSocket: React.FC<HelpCallConnectSocket> = ({
 
   useEffect(() => {
     if (lineName === '') return;
-    const client = Stomp.client(BROKER_URL);
-    client.debug = () => {};
     client.connect({ Authorization: accountAccessToken }, () => {
       client.subscribe('/user/queue/error', () => {});
 

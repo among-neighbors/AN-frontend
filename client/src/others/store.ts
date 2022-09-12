@@ -15,6 +15,7 @@ const ACTION_TO_GET_READY_FOR_REQUEST_API = 'actionToGetReadyForRequestAPI';
 const ACTION_TO_PUT_PROFILE = 'actionToPutProfile';
 
 const ACTION_TO_UPDATE_HELP_CALL = 'actionToUpdateHelpCall';
+const ACTION_TO_CLOSE_HELP_CALL_BOX = 'actionToCloseHelpCallBox';
 
 interface TableNavState extends Obj<number> {
   notice: number;
@@ -55,11 +56,18 @@ const helpCallReducer = (
   action: {
     type: string;
     helpCallData: HelpCallState;
+    targetHouse: string;
   },
 ) => {
   switch (action.type) {
     case ACTION_TO_UPDATE_HELP_CALL:
       return action.helpCallData;
+    case ACTION_TO_CLOSE_HELP_CALL_BOX:
+      const tempState = { ...state };
+      tempState.requests = state.requests.filter(
+        (request) => request.targetHouse !== action.targetHouse,
+      );
+      return tempState;
     default:
       return state;
   }
@@ -165,6 +173,13 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer);
 
+const closeHelpCallBox = (targetHouse: string) => {
+  store.dispatch({
+    type: ACTION_TO_CLOSE_HELP_CALL_BOX,
+    targetHouse,
+  });
+};
+
 const handleTableNav = (isNotice: boolean, idx: number) => {
   store.dispatch({
     type: isNotice ? ACTION_FROM_NOTICE : ACTION_FROM_COMMUNITY,
@@ -230,6 +245,7 @@ export {
   handlePutProfile,
   helpCallReducer,
   updateHelpCallData,
+  closeHelpCallBox,
   HelpCallState,
   RootState,
   accessTokenState,
