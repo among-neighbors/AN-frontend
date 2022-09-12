@@ -24,7 +24,6 @@ const HelpCallConnectSocket: React.FC<HelpCallConnectSocket> = ({
 }) => {
   const { accountAccessToken } = accountToken;
   const { lineName } = profileData;
-  console.log('helpCallData ', helpCallData);
 
   const handleRequest = (targetHouse: string) => {
     const tempHelpCallData = {
@@ -56,6 +55,7 @@ const HelpCallConnectSocket: React.FC<HelpCallConnectSocket> = ({
   useEffect(() => {
     if (lineName === '') return;
     const client = Stomp.client(BROKER_URL);
+    client.debug = () => {};
     client.connect({ Authorization: accountAccessToken }, () => {
       client.subscribe('/user/queue/error', () => {});
 
