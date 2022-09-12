@@ -5,6 +5,8 @@ import {
 } from '~/others/integrateInterface';
 import { TableRowForMobileProps, TableRowForCommentProps } from './interface';
 import { stringByScope, stringByCategory, handledDate } from '~/others/integrateVariable';
+import { Typography } from '@mui/material';
+import { Box } from '@mui/system';
 
 const TableRowForMobile: React.FC<TableRowForMobileProps> = ({ row }) => {
   if (isProcessedNoticePostData(row)) {
@@ -44,7 +46,11 @@ const TableRowForComment: React.FC<TableRowForCommentProps> = ({ commentData }) 
   } = commentData;
   return (
     <StyledTableRowForComment>
-      <div>{text}</div>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'inherit !important' }}>
+        {text.split('\n').map((str, index) => {
+          return <Typography key={index}>{str}</Typography>;
+        })}
+      </Box>
       <p>{`${lineName === '000' ? '' : `${lineName}동 ${houseName}호`}  ${name} | ${handledDate(
         createdDate,
       )}`}</p>

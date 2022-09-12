@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import MainLink from '~/components/organisms/MainLink';
-import notice from '../../public/img/notice.png';
-import community from '../../public/img/community.png';
-import complaint from '../../public/img/complaint.png';
+import notice from '../../public/img/notice.jpg';
+import community from '../../public/img/community.jpg';
+import complaint from '../../public/img/complaint.jpg';
 
 const HomePage = () => {
   return (

@@ -89,8 +89,14 @@ const Profile = styled.div<ProfileProps>`
   ${shadowCSSForStyledComponent}
   &:hover {
     transform: translate(4px, -4px);
+    @media (max-width: 500px) {
+      transform: scale(0.7);
+    }
   }
   transition: 0.3s;
+  @media (max-width: 500px) {
+    transform: scale(0.7);
+  }
 `;
 
 const NewProfileButton = styled(Profile)``;
@@ -102,6 +108,9 @@ const SelectedProfile = styled(Profile)`
   padding: 50px;
   &:hover {
     transform: none;
+    @media (max-width: 500px) {
+      transform: scale(0.7);
+    }
   }
   cursor: inherit;
 `;
