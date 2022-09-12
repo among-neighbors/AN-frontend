@@ -25,6 +25,3 @@ dist-ssr
 
 # Dockerfile
 Dockerfile
-
-# https setting
-vite.config.ts
