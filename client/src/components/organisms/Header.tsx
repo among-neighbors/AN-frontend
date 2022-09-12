@@ -23,11 +23,13 @@ import {
   handlePutProfile,
   handleRefreshAccountAccessToken,
   handleRefreshProfileAccessToken,
+  openHelpSideBar,
   RootState,
 } from '~/others/store';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import myAxios from '~/others/myAxios';
+import { client } from './HelpCallConnectSocket';
 
 interface HeaderProps {
   isReadyForRequestAPI: boolean;
@@ -68,7 +70,6 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken }) =>
 
   const handleLogOutAndRedirect = async () => {
     handleCloseUserMenu();
-    await myAxios('get', `api/v1/auth/profiles/logout`, null, true, profileAccessToken);
     await myAxios('get', `api/v1/auth/accounts/logout`, null, true, accountAccessToken);
     handleRefreshAccountAccessToken('');
     handleRefreshProfileAccessToken('');
@@ -90,6 +91,12 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken }) =>
       houseName,
     });
     setProfileName(name);
+  };
+
+  const requestHelpCall = () => {
+    client.publish({ destination: '/pub/alert', body: JSON.stringify({ text: 'help' }) });
+    handleCloseHelpCallModal();
+    openHelpSideBar();
   };
 
   useEffect(() => {
@@ -314,6 +321,7 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken }) =>
                         color='inherit'
                         sx={{ height: '32px' }}
                         startIcon={<ArrowBack />}
+                        onClick={handleCloseHelpCallModal}
                       >
                         돌아가기
                       </Button>
@@ -322,6 +330,7 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken }) =>
                         color='error'
                         sx={{ height: '32px' }}
                         endIcon={<ArrowForward />}
+                        onClick={requestHelpCall}
                       >
                         동의 후 도움 요청
                       </Button>
