@@ -14,6 +14,8 @@ const ACTION_TO_GET_READY_FOR_REQUEST_API = 'actionToGetReadyForRequestAPI';
 
 const ACTION_TO_PUT_PROFILE = 'actionToPutProfile';
 
+const ACTION_TO_UPDATE_HELP_CALL = 'actionToUpdateHelpCall';
+
 interface TableNavState extends Obj<number> {
   notice: number;
   community: number;
@@ -30,6 +32,7 @@ interface RootState {
   accessTokenReducer: accessTokenState;
   readyForRequestAPIReducer: boolean;
   profileReducer: ProfileState;
+  helpCallReducer: HelpCallState;
 }
 
 interface ProfileState {
@@ -38,6 +41,29 @@ interface ProfileState {
   lineName: string;
   houseName: string;
 }
+
+interface HelpCallState {
+  requests: { targetHouse: string }[];
+  accepts: { targetHouse: string; acceptHouse: string }[];
+}
+
+const helpCallReducer = (
+  state: HelpCallState = {
+    requests: [],
+    accepts: [],
+  },
+  action: {
+    type: string;
+    helpCallData: HelpCallState;
+  },
+) => {
+  switch (action.type) {
+    case ACTION_TO_UPDATE_HELP_CALL:
+      return action.helpCallData;
+    default:
+      return state;
+  }
+};
 
 const profileReducer = (
   state: ProfileState = {
@@ -134,6 +160,7 @@ const rootReducer = combineReducers({
   accessTokenReducer,
   readyForRequestAPIReducer,
   profileReducer,
+  helpCallReducer,
 });
 
 const store = createStore(rootReducer);
@@ -184,6 +211,13 @@ const handlePutProfile = (profileData: ProfileState) => {
   });
 };
 
+const updateHelpCallData = (helpCallData: HelpCallState) => {
+  store.dispatch({
+    type: ACTION_TO_UPDATE_HELP_CALL,
+    helpCallData,
+  });
+};
+
 export {
   store,
   TableNavState,
@@ -194,6 +228,9 @@ export {
   handleRefreshProfileAccessToken,
   getReadyForRequestAPI,
   handlePutProfile,
+  helpCallReducer,
+  updateHelpCallData,
+  HelpCallState,
   RootState,
   accessTokenState,
   ProfileState,
