@@ -70,7 +70,6 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken }) =>
 
   const handleLogOutAndRedirect = async () => {
     handleCloseUserMenu();
-    await myAxios('get', `api/v1/auth/profiles/logout`, null, true, profileAccessToken);
     await myAxios('get', `api/v1/auth/accounts/logout`, null, true, accountAccessToken);
     handleRefreshAccountAccessToken('');
     handleRefreshProfileAccessToken('');
