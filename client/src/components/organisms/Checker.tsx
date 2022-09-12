@@ -11,6 +11,7 @@ import {
 import ProfileHome from './ProfileHome';
 import { useNavigate, useLocation } from 'react-router-dom';
 import myAxios from '~/others/myAxios';
+import HelpCallConnectSocket from './HelpCallConnectSocket';
 
 interface CheckerProps {
   accessTokenState: accessTokenState;
@@ -70,6 +71,9 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
 
   if (accountKey && profileKey && accountAccessToken !== '' && profileAccessToken === '') {
     return <ProfileHome accountAccessToken={accountAccessToken} />;
+  }
+  if (accountKey && profileKey && accountAccessToken !== '' && profileAccessToken !== '') {
+    return <HelpCallConnectSocket />;
   }
   return <></>;
 };

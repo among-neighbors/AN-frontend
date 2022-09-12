@@ -1,14 +1,20 @@
 import { Box } from '@mui/system';
 import { connect } from 'react-redux';
-import { closeHelpSideBar, RootState } from '~/others/store';
+import { closeHelpSideBar, HelpCallState, ProfileState, RootState } from '~/others/store';
 import { HelpCallBox, HelpFinBox } from '../molecules/HelpBoxes.tsx';
 import styled from 'styled-components';
 
 interface HelpSideBarProps {
   isHelpSideBarOpen: boolean;
+  helpCallData: HelpCallState;
+  profileData: ProfileState;
 }
 
-const HelpSideBar: React.FC<HelpSideBarProps> = ({ isHelpSideBarOpen }) => {
+const HelpSideBar: React.FC<HelpSideBarProps> = ({
+  isHelpSideBarOpen,
+  helpCallData,
+  profileData,
+}) => {
   return (
     <>
       <Box
@@ -29,12 +35,21 @@ const HelpSideBar: React.FC<HelpSideBarProps> = ({ isHelpSideBarOpen }) => {
 
       <Block className={isHelpSideBarOpen ? '' : 'disNone'}></Block>
       <StyledHelpSideBar className={isHelpSideBarOpen ? '' : 'disNone'}>
-        <HelpCallBox />
-        <HelpCallBox />
-        <HelpCallBox />
-        <HelpFinBox />
-        <HelpFinBox />
-        <HelpFinBox />
+        {helpCallData.requests.reverse().map(({ targetHouse }, index) => {
+          return (
+            <HelpCallBox key={index} targetHouse={targetHouse} myHouseLine={profileData.lineName} />
+          );
+        })}
+        {helpCallData.accepts.reverse().map(({ targetHouse, acceptHouse }, index) => {
+          return (
+            <HelpFinBox
+              key={index}
+              targetHouse={targetHouse}
+              acceptHouse={acceptHouse}
+              myHouseLine={profileData.lineName}
+            />
+          );
+        })}
       </StyledHelpSideBar>
     </>
   );
@@ -59,7 +74,11 @@ const StyledHelpSideBar = styled.div`
 `;
 
 const mapStateToProps = (state: RootState) => {
-  return { isHelpSideBarOpen: state.helpSideBarReducer };
+  return {
+    isHelpSideBarOpen: state.helpSideBarReducer,
+    helpCallData: state.helpCallReducer,
+    profileData: state.profileReducer,
+  };
 };
 
 export default connect(mapStateToProps)(HelpSideBar);
