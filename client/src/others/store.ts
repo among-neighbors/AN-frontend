@@ -5,7 +5,8 @@ const ACTION_FROM_NOTICE = 'actionToNotice',
   ACTION_FROM_COMMUNITY = 'actionToCommunity';
 
 const ACTION_TO_HANDLE_HELP_SIDE_BAR = 'actionToHandleHelpSideBar',
-  ACTION_TO_CLOSE_HELP_SIDE_BAR = 'actionToCloseHelpSideBar';
+  ACTION_TO_CLOSE_HELP_SIDE_BAR = 'actionToCloseHelpSideBar',
+  ACTION_TO_OPEN_HELP_SIDE_BAR = 'actionToOpenHelpSideBar';
 
 const ACTION_TO_REFRESH_ACCOUNT_ACCESS_TOKEN = 'actionToRefreshAccountAccessToken',
   ACTION_TO_REFRESH_PROFILE_ACCESS_TOKEN = 'actionToRefreshProfileAccessToken';
@@ -125,6 +126,8 @@ const helpSideBarReducer = (state = false, action: { type: string }) => {
       return !state;
     case ACTION_TO_CLOSE_HELP_SIDE_BAR:
       return false;
+    case ACTION_TO_OPEN_HELP_SIDE_BAR:
+      return true;
     default:
       return state;
   }
@@ -193,6 +196,12 @@ const handleHelpSideBar = () => {
   });
 };
 
+const openHelpSideBar = () => {
+  store.dispatch({
+    type: ACTION_TO_OPEN_HELP_SIDE_BAR,
+  });
+};
+
 const closeHelpSideBar = () => {
   store.dispatch({
     type: ACTION_TO_CLOSE_HELP_SIDE_BAR,
@@ -239,6 +248,7 @@ export {
   handleTableNav,
   handleHelpSideBar,
   closeHelpSideBar,
+  openHelpSideBar,
   handleRefreshAccountAccessToken,
   handleRefreshProfileAccessToken,
   getReadyForRequestAPI,
