@@ -59,7 +59,7 @@ const StyledHelpSideBar = styled.div`
 `;
 
 const mapStateToProps = (state: RootState) => {
-  return { isHelpSideBarOpen: state.helpSideBarReducer };
+  return { isHelpSideBarOpen: state.helpSideBarReducer, helpCallData: state.helpCallReducer };
 };
 
 export default connect(mapStateToProps)(HelpSideBar);
