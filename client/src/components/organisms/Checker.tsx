@@ -52,7 +52,6 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
   }, []);
 
   useEffect(() => {
-    console.log('HI');
     if (!accountKey || !profileKey) return;
     getReadyForRequestAPI();
     if (accountAccessToken !== '' && profileAccessToken === '') {
