@@ -1,8 +1,9 @@
-import { Box } from '@mui/system';
+import { Box, flexbox } from '@mui/system';
 import { connect } from 'react-redux';
 import { closeHelpSideBar, HelpCallState, ProfileState, RootState } from '~/others/store';
 import { HelpCallBox, HelpFinBox } from '../molecules/HelpBoxes.tsx';
 import styled from 'styled-components';
+import { shadowCssForMUI } from '~/others/cssLibrary';
 
 interface HelpSideBarProps {
   isHelpSideBarOpen: boolean;
@@ -36,6 +37,25 @@ const HelpSideBar: React.FC<HelpSideBarProps> = ({
       <Block className={isHelpSideBarOpen ? '' : 'disNone'}></Block>
       <StyledHelpSideBar className={isHelpSideBarOpen ? '' : 'disNone'}>
         {helpCallData.requests.reverse().map(({ targetHouse }, index) => {
+          if (profileData.houseName === targetHouse) {
+            return (
+              <Box key={index} sx={{ width: '100%', height: '100px', padding: '13px' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    ...shadowCssForMUI,
+                    height: '60px',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: '#E7602A',
+                    color: '#fff',
+                  }}
+                >
+                  도움 요청 중입니다...
+                </Box>
+              </Box>
+            );
+          }
           return (
             <HelpCallBox key={index} targetHouse={targetHouse} myHouseLine={profileData.lineName} />
           );
