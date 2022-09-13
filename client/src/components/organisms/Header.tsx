@@ -23,6 +23,7 @@ import {
   handlePutProfile,
   handleRefreshAccountAccessToken,
   handleRefreshProfileAccessToken,
+  HelpCallState,
   openHelpSideBar,
   RootState,
 } from '~/others/store';
@@ -34,9 +35,10 @@ import { client } from './HelpCallConnectSocket';
 interface HeaderProps {
   isReadyForRequestAPI: boolean;
   accessToken: accessTokenState;
+  helpCallData: HelpCallState;
 }
 
-const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken }) => {
+const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken, helpCallData }) => {
   const { accountAccessToken, profileAccessToken } = accessToken;
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -236,6 +238,7 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken }) =>
                     display: {
                       xs: 'none',
                       sm: 'flex',
+                      position: 'relative',
                     },
                     '& .helpCallBtn:hover': {
                       background: '#fff',
@@ -254,6 +257,7 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken }) =>
                       background: '#fff',
                       width: '40px',
                       height: '40px',
+                      marginRight: '50px',
                     }}
                   >
                     <Avatar
@@ -274,20 +278,24 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken }) =>
                       src='../../../public/img/sirenWhite.png'
                     />
                   </IconButton>
-                  <IconButton
-                    onClick={handleHelpSideBar}
-                    className='helpListBtn'
-                    sx={{
-                      position: 'relative',
-                      left: '-15px',
-                      background: '#f11000',
-                      color: '#fff',
-                      width: '40px',
-                      height: '40px',
-                    }}
-                  >
-                    +3
-                  </IconButton>
+                  {helpCallData.requests.length === 0 ? (
+                    <></>
+                  ) : (
+                    <IconButton
+                      onClick={handleHelpSideBar}
+                      className='helpListBtn'
+                      sx={{
+                        position: 'absolute',
+                        left: '+30px',
+                        background: '#f11000',
+                        color: '#fff',
+                        width: '40px',
+                        height: '40px',
+                      }}
+                    >
+                      {helpCallData.requests.length}
+                    </IconButton>
+                  )}
                 </Box>
 
                 <Menu
@@ -409,6 +417,7 @@ const mapStateToProps = (state: RootState) => {
   return {
     isReadyForRequestAPI: state.readyForRequestAPIReducer,
     accessToken: state.accessTokenReducer,
+    helpCallData: state.helpCallReducer,
   };
 };
 
