@@ -1,57 +1,27 @@
 import { useEffect } from 'react';
-import {
-  accessTokenState,
-  HelpCallState,
-  ProfileState,
-  RootState,
-  updateHelpCallData,
-} from '~/others/store';
+import { accessTokenState, ProfileState, RootState, updateHelpCallData } from '~/others/store';
 import { Stomp } from '@stomp/stompjs';
 import { connect } from 'react-redux';
 
 interface HelpCallConnectSocket {
   accountToken: accessTokenState;
   profileData: ProfileState;
-  helpCallData: HelpCallState;
 }
 
 const BROKER_URL = 'wss://neighbor42.com:8181/an-ws';
 export const client = Stomp.client(BROKER_URL);
 client.debug = () => {};
 
-const HelpCallConnectSocket: React.FC<HelpCallConnectSocket> = ({
-  accountToken,
-  profileData,
-  helpCallData,
-}) => {
+const HelpCallConnectSocket: React.FC<HelpCallConnectSocket> = ({ accountToken, profileData }) => {
   const { accountAccessToken } = accountToken;
   const { lineName } = profileData;
 
   const handleRequest = (targetHouse: string) => {
-    const tempHelpCallData = {
-      ...helpCallData,
-    };
-    tempHelpCallData.requests = helpCallData.requests.filter(
-      (request) => request.targetHouse !== targetHouse,
-    );
-    tempHelpCallData.requests.push({
-      targetHouse,
-    });
-    updateHelpCallData(tempHelpCallData);
+    updateHelpCallData(targetHouse);
   };
 
   const handleAccept = (targetHouse: string, acceptHouse: string) => {
-    const tempHelpCallData = {
-      ...helpCallData,
-    };
-    tempHelpCallData.requests = helpCallData.requests.filter(
-      (request) => request.targetHouse !== targetHouse,
-    );
-    tempHelpCallData.accepts.push({
-      acceptHouse,
-      targetHouse,
-    });
-    updateHelpCallData(tempHelpCallData);
+    updateHelpCallData(targetHouse, acceptHouse);
   };
 
   useEffect(() => {

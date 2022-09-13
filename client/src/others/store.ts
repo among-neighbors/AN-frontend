@@ -56,15 +56,32 @@ const helpCallReducer = (
   },
   action: {
     type: string;
-    helpCallData: HelpCallState;
+    acceptHouse: string;
     targetHouse: string;
   },
 ) => {
-  switch (action.type) {
+  const tempState = { ...state };
+  const { type, acceptHouse, targetHouse } = action;
+  switch (type) {
     case ACTION_TO_UPDATE_HELP_CALL:
-      return action.helpCallData;
+      if (acceptHouse) {
+        tempState.requests = state.requests.filter(
+          (request) => request.targetHouse !== targetHouse,
+        );
+        tempState.accepts.push({
+          acceptHouse,
+          targetHouse,
+        });
+      } else {
+        tempState.requests = state.requests.filter(
+          (request) => request.targetHouse !== targetHouse,
+        );
+        tempState.requests.push({
+          targetHouse,
+        });
+      }
+      return tempState;
     case ACTION_TO_CLOSE_HELP_CALL_BOX:
-      const tempState = { ...state };
       tempState.requests = state.requests.filter(
         (request) => request.targetHouse !== action.targetHouse,
       );
@@ -235,10 +252,11 @@ const handlePutProfile = (profileData: ProfileState) => {
   });
 };
 
-const updateHelpCallData = (helpCallData: HelpCallState) => {
+const updateHelpCallData = (targetHouse: string, acceptHouse?: string) => {
   store.dispatch({
     type: ACTION_TO_UPDATE_HELP_CALL,
-    helpCallData,
+    targetHouse,
+    acceptHouse,
   });
 };
 
