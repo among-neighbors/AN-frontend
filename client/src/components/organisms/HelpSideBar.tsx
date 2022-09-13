@@ -1,4 +1,4 @@
-import { Box, flexbox } from '@mui/system';
+import { Box } from '@mui/system';
 import { connect } from 'react-redux';
 import { closeHelpSideBar, HelpCallState, ProfileState, RootState } from '~/others/store';
 import { HelpCallBox, HelpFinBox } from '../molecules/HelpBoxes.tsx';
