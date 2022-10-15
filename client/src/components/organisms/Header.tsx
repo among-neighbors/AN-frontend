@@ -31,7 +31,7 @@ import {
   RootState,
 } from '~/others/store';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import myAxios from '~/others/myAxios';
 import { client } from './HelpCallConnectSocket';
 
@@ -50,6 +50,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const { accountAccessToken, profileAccessToken } = accessToken;
   const navigate = useNavigate();
+  const location = useLocation();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [anchorElHelpCall, setAnchorElHelpCall] = React.useState<null | HTMLElement>(null);
@@ -222,7 +223,7 @@ const Header: React.FC<HeaderProps> = ({
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
-                  color: '#828282',
+                  color: page.link === location.pathname ? '#EC8034' : '#828282',
                   display: 'block',
                   fontWeight: 700,
                   fontSize: '16px',
@@ -402,11 +403,11 @@ const pages: {
   },
   {
     name: '민원',
-    link: 'complaint',
+    link: '/complaint',
   },
   {
     name: '커뮤니티',
-    link: 'community',
+    link: '/community',
   },
 ];
 
