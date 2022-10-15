@@ -10,7 +10,7 @@ import {
   NewProfileButton,
   SelectedProfile,
 } from './styled';
-import { handleRefreshProfileAccessToken, handlePutProfile } from '~/others/store';
+import { handleRefreshProfileAccessToken } from '~/others/store';
 import SquareImg from '../../atoms/Img';
 import NewProfileForm from '../NewProfileForm';
 import myAxios from '~/others/myAxios';
@@ -127,8 +127,17 @@ const Profiles: React.FC<ProfilesProps> = ({
             <SquareImg src='../../../public/img/back.png' length='60px' />
           </ProfileHomeButton>
           <SelectedProfileContainer onSubmit={handleSubmitProfileLogin}>
-            <SelectedProfile index={selectedProfileData.colorIndex}>
-              {selectedProfileData.name}
+            <SelectedProfile
+              index={selectedProfileData.imgUrl ? 0 : selectedProfileData.colorIndex}
+            >
+              {selectedProfileData.imgUrl ? (
+                <div className={'profileImg'}>
+                  <p>{selectedProfileData.name}</p>
+                  <SquareImg src={selectedProfileData.imgUrl} length='100%' opacity={0.3} />
+                </div>
+              ) : (
+                selectedProfileData.name
+              )}
             </SelectedProfile>
             <TextField
               margin='normal'
@@ -165,10 +174,17 @@ const Profiles: React.FC<ProfilesProps> = ({
             return (
               <Profile
                 key={index}
-                index={index + 1}
+                index={imgUrl ? 0 : index + 1}
                 onClick={() => selectProfile({ id, name, colorIndex: index + 1, imgUrl })}
               >
-                {name}
+                {imgUrl ? (
+                  <div className={'profileImg'}>
+                    <p>{name}</p>
+                    <SquareImg src={imgUrl} length='100%' opacity={0.3} />
+                  </div>
+                ) : (
+                  name
+                )}
               </Profile>
             );
           })}

@@ -85,17 +85,29 @@ const Profile = styled.div<ProfileProps>`
   height: 150px;
   background: #fff;
   font-size: 30px;
-  padding: 30px;
+  overflow: hidden;
   color: #fff;
   background: ${(props) => ColorsByProfileIndex[props.index ?? 0]};
   cursor: pointer;
   text-align: center;
   ${shadowCSSForStyledComponent}
+
+  & .profileImg {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    & > p {
+      position: absolute;
+      z-index: 1;
+      color: #fff;
+    }
+  }
+
   &:hover {
     transform: translate(4px, -4px);
-    @media (max-width: 500px) {
-      transform: scale(0.7);
-    }
   }
   transition: 0.3s;
   @media (max-width: 500px) {
@@ -112,12 +124,8 @@ const SelectedProfile = styled(Profile)`
   width: 250px;
   height: 250px;
   font-size: 50px;
-  padding: 50px;
   &:hover {
     transform: none;
-    @media (max-width: 500px) {
-      transform: scale(0.7);
-    }
   }
   cursor: inherit;
 `;
