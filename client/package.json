@@ -28,6 +28,7 @@
     "use-interval": "^1.4.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "^6.5.0",
     "@types/node": "^18.7.5",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.5",
@@ -46,6 +47,7 @@
     "typescript": "^4.6.3",
     "vite": "^3.0.7",
     "vite-plugin-live-reload": "^3.0.0",
+    "vite-plugin-svgr": "^2.2.2",
     "vite-tsconfig-paths": "^3.5.0"
   }
 }

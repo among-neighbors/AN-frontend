@@ -10,7 +10,7 @@ import {
   NewProfileButton,
   SelectedProfile,
 } from './styled';
-import { handleRefreshProfileAccessToken } from '~/others/store';
+import { handleRefreshProfileAccessToken, handlePutProfile } from '~/others/store';
 import SquareImg from '../../atoms/Img';
 import NewProfileForm from '../NewProfileForm';
 import myAxios from '~/others/myAxios';
@@ -23,6 +23,7 @@ interface ProfileData {
   id: number;
   name: string;
   colorIndex: number;
+  imgUrl: string | null;
 }
 
 const ProfileHome: React.FC<ProfileHomeProps> = ({ accountAccessToken }) => {
@@ -83,14 +84,16 @@ const Profiles: React.FC<ProfilesProps> = ({
     id: 0,
     name: '',
     colorIndex: 0,
+    imgUrl: null,
   });
 
-  const selectProfile = ({ id, name, colorIndex }: ProfileData) => {
+  const selectProfile = ({ id, name, colorIndex, imgUrl }: ProfileData) => {
     setIsSelectedProfile(true);
     setSelectedProfileData({
       id,
       name,
       colorIndex,
+      imgUrl,
     });
   };
 
@@ -100,6 +103,7 @@ const Profiles: React.FC<ProfilesProps> = ({
       id: 0,
       name: '',
       colorIndex: 0,
+      imgUrl: null,
     });
   };
 
@@ -111,7 +115,8 @@ const Profiles: React.FC<ProfilesProps> = ({
       pin: data.get('pin'),
     };
     const res = await myAxios('post', 'api/v1/auth/profiles/login', body, true, accountAccessToken);
-    handleRefreshProfileAccessToken(res.data.response.accessToken);
+    const profileToken = res.data.response.accessToken;
+    handleRefreshProfileAccessToken(profileToken);
   };
 
   return (
@@ -156,12 +161,12 @@ const Profiles: React.FC<ProfilesProps> = ({
         </>
       ) : (
         <ProfileListContainer>
-          {profileList?.map(({ id, name }, index) => {
+          {profileList?.map(({ id, name, imgUrl }, index) => {
             return (
               <Profile
                 key={index}
                 index={index + 1}
-                onClick={() => selectProfile({ id, name, colorIndex: index + 1 })}
+                onClick={() => selectProfile({ id, name, colorIndex: index + 1, imgUrl })}
               >
                 {name}
               </Profile>

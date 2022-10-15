@@ -65,6 +65,10 @@ const ProfileListContainer = styled.div`
   width: 100%;
   gap: 40px;
   padding: 40px;
+  @media (max-width: 500px) {
+    gap: 10px;
+    padding: 20px;
+  }
 `;
 
 const ProfileLoginButton = styled(Button)``;
@@ -95,7 +99,10 @@ const Profile = styled.div<ProfileProps>`
   }
   transition: 0.3s;
   @media (max-width: 500px) {
-    transform: scale(0.7);
+    width: calc(50% - 10px);
+    height: 100px;
+    font-size: 14px;
+    white-space: nowrap;
   }
 `;
 

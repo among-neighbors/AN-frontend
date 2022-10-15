@@ -7,6 +7,7 @@ import {
   handleRefreshAccountAccessToken,
   handleRefreshProfileAccessToken,
   RootState,
+  handlePutProfile,
 } from '~/others/store';
 import ProfileHome from './ProfileHome';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -45,6 +46,23 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
       setProfileKey(true);
     }
   };
+
+  const getProfile = async () => {
+    const res = await myAxios('get', `api/v1/profiles/me`, null, true, profileAccessToken);
+    const { id, name, lineName, houseName, imgUrl } = res.data.response;
+    handlePutProfile({
+      id,
+      name,
+      lineName,
+      houseName,
+      imgUrl: imgUrl ?? '',
+    });
+  };
+
+  useEffect(() => {
+    if (profileAccessToken === '') return;
+    getProfile();
+  }, [profileAccessToken]);
 
   useEffect(() => {
     checkAccountLogin();
