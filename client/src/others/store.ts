@@ -42,6 +42,7 @@ interface ProfileState {
   name: string;
   lineName: string;
   houseName: string;
+  imgUrl: string;
 }
 
 interface HelpCallState {
@@ -97,6 +98,7 @@ const profileReducer = (
     name: '',
     lineName: '',
     houseName: '',
+    imgUrl: '',
   },
   action: {
     type: string;

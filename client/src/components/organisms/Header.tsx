@@ -12,7 +12,9 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import SquareImg from '~/components/atoms/Img';
+import { ReactComponent as MainIcon } from '../../../public/img/mainIcon.svg';
+import { ReactComponent as MainLetter } from '../../../public/img/mainLetter.svg';
+import { ReactComponent as Siren } from '../../../public/img/siren.svg';
 import { Link } from 'react-router-dom';
 import { shadowCssForMUI } from '~/others/cssLibrary';
 import ArrowBack from '@mui/icons-material/ArrowBack';
@@ -25,6 +27,7 @@ import {
   handleRefreshProfileAccessToken,
   HelpCallState,
   openHelpSideBar,
+  ProfileState,
   RootState,
 } from '~/others/store';
 import { connect } from 'react-redux';
@@ -36,15 +39,20 @@ interface HeaderProps {
   isReadyForRequestAPI: boolean;
   accessToken: accessTokenState;
   helpCallData: HelpCallState;
+  profileData: ProfileState;
 }
 
-const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken, helpCallData }) => {
+const Header: React.FC<HeaderProps> = ({
+  isReadyForRequestAPI,
+  accessToken,
+  helpCallData,
+  profileData,
+}) => {
   const { accountAccessToken, profileAccessToken } = accessToken;
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [anchorElHelpCall, setAnchorElHelpCall] = React.useState<null | HTMLElement>(null);
-  const [profileName, setProfileName] = useState('');
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -83,31 +91,17 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken, help
     handleRefreshProfileAccessToken('');
   };
 
-  const getProfile = async () => {
-    const res = await myAxios('get', `api/v1/profiles/me`, null, true, profileAccessToken);
-    const { id, name, lineName, houseName } = res.data.response;
-    handlePutProfile({
-      id,
-      name,
-      lineName,
-      houseName,
-    });
-    setProfileName(name);
-  };
-
   const requestHelpCall = () => {
     client.publish({ destination: '/pub/alert', body: JSON.stringify({ text: 'help' }) });
     handleCloseHelpCallModal();
     openHelpSideBar();
   };
 
-  useEffect(() => {
-    if (profileAccessToken === '') return;
-    getProfile();
-  }, [profileAccessToken]);
-
   return (
-    <AppBar position='fixed' sx={{ height: '70px' }}>
+    <AppBar
+      position='fixed'
+      sx={{ height: '70px', background: '#fff', boxShadow: '0px 4px 11px rgba(0, 0, 0, 0.1)' }}
+    >
       <Container
         maxWidth='xl'
         sx={{
@@ -142,10 +136,11 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken, help
               color: 'inherit',
               textDecoration: 'none',
               alignItems: 'center',
+              gap: '15px',
             }}
           >
-            <SquareImg src='../../../public/img/iconWhite.png' />
-            이웃사이
+            <MainIcon />
+            <MainLetter />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -157,7 +152,7 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken, help
               onClick={handleOpenNavMenu}
               color='inherit'
             >
-              <MenuIcon />
+              <MenuIcon sx={{ color: '#EC8034' }} />
             </IconButton>
             <Menu
               id='menu-appbar'
@@ -206,18 +201,36 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken, help
               color: 'inherit',
               textDecoration: 'none',
               alignItems: 'center',
+              gap: '10px',
             }}
           >
-            <SquareImg src='../../../public/img/iconWhite.png' />
-            이웃사이
+            <MainIcon />
+            <MainLetter />
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'none', md: 'flex' },
+              marginLeft: '40px',
+              gap: '40px',
+            }}
+          >
             {pages.map((page) => (
               <Button
                 key={page.name}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{
+                  my: 2,
+                  color: '#828282',
+                  display: 'block',
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  textAlign: 'center',
+                  '&:hover': {
+                    background: '#fff',
+                  },
+                }}
                 component={Link}
                 to={page.link}
               >
@@ -255,42 +268,26 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken, help
                     sx={{
                       zIndex: 1,
                       background: '#fff',
-                      width: '40px',
-                      height: '40px',
-                      marginRight: '50px',
+                      marginRight: '20px',
                     }}
                   >
-                    <Avatar
-                      className='nonHover'
-                      sx={{
-                        width: '28px',
-                        height: '28px',
-                      }}
-                      src='../../../public/img/sirenRed.png'
-                    />
-                    <Avatar
-                      className='hover'
-                      sx={{
-                        width: '28px',
-                        height: '28px',
-                        display: 'none',
-                      }}
-                      src='../../../public/img/sirenWhite.png'
-                    />
+                    <Siren />
                   </IconButton>
-                  {helpCallData.requests.length === 0 ? (
-                    <></>
-                  ) : (
+                  {helpCallData.requests.length !== 0 && (
                     <IconButton
                       onClick={handleHelpSideBar}
                       className='helpListBtn'
                       sx={{
                         position: 'absolute',
-                        left: '+30px',
-                        background: '#f11000',
+                        left: '30px',
+                        top: '10px',
+                        background: '#EC8034',
+                        border: 'solid 2px #fff',
+                        fontSize: '12px',
                         color: '#fff',
-                        width: '40px',
-                        height: '40px',
+                        width: '26px',
+                        height: '26px',
+                        zIndex: '1',
                       }}
                     >
                       {helpCallData.requests.length}
@@ -349,7 +346,7 @@ const Header: React.FC<HeaderProps> = ({ isReadyForRequestAPI, accessToken, help
                 <Box sx={{ flexGrow: 0 }}>
                   <Tooltip title='Open settings'>
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar>{`${profileName}`.substr(0, 2)}</Avatar>
+                      <Avatar src={profileData.imgUrl}>{`${profileData.name}`.substr(0, 2)}</Avatar>
                     </IconButton>
                   </Tooltip>
                   <Menu
@@ -418,6 +415,7 @@ const mapStateToProps = (state: RootState) => {
     isReadyForRequestAPI: state.readyForRequestAPIReducer,
     accessToken: state.accessTokenReducer,
     helpCallData: state.helpCallReducer,
+    profileData: state.profileReducer,
   };
 };
 
