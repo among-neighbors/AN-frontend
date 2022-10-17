@@ -41,14 +41,16 @@ const MainLink: React.FC<MainLinkProps> = ({ buttonText, src, nav }) => {
         }}
       >
         <StyledImg src={src} />
-        <Button variant='outlined'>{buttonText}</Button>
+        <Button variant='outlined' sx={{ borderRadius: '20px' }}>
+          {buttonText}
+        </Button>
       </StyledMainLink>
     </>
   );
 };
 
 const StyledImg = styled.img`
-  width: 40%;
+  width: 35%;
   margin: 30px;
 `;
 

@@ -12,37 +12,40 @@ const StyledContainer = styled.div`
 // 텍스트를 감싸고 있는 요소
 const StyledContainerText = styled.div`
   font-size: 35px;
-  width: 70%;
-  height: 65%;
+  text-align: center;
+  align-itemx: center;
+  justify-contents: center;
+  width: 100%;
+  height: 90%;
   position: absolute;
   top: 0;
-  left: 18%;
   color: black;
   font-weight: bold;
   font-family: BlinkMacSystemFont;
 `;
 
-// 텍스트를 감싸고 있는 요소
 const StyledContainerBtn = styled.div`
-  width: 75%;
-  height:100%;
-  position: absolute;
+  width: 52%;
+  height:70%;
   display: flex;
-  justifyContent: 'space-between',
-  bottom: 5%;
-  left: 5%;
+  align-items: center;
+  justify-content: 'space-between',
   color: black;
-  margin:10% 0 0 0;
+  margin:5% 0 0 0;
+  position: absolute;
   font-family: BlinkMacSystemFont;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const HomePage = () => {
   return (
     <StyledHome>
       <StyledContainer>
-        <MainImage />
+        <MainImage width='100%' />
         <StyledContainerText>
-          작은 관심으로 따뜻한 이웃 사이를 만드는 서비스, 오늘도 이웃사이 하세요
+          <p>작은 관심으로 따뜻한 이웃 사이를 만드는 서비스, 오늘도 이웃사이 하세요</p>
           <StyledContainerBtn>
             {linkData.map(({ buttonText, src, nav }, index) => {
               return <MainLink buttonText={buttonText} nav={nav} src={src} key={index} />;
