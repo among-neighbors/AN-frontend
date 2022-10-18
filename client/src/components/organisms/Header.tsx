@@ -102,7 +102,12 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <AppBar
       position='fixed'
-      sx={{ height: '70px', background: '#fff', boxShadow: '0px 4px 11px rgba(0, 0, 0, 0.1)' }}
+      sx={{
+        height: '70px',
+        background: '#fff',
+        boxShadow: '0px 4px 11px rgba(0, 0, 0, 0.1)',
+        zIndex: '8',
+      }}
     >
       <Container
         maxWidth='xl'

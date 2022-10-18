@@ -4,6 +4,7 @@ import { closeHelpSideBar, HelpCallState, ProfileState, RootState } from '~/othe
 import { HelpCallBox, HelpFinBox } from '../molecules/HelpBoxes.tsx';
 import styled from 'styled-components';
 import { shadowCssForMUI } from '~/others/cssLibrary';
+import SquareImg from '../atoms/Img';
 
 interface HelpSideBarProps {
   isHelpSideBarOpen: boolean;
@@ -36,8 +37,10 @@ const HelpSideBar: React.FC<HelpSideBarProps> = ({
 
       <Block className={isHelpSideBarOpen ? '' : 'disNone'}></Block>
       <StyledHelpSideBar className={isHelpSideBarOpen ? '' : 'disNone'}>
+        <div className={'closeHelpSideBar'} onClick={closeHelpSideBar}>
+          <SquareImg src={'../../../public/img/back.png'} length={'40px'} />
+        </div>
         {helpCallData.requests.reverse().map(({ targetHouse }, index) => {
-          console.log(profileData.houseName, targetHouse);
           if (profileData.houseName === targetHouse) {
             return (
               <Box key={index} sx={{ width: '100%', height: '100%', padding: '3px 13px' }}>
@@ -58,11 +61,7 @@ const HelpSideBar: React.FC<HelpSideBarProps> = ({
             );
           }
           return (
-            <HelpCallBox
-              key={index}
-              targetHouse={profileData.houseName}
-              myHouseLine={profileData.lineName}
-            />
+            <HelpCallBox key={index} targetHouse={targetHouse} myHouseLine={profileData.lineName} />
           );
         })}
         {helpCallData.accepts.reverse().map(({ targetHouse, acceptHouse }, index) => {
@@ -88,6 +87,7 @@ const Block = styled.div`
 
 const StyledHelpSideBar = styled.div`
   position: fixed;
+  /* padding-top: 50px; */
   top: 70px;
   right: 0;
   width: 300px !important;
@@ -96,6 +96,13 @@ const StyledHelpSideBar = styled.div`
   background: #fff;
   border-left: solid 1px #ddd;
   z-index: 2;
+  & .closeHelpSideBar {
+    width: 40px;
+    height: 40px;
+    filter: invert(1);
+    transform: rotate(180deg);
+    cursor: pointer;
+  }
 `;
 
 const mapStateToProps = (state: RootState) => {
