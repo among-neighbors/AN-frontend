@@ -31,4 +31,24 @@ export const StyledMap = styled.div`
       left: calc(50% - 23px);
     }
   }
+  & .services {
+    display: flex;
+    position: absolute;
+    top: 85px;
+    right: 20px;
+    z-index: 12;
+    gap: 15px;
+    & > button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      outline: none;
+      width: 30px;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
 `;

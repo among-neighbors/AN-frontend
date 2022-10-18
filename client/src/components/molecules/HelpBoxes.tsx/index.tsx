@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import SquareImg from '~/components/atoms/Img';
 import { client } from '~/components/organisms/HelpCallConnectSocket';
-import { closeHelpCallBox } from '~/others/store';
+import { closeHelpCallBox, openMap } from '~/others/store';
 import { HelpCallBoxInner, HelpFinBoxContainer, HelpCallBoxContainer } from './styled';
 
 interface HelpFinBoxProps {
@@ -47,7 +47,12 @@ const HelpCallBox: React.FC<HelpCallBoxProps> = ({ targetHouse, myHouseLine }) =
               color='inherit'
               sx={{ color: '#000', width: '110px', height: '30px' }}
               variant='outlined'
-              onClick={() => closeHelpCallBox(targetHouse)}
+              onClick={() =>
+                openMap({
+                  lat: 35.888836,
+                  lng: 128.6102997,
+                })
+              }
             >
               지도 보기
             </Button>

@@ -1,10 +1,13 @@
 import { Button } from '@mui/material';
-import { Map } from 'react-kakao-maps-sdk';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { connect } from 'react-redux';
 import SquareImg from '~/components/atoms/Img';
 import { closeMap, MapState, RootState } from '~/others/store';
 import { ReactComponent as MainIcon } from '../../../../public/img/mainIcon.svg';
+import { ReactComponent as Plus } from '../../../../public/img/plus.svg';
+import { ReactComponent as Minus } from '../../../../public/img/minus.svg';
 import { StyledMap } from './styled';
+import { useRef } from 'react';
 
 interface Props {
   mapState: MapState;
@@ -13,6 +16,22 @@ interface Props {
 const MyMap: React.FC<Props> = (props) => {
   const { mapState } = props;
   const { isOpen, pos } = mapState;
+  const mapRef = useRef<kakao.maps.Map>(null);
+
+  const levelUp = () => {
+    const map = mapRef.current;
+    if (!map) return;
+    const nowLevel = map.getLevel();
+    map.setLevel(nowLevel - 1);
+  };
+
+  const levelDown = () => {
+    const map = mapRef.current;
+    if (!map) return;
+    const nowLevel = map.getLevel();
+    map.setLevel(nowLevel + 1);
+  };
+
   return (
     <>
       {isOpen && (
@@ -33,12 +52,23 @@ const MyMap: React.FC<Props> = (props) => {
           {pos && (
             <Map
               center={pos}
+              ref={mapRef}
               style={{
                 width: '100%',
                 height: '100%',
               }}
-            ></Map>
+            >
+              <MapMarker position={pos} />
+            </Map>
           )}
+          <div className={'services'}>
+            <button onClick={levelUp}>
+              <Plus />
+            </button>
+            <button onClick={levelDown}>
+              <Minus />
+            </button>
+          </div>
         </StyledMap>
       )}
     </>

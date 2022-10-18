@@ -94,7 +94,10 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   const requestHelpCall = () => {
-    client.publish({ destination: '/pub/alert', body: JSON.stringify({ text: 'help' }) });
+    client.publish({
+      destination: '/pub/alert',
+      body: JSON.stringify({ text: 'help', lat: 35.888836, lng: 128.6102997 }),
+    });
     handleCloseHelpCallModal();
     openHelpSideBar();
   };
