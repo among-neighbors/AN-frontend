@@ -1,8 +1,6 @@
-import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import TableNav, { Category } from '~/components/molecules/TableNav';
 import PageHeader from '~/components/organisms/PageHeader';
 import BoardTable from '~/components/organisms/Table';

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -22,7 +21,6 @@ import ArrowForward from '@mui/icons-material/ArrowForward';
 import {
   accessTokenState,
   handleHelpSideBar,
-  handlePutProfile,
   handleRefreshAccountAccessToken,
   handleRefreshProfileAccessToken,
   HelpCallState,

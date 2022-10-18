@@ -122,8 +122,12 @@ export const Category: React.FC<CategoryProps> = ({ type }) => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        {Object.entries(MenuItemsByCategory).map(([category, name]) => {
-          return <MenuItem onClick={() => navigateTo(category)}>{name}</MenuItem>;
+        {Object.entries(MenuItemsByCategory).map(([category, name], index) => {
+          return (
+            <MenuItem onClick={() => navigateTo(category)} key={index}>
+              {name}
+            </MenuItem>
+          );
         })}
       </Menu>
     </>
