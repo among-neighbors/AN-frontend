@@ -18,6 +18,9 @@ const ACTION_TO_PUT_PROFILE = 'actionToPutProfile';
 const ACTION_TO_UPDATE_HELP_CALL = 'actionToUpdateHelpCall';
 const ACTION_TO_CLOSE_HELP_CALL_BOX = 'actionToCloseHelpCallBox';
 
+const ACTION_TO_OPEN_MAP = 'actionToOpenMap';
+const ACTION_TO_CLOSE_MAP = 'actionToCloseMap';
+
 interface TableNavState extends Obj<number> {
   notice: number;
   community: number;
@@ -35,6 +38,7 @@ interface RootState {
   readyForRequestAPIReducer: boolean;
   profileReducer: ProfileState;
   helpCallReducer: HelpCallState;
+  mapReducer: MapState;
 }
 
 interface ProfileState {
@@ -49,6 +53,45 @@ interface HelpCallState {
   requests: { targetHouse: string }[];
   accepts: { targetHouse: string; acceptHouse: string }[];
 }
+
+interface Pos {
+  lat: number;
+  lng: number;
+}
+
+interface MapState {
+  isOpen: boolean;
+  pos?: Pos;
+}
+
+const mapReducer = (
+  state: MapState = {
+    isOpen: false,
+  },
+  action: {
+    type: string;
+    pos: {
+      lat: string;
+      lng: string;
+    };
+  },
+) => {
+  const { type, pos } = action;
+
+  switch (type) {
+    case ACTION_TO_OPEN_MAP:
+      return {
+        isOpen: true,
+        pos,
+      };
+    case ACTION_TO_CLOSE_MAP:
+      return {
+        isOpen: false,
+      };
+    default:
+      return state;
+  }
+};
 
 const helpCallReducer = (
   state: HelpCallState = {
@@ -191,9 +234,23 @@ const rootReducer = combineReducers({
   readyForRequestAPIReducer,
   profileReducer,
   helpCallReducer,
+  mapReducer,
 });
 
 const store = createStore(rootReducer);
+
+const openMap = (pos: Pos) => {
+  store.dispatch({
+    type: ACTION_TO_OPEN_MAP,
+    pos,
+  });
+};
+
+const closeMap = () => {
+  store.dispatch({
+    type: ACTION_TO_CLOSE_MAP,
+  });
+};
 
 const closeHelpCallBox = (targetHouse: string) => {
   store.dispatch({
@@ -276,8 +333,11 @@ export {
   helpCallReducer,
   updateHelpCallData,
   closeHelpCallBox,
+  openMap,
+  closeMap,
   HelpCallState,
   RootState,
   accessTokenState,
   ProfileState,
+  MapState,
 };
