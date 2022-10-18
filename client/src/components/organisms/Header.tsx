@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -22,7 +21,6 @@ import ArrowForward from '@mui/icons-material/ArrowForward';
 import {
   accessTokenState,
   handleHelpSideBar,
-  handlePutProfile,
   handleRefreshAccountAccessToken,
   handleRefreshProfileAccessToken,
   HelpCallState,
@@ -31,12 +29,14 @@ import {
   RootState,
 } from '~/others/store';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import myAxios from '~/others/myAxios';
 import { client } from './HelpCallConnectSocket';
+import { HelpCallBox } from '../molecules/HelpBoxes.tsx';
 
 interface HeaderProps {
   isReadyForRequestAPI: boolean;
+  isHelpCallSideBarOpen: boolean;
   accessToken: accessTokenState;
   helpCallData: HelpCallState;
   profileData: ProfileState;
@@ -44,12 +44,14 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({
   isReadyForRequestAPI,
+  isHelpCallSideBarOpen,
   accessToken,
   helpCallData,
   profileData,
 }) => {
   const { accountAccessToken, profileAccessToken } = accessToken;
   const navigate = useNavigate();
+  const location = useLocation();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [anchorElHelpCall, setAnchorElHelpCall] = React.useState<null | HTMLElement>(null);
@@ -222,7 +224,7 @@ const Header: React.FC<HeaderProps> = ({
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
-                  color: '#828282',
+                  color: page.link === location.pathname ? '#EC8034' : '#828282',
                   display: 'block',
                   fontWeight: 700,
                   fontSize: '16px',
@@ -241,7 +243,7 @@ const Header: React.FC<HeaderProps> = ({
 
           {isReadyForRequestAPI &&
             (accountAccessToken === '' ? (
-              <Button onClick={() => navigate('/sign')} variant='outlined' color='inherit'>
+              <Button onClick={() => navigate('/sign')} variant='outlined'>
                 로그인
               </Button>
             ) : (
@@ -251,8 +253,8 @@ const Header: React.FC<HeaderProps> = ({
                     display: {
                       xs: 'none',
                       sm: 'flex',
-                      position: 'relative',
                     },
+                    position: 'relative',
                     '& .helpCallBtn:hover': {
                       background: '#fff',
                     },
@@ -292,6 +294,51 @@ const Header: React.FC<HeaderProps> = ({
                     >
                       {helpCallData.requests.length}
                     </IconButton>
+                  )}
+                  {!isHelpCallSideBarOpen && (
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        position: 'absolute',
+                        top: '40px',
+                        right: '-20px',
+                        width: '300px',
+                        zIndex: 3,
+                      }}
+                    >
+                      {helpCallData.requests.reverse().map(({ targetHouse }, index) => {
+                        if (profileData.houseName === targetHouse) {
+                          return (
+                            <Box
+                              key={index}
+                              sx={{ width: '100%', height: '100%', padding: '3px 13px' }}
+                            >
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  ...shadowCssForMUI,
+                                  height: '60px',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  background: '#E7602A',
+                                  color: '#fff',
+                                }}
+                              >
+                                도움 요청 중입니다...
+                              </Box>
+                            </Box>
+                          );
+                        }
+                        return (
+                          <HelpCallBox
+                            key={index}
+                            targetHouse={targetHouse}
+                            myHouseLine={profileData.lineName}
+                          />
+                        );
+                      })}
+                    </Box>
                   )}
                 </Box>
 
@@ -402,17 +449,18 @@ const pages: {
   },
   {
     name: '민원',
-    link: 'complaint',
+    link: '/complaint',
   },
   {
     name: '커뮤니티',
-    link: 'community',
+    link: '/community',
   },
 ];
 
 const mapStateToProps = (state: RootState) => {
   return {
     isReadyForRequestAPI: state.readyForRequestAPIReducer,
+    isHelpCallSideBarOpen: state.helpSideBarReducer,
     accessToken: state.accessTokenReducer,
     helpCallData: state.helpCallReducer,
     profileData: state.profileReducer,

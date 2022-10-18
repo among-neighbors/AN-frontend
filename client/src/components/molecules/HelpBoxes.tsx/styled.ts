@@ -23,8 +23,8 @@ const HelpFinBoxContainer = styled.div`
 
 const HelpCallBoxContainer = styled.div`
   width: 100%;
-  height: 100px;
-  padding: 13px;
+  height: 90px;
+  padding: 3px 13px;
   color: #000;
 `;
 
@@ -37,6 +37,7 @@ const HelpCallBoxInner = styled.div`
   border-radius: 4px;
   gap: 8px;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  background: #fff;
   & > p {
     display: flex;
     justify-content: center;

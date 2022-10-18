@@ -37,9 +37,10 @@ const HelpSideBar: React.FC<HelpSideBarProps> = ({
       <Block className={isHelpSideBarOpen ? '' : 'disNone'}></Block>
       <StyledHelpSideBar className={isHelpSideBarOpen ? '' : 'disNone'}>
         {helpCallData.requests.reverse().map(({ targetHouse }, index) => {
+          console.log(profileData.houseName, targetHouse);
           if (profileData.houseName === targetHouse) {
             return (
-              <Box key={index} sx={{ width: '100%', height: '100px', padding: '13px' }}>
+              <Box key={index} sx={{ width: '100%', height: '100%', padding: '3px 13px' }}>
                 <Box
                   sx={{
                     display: 'flex',
@@ -57,7 +58,11 @@ const HelpSideBar: React.FC<HelpSideBarProps> = ({
             );
           }
           return (
-            <HelpCallBox key={index} targetHouse={targetHouse} myHouseLine={profileData.lineName} />
+            <HelpCallBox
+              key={index}
+              targetHouse={profileData.houseName}
+              myHouseLine={profileData.lineName}
+            />
           );
         })}
         {helpCallData.accepts.reverse().map(({ targetHouse, acceptHouse }, index) => {
