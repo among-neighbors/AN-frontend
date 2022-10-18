@@ -34,18 +34,36 @@ const MainLink: React.FC<MainLinkProps> = ({ buttonText, src, nav }) => {
         onClick={() => navigate(`/${nav}`)}
         sx={{
           display: {
-            xs: 'flex',
+            xs: 'none',
             sm: 'flex',
             md: 'none',
           },
 
           width: '100%',
-          height: 'calc(100% / 3)',
+          height: 'calc(100% / 2)',
         }}
       >
         <StyledImg src={src} />
 
         <Button variant='outlined' sx={{ borderRadius: '20px', fontSize: '10px' }}>
+          {buttonText}
+        </Button>
+      </StyledMainLink>
+      <StyledMainLink
+        onClick={() => navigate(`/${nav}`)}
+        sx={{
+          display: {
+            xs: 'flex',
+            sm: 'none',
+            md: 'none',
+          },
+          width: '90%',
+          height: 'calc(100% / 3)',
+        }}
+      >
+        <StyledImg2 src={src} />
+
+        <Button variant='outlined' sx={{ borderRadius: '20px', fontSize: '8px' }}>
           {buttonText}
         </Button>
       </StyledMainLink>
@@ -56,6 +74,10 @@ const MainLink: React.FC<MainLinkProps> = ({ buttonText, src, nav }) => {
 const StyledImg = styled.img`
   width: 35%;
   margin: 30px;
+`;
+const StyledImg2 = styled.img`
+  height: 30%;
+  margin: 15px;
 `;
 
 const StyledMainLink = styled(Box)`
