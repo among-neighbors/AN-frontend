@@ -26,7 +26,10 @@ const StyledPageHeader = styled.div`
     margin: 20px;
   }
   & > p {
-    font-size: 16px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 160%;
+    color: #828282;
   }
 `;
 
@@ -34,17 +37,17 @@ const texts = [
   {
     type: 'notice',
     title: '공지사항',
-    sub: '반포 자이 공지사항에 오신 것을 환영합니다.',
+    sub: '공지사항에 오신 것을 환영합니다',
   },
   {
     type: 'complaint',
     title: '민원',
-    sub: '반포 자이 민원 처리는 여기서 도와드리겠습니다.',
+    sub: '민원 처리는 여기서 도와드리겠습니다',
   },
   {
     type: 'community',
     title: '커뮤니티',
-    sub: '반포 자이 커뮤니티에 오신 것을 환영합니다.',
+    sub: '내 주변 이웃과 자유롭게 소통해봐요',
   },
 ];
 

@@ -154,8 +154,8 @@ const helpSideBarReducer = (state = false, action: { type: string }) => {
 
 const accessTokenReducer = (
   state = {
-    accountAccessToken: '',
-    profileAccessToken: '',
+    accountAccessToken: '123',
+    profileAccessToken: '123',
   },
   action: { type: string; accessToken: string },
 ) => {

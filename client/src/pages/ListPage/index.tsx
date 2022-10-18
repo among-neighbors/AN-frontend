@@ -1,9 +1,9 @@
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import TableNav from '~/components/molecules/TableNav';
+import TableNav, { Category } from '~/components/molecules/TableNav';
 import PageHeader from '~/components/organisms/PageHeader';
 import BoardTable from '~/components/organisms/Table';
 import myAxios from '~/others/myAxios';
@@ -59,19 +59,20 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
       <PageHeader type={type} />
-      {type === 'notice' || type === 'community' ? (
-        <TableNav type={type} isPageMove={false} />
-      ) : (
-        <></>
-      )}
-      {type === 'complaint' || type === 'community' ? (
-        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'right', paddingRight: '20px' }}>
-          <Button component={Link} to={`/${type}/writing`} variant='contained'>
-            {buttonTextByType[type]}
-          </Button>
+      {(type === 'notice' || type === 'community') && <TableNav type={type} isPageMove={false} />}
+      {(type === 'complaint' || type === 'community') && (
+        <Box
+          sx={{
+            width: '100%',
+            height: '34px',
+            display: 'flex',
+            justifyContent: 'end',
+            padding: '0 20px',
+            gap: '25px',
+          }}
+        >
+          {type === 'community' && <Category type={type} />}
         </Box>
-      ) : (
-        <></>
       )}
       <BoardTable type={type} rows={rows} isFirstPage={isFirstPage} isLastPage={isLastPage} />
     </Box>
@@ -114,11 +115,6 @@ const handleList = (list: DeliverdTypePostDataArray): ProcessedTypePostDataArray
       writer: `${writer.lineName}동 ${writer.houseName}호`,
     };
   });
-};
-
-const buttonTextByType: Obj<string> = {
-  complaint: '민원 작성',
-  community: '글쓰기',
 };
 
 const mapStateToProps = (state: RootState) => {
