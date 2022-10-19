@@ -40,40 +40,60 @@ const HelpSideBar: React.FC<HelpSideBarProps> = ({
         <div className={'closeHelpSideBar'} onClick={closeHelpSideBar}>
           <SquareImg src={'../../../public/img/back.png'} length={'40px'} />
         </div>
-        {helpCallData.requests.reverse().map(({ targetHouse }, index) => {
-          if (profileData.houseName === targetHouse) {
-            return (
-              <Box key={index} sx={{ width: '100%', height: '100%', padding: '3px 13px' }}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    ...shadowCssForMUI,
-                    height: '60px',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: '#E7602A',
-                    color: '#fff',
-                  }}
-                >
-                  도움 요청 중입니다...
+        <div className={'requests'}>
+          {helpCallData.requests.map(({ targetHouse, pos }, index) => {
+            if (profileData.houseName === targetHouse) {
+              return (
+                <Box key={index} sx={{ width: '100%', height: '100%', padding: '3px 13px' }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      ...shadowCssForMUI,
+                      height: '60px',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: '#E7602A',
+                      color: '#fff',
+                    }}
+                  >
+                    도움 요청 중입니다...
+                  </Box>
                 </Box>
-              </Box>
+              );
+            }
+            return (
+              <HelpCallBox
+                key={index}
+                targetHouse={targetHouse}
+                myHouseLine={profileData.lineName}
+                pos={pos}
+              />
             );
-          }
-          return (
-            <HelpCallBox key={index} targetHouse={targetHouse} myHouseLine={profileData.lineName} />
-          );
-        })}
-        {helpCallData.accepts.reverse().map(({ targetHouse, acceptHouse }, index) => {
-          return (
-            <HelpFinBox
-              key={index}
-              targetHouse={targetHouse}
-              acceptHouse={acceptHouse}
-              myHouseLine={profileData.lineName}
-            />
-          );
-        })}
+          })}
+        </div>
+        <div className={'accepts'}>
+          {helpCallData.accepts.map(({ targetHouse, acceptHouse, pos }, index) => {
+            if (profileData.houseName === acceptHouse) {
+              return (
+                <HelpFinBox
+                  key={index}
+                  targetHouse={targetHouse}
+                  acceptHouse={acceptHouse}
+                  myHouseLine={profileData.lineName}
+                  pos={pos}
+                />
+              );
+            }
+            return (
+              <HelpFinBox
+                key={index}
+                targetHouse={targetHouse}
+                acceptHouse={acceptHouse}
+                myHouseLine={profileData.lineName}
+              />
+            );
+          })}
+        </div>
       </StyledHelpSideBar>
     </>
   );
@@ -87,7 +107,6 @@ const Block = styled.div`
 
 const StyledHelpSideBar = styled.div`
   position: fixed;
-  /* padding-top: 50px; */
   top: 70px;
   right: 0;
   width: 300px !important;
@@ -95,6 +114,7 @@ const StyledHelpSideBar = styled.div`
   height: calc(100vh - 70px);
   background: #fff;
   border-left: solid 1px #ddd;
+  overflow: auto;
   z-index: 2;
   & .closeHelpSideBar {
     width: 40px;
@@ -102,6 +122,15 @@ const StyledHelpSideBar = styled.div`
     filter: invert(1);
     transform: rotate(180deg);
     cursor: pointer;
+  }
+  & .requests,
+  .accepts {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  & .requests {
+    gap: 5px;
+    margin-bottom: 15px;
   }
 `;
 

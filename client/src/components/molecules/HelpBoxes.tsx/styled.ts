@@ -5,12 +5,11 @@ const HelpFinBoxContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  height: 60px;
   outline: solid #ddd;
   outline-width: 0.5px;
   color: #000;
   gap: 5px;
-  padding-left: 10px;
+  padding: 10px 10px;
   & > h5 {
     font-size: 13px;
     font-weight: 500;

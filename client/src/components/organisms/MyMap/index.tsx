@@ -1,8 +1,7 @@
-import { Button } from '@mui/material';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { connect } from 'react-redux';
 import SquareImg from '~/components/atoms/Img';
-import { closeMap, MapState, RootState } from '~/others/store';
+import { closeMap, MapState, Pos, RootState } from '~/others/store';
 import { ReactComponent as MainIcon } from '../../../../public/img/mainIcon.svg';
 import { ReactComponent as Plus } from '../../../../public/img/plus.svg';
 import { ReactComponent as Minus } from '../../../../public/img/minus.svg';
@@ -42,11 +41,6 @@ const MyMap: React.FC<Props> = (props) => {
             </div>
             <div className={'icon'}>
               <MainIcon />
-            </div>
-            <div>
-              <Button variant={'contained'} color={'success'}>
-                수락
-              </Button>
             </div>
           </div>
           {pos && (

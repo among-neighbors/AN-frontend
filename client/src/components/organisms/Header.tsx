@@ -93,10 +93,24 @@ const Header: React.FC<HeaderProps> = ({
     handleRefreshProfileAccessToken('');
   };
 
-  const requestHelpCall = () => {
+  const getPosition = async () => {
+    return new Promise<GeolocationPosition>((resolve, reject) =>
+      navigator.geolocation.getCurrentPosition(resolve, reject),
+    );
+  };
+
+  const requestHelpCall = async () => {
+    if (!navigator.geolocation) {
+      alert('위치 동의가 필요합니다!');
+      return;
+    }
+
+    const pos = await getPosition();
+    const { latitude, longitude } = pos.coords;
+
     client.publish({
       destination: '/pub/alert',
-      body: JSON.stringify({ text: 'help', lat: 35.888836, lng: 128.6102997 }),
+      body: JSON.stringify({ text: 'help', lat: latitude, lng: longitude }),
     });
     handleCloseHelpCallModal();
     openHelpSideBar();
@@ -307,15 +321,16 @@ const Header: React.FC<HeaderProps> = ({
                     <Box
                       sx={{
                         display: 'flex',
-                        flexDirection: 'column',
+                        flexDirection: 'column-reverse',
                         position: 'absolute',
                         top: '40px',
                         right: '-20px',
                         width: '300px',
+                        gap: '5px',
                         zIndex: 3,
                       }}
                     >
-                      {helpCallData.requests.reverse().map(({ targetHouse }, index) => {
+                      {helpCallData.requests.map(({ targetHouse, pos }, index) => {
                         if (profileData.houseName === targetHouse) {
                           return (
                             <Box
@@ -343,6 +358,7 @@ const Header: React.FC<HeaderProps> = ({
                             key={index}
                             targetHouse={targetHouse}
                             myHouseLine={profileData.lineName}
+                            pos={pos}
                           />
                         );
                       })}
@@ -372,8 +388,7 @@ const Header: React.FC<HeaderProps> = ({
                         paddingLeft: '20px',
                       }}
                     >
-                      도움 요청 시 라인 내 입주민에게
-                      <br /> 도움 요청을 알립니다.
+                      도움 요청 시 이웃에게 도움 요청을 알립니다.
                     </Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
                       <Button

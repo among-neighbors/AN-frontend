@@ -50,8 +50,8 @@ interface ProfileState {
 }
 
 interface HelpCallState {
-  requests: { targetHouse: string }[];
-  accepts: { targetHouse: string; acceptHouse: string }[];
+  requests: { targetHouse: string; pos: Pos }[];
+  accepts: { targetHouse: string; acceptHouse: string; pos: Pos }[];
 }
 
 interface Pos {
@@ -102,10 +102,11 @@ const helpCallReducer = (
     type: string;
     acceptHouse: string;
     targetHouse: string;
+    pos: Pos;
   },
 ) => {
   const tempState = { ...state };
-  const { type, acceptHouse, targetHouse } = action;
+  const { type, acceptHouse, targetHouse, pos } = action;
   switch (type) {
     case ACTION_TO_UPDATE_HELP_CALL:
       if (acceptHouse) {
@@ -115,6 +116,7 @@ const helpCallReducer = (
         tempState.accepts.push({
           acceptHouse,
           targetHouse,
+          pos,
         });
       } else {
         tempState.requests = state.requests.filter(
@@ -122,6 +124,7 @@ const helpCallReducer = (
         );
         tempState.requests.push({
           targetHouse,
+          pos,
         });
       }
       return tempState;
@@ -311,11 +314,12 @@ const handlePutProfile = (profileData: ProfileState) => {
   });
 };
 
-const updateHelpCallData = (targetHouse: string, acceptHouse?: string) => {
+const updateHelpCallData = (targetHouse: string, pos: Pos, acceptHouse?: string) => {
   store.dispatch({
     type: ACTION_TO_UPDATE_HELP_CALL,
     targetHouse,
     acceptHouse,
+    pos,
   });
 };
 
@@ -340,4 +344,5 @@ export {
   accessTokenState,
   ProfileState,
   MapState,
+  Pos,
 };

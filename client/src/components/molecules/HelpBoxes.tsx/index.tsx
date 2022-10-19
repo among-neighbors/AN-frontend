@@ -1,34 +1,47 @@
 import { Button } from '@mui/material';
 import SquareImg from '~/components/atoms/Img';
 import { client } from '~/components/organisms/HelpCallConnectSocket';
-import { closeHelpCallBox, openMap } from '~/others/store';
+import { closeHelpCallBox, openMap, Pos } from '~/others/store';
 import { HelpCallBoxInner, HelpFinBoxContainer, HelpCallBoxContainer } from './styled';
 
 interface HelpFinBoxProps {
   myHouseLine: string;
   targetHouse: string;
   acceptHouse: string;
+  pos?: Pos;
 }
 
 interface HelpCallBoxProps {
   myHouseLine: string;
   targetHouse: string;
+  pos: Pos;
 }
 
-const HelpFinBox: React.FC<HelpFinBoxProps> = ({ targetHouse, acceptHouse, myHouseLine }) => {
+const HelpFinBox: React.FC<HelpFinBoxProps> = ({ targetHouse, acceptHouse, myHouseLine, pos }) => {
   return (
     <HelpFinBoxContainer>
-      <h5>{`${myHouseLine} ${targetHouse}의 긴급 도움 요청이 해결되었습니다.`}</h5>
+      <h5>{`${myHouseLine} ${targetHouse}의 긴급 도움 요청을 수락했습니다.`}</h5>
       <p>{`도운 이웃 : ${acceptHouse}`}</p>
+      {pos && (
+        <Button
+          color='inherit'
+          sx={{ color: '#000', width: '110px', height: '30px' }}
+          variant='outlined'
+          onClick={() => openMap(pos)}
+        >
+          지도 보기
+        </Button>
+      )}
     </HelpFinBoxContainer>
   );
 };
 
-const HelpCallBox: React.FC<HelpCallBoxProps> = ({ targetHouse, myHouseLine }) => {
-  const acceptHelpCall = () => {
+const HelpCallBox: React.FC<HelpCallBoxProps> = ({ targetHouse, myHouseLine, pos }) => {
+  const acceptHelpCall = (pos: Pos) => {
+    const { lat, lng } = pos;
     client.publish({
       destination: '/pub/accept',
-      body: JSON.stringify({ target: targetHouse }),
+      body: JSON.stringify({ target: targetHouse, lat, lng }),
     });
   };
 
@@ -47,12 +60,7 @@ const HelpCallBox: React.FC<HelpCallBoxProps> = ({ targetHouse, myHouseLine }) =
               color='inherit'
               sx={{ color: '#000', width: '110px', height: '30px' }}
               variant='outlined'
-              onClick={() =>
-                openMap({
-                  lat: 35.888836,
-                  lng: 128.6102997,
-                })
-              }
+              onClick={() => openMap(pos)}
             >
               지도 보기
             </Button>
@@ -60,7 +68,7 @@ const HelpCallBox: React.FC<HelpCallBoxProps> = ({ targetHouse, myHouseLine }) =
               color='success'
               sx={{ width: '140px', height: '30px' }}
               variant='contained'
-              onClick={acceptHelpCall}
+              onClick={() => acceptHelpCall(pos)}
             >
               수락
             </Button>
