@@ -5,6 +5,7 @@ import community from '../../public/img/communityIcon.svg';
 import complaint from '../../public/img/complaintIcon.svg';
 import { ReactComponent as MainImage } from '../../public/img/homeMain.svg';
 import { Box, Typography } from '@mui/material';
+import MyMap from '~/components/organisms/MyMap';
 
 //이미지와 텍스트를 감싸고 있는 요소
 const StyledContainer = styled.div`
@@ -74,6 +75,7 @@ const StyledContainerBtn3 = styled.div`
 const HomePage = () => {
   return (
     <StyledHome>
+      <MyMap />
       <StyledContainer>
         <MainImage width='100%' />
         <StyledContainerText>

@@ -4,6 +4,7 @@ import { closeHelpSideBar, HelpCallState, ProfileState, RootState } from '~/othe
 import { HelpCallBox, HelpFinBox } from '../molecules/HelpBoxes.tsx';
 import styled from 'styled-components';
 import { shadowCssForMUI } from '~/others/cssLibrary';
+import SquareImg from '../atoms/Img';
 
 interface HelpSideBarProps {
   isHelpSideBarOpen: boolean;
@@ -36,45 +37,63 @@ const HelpSideBar: React.FC<HelpSideBarProps> = ({
 
       <Block className={isHelpSideBarOpen ? '' : 'disNone'}></Block>
       <StyledHelpSideBar className={isHelpSideBarOpen ? '' : 'disNone'}>
-        {helpCallData.requests.reverse().map(({ targetHouse }, index) => {
-          console.log(profileData.houseName, targetHouse);
-          if (profileData.houseName === targetHouse) {
-            return (
-              <Box key={index} sx={{ width: '100%', height: '100%', padding: '3px 13px' }}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    ...shadowCssForMUI,
-                    height: '60px',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: '#E7602A',
-                    color: '#fff',
-                  }}
-                >
-                  도움 요청 중입니다...
+        <div className={'closeHelpSideBar'} onClick={closeHelpSideBar}>
+          <SquareImg src={'../../../public/img/back.png'} length={'40px'} />
+        </div>
+        <div className={'requests'}>
+          {helpCallData.requests.map(({ targetHouse, pos }, index) => {
+            if (profileData.houseName === targetHouse) {
+              return (
+                <Box key={index} sx={{ width: '100%', height: '100%', padding: '3px 13px' }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      ...shadowCssForMUI,
+                      height: '60px',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: '#E7602A',
+                      color: '#fff',
+                    }}
+                  >
+                    도움 요청 중입니다...
+                  </Box>
                 </Box>
-              </Box>
+              );
+            }
+            return (
+              <HelpCallBox
+                key={index}
+                targetHouse={targetHouse}
+                myHouseLine={profileData.lineName}
+                pos={pos}
+              />
             );
-          }
-          return (
-            <HelpCallBox
-              key={index}
-              targetHouse={profileData.houseName}
-              myHouseLine={profileData.lineName}
-            />
-          );
-        })}
-        {helpCallData.accepts.reverse().map(({ targetHouse, acceptHouse }, index) => {
-          return (
-            <HelpFinBox
-              key={index}
-              targetHouse={targetHouse}
-              acceptHouse={acceptHouse}
-              myHouseLine={profileData.lineName}
-            />
-          );
-        })}
+          })}
+        </div>
+        <div className={'accepts'}>
+          {helpCallData.accepts.map(({ targetHouse, acceptHouse, pos }, index) => {
+            if (profileData.houseName === acceptHouse) {
+              return (
+                <HelpFinBox
+                  key={index}
+                  targetHouse={targetHouse}
+                  acceptHouse={acceptHouse}
+                  myHouseLine={profileData.lineName}
+                  pos={pos}
+                />
+              );
+            }
+            return (
+              <HelpFinBox
+                key={index}
+                targetHouse={targetHouse}
+                acceptHouse={acceptHouse}
+                myHouseLine={profileData.lineName}
+              />
+            );
+          })}
+        </div>
       </StyledHelpSideBar>
     </>
   );
@@ -95,7 +114,24 @@ const StyledHelpSideBar = styled.div`
   height: calc(100vh - 70px);
   background: #fff;
   border-left: solid 1px #ddd;
+  overflow: auto;
   z-index: 2;
+  & .closeHelpSideBar {
+    width: 40px;
+    height: 40px;
+    filter: invert(1);
+    transform: rotate(180deg);
+    cursor: pointer;
+  }
+  & .requests,
+  .accepts {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  & .requests {
+    gap: 5px;
+    margin-bottom: 15px;
+  }
 `;
 
 const mapStateToProps = (state: RootState) => {
