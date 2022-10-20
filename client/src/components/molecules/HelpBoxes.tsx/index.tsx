@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import SquareImg from '~/components/atoms/Img';
 import { client } from '~/components/organisms/HelpCallConnectSocket';
-import { closeHelpCallBox, openMap, Pos } from '~/others/store';
+import { closeHelpCallBox, openHelpSideBar, openMap, Pos } from '~/others/store';
 import { HelpCallBoxInner, HelpFinBoxContainer, HelpCallBoxContainer } from './styled';
 
 interface HelpFinBoxProps {
@@ -43,6 +43,8 @@ const HelpCallBox: React.FC<HelpCallBoxProps> = ({ targetHouse, myHouseLine, pos
       destination: '/pub/accept',
       body: JSON.stringify({ target: targetHouse, lat, lng }),
     });
+    openHelpSideBar();
+    openMap(pos);
   };
 
   return (
