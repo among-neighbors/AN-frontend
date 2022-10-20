@@ -38,10 +38,9 @@ const HelpFinBox: React.FC<HelpFinBoxProps> = ({ targetHouse, acceptHouse, myHou
 
 const HelpCallBox: React.FC<HelpCallBoxProps> = ({ targetHouse, myHouseLine, pos }) => {
   const acceptHelpCall = (pos: Pos) => {
-    const { lat, lng } = pos;
     client.publish({
       destination: '/pub/accept',
-      body: JSON.stringify({ target: targetHouse, lat, lng }),
+      body: JSON.stringify({ target: targetHouse }),
     });
     openHelpSideBar();
     openMap(pos);

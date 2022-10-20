@@ -30,16 +30,15 @@ const HelpCallConnectSocket: React.FC<HelpCallConnectSocket> = ({ accountToken, 
       client.subscribe('/user/queue/error', () => {});
 
       client.subscribe(`/sub/line/${profileData.lineName}`, (message) => {
-        const processedMessage = JSON.parse(message.body);
-        if (JSON.parse(message.body).house) {
-          handleRequest(processedMessage.house, {
-            lat: processedMessage.lat,
-            lng: processedMessage.lng,
+        const { target_house, accept_house, house, lat, lng } = JSON.parse(message.body);
+        if (house) {
+          handleRequest(house, {
+            lat,
+            lng,
           });
         }
 
-        if (JSON.parse(message.body).target_house) {
-          const { target_house, accept_house, lat, lng } = JSON.parse(message.body);
+        if (target_house) {
           handleAccept(target_house, accept_house, {
             lat,
             lng,
