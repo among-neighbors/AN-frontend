@@ -25,7 +25,7 @@ const MainLink: React.FC<MainLinkProps> = ({ buttonText, src, nav }) => {
           height: '100%',
         }}
       >
-        <StyledImg src={src} />
+        <StyledImgMd src={src} />
         <Button variant='outlined' sx={{ borderRadius: '20px' }}>
           {buttonText}
         </Button>
@@ -40,10 +40,10 @@ const MainLink: React.FC<MainLinkProps> = ({ buttonText, src, nav }) => {
           },
 
           width: '100%',
-          height: 'calc(100% / 2)',
+          height: 'calc(100% / 1.5)',
         }}
       >
-        <StyledImg src={src} />
+        <StyledImgSm src={src} width='20%' />
 
         <Button variant='outlined' sx={{ borderRadius: '20px', fontSize: '10px' }}>
           {buttonText}
@@ -61,7 +61,7 @@ const MainLink: React.FC<MainLinkProps> = ({ buttonText, src, nav }) => {
           height: 'calc(100% / 3)',
         }}
       >
-        <StyledImg2 src={src} />
+        <StyledImgXs src={src} />
 
         <Button variant='outlined' sx={{ borderRadius: '20px', fontSize: '8px' }}>
           {buttonText}
@@ -71,11 +71,15 @@ const MainLink: React.FC<MainLinkProps> = ({ buttonText, src, nav }) => {
   );
 };
 
-const StyledImg = styled.img`
+const StyledImgMd = styled.img`
   width: 35%;
   margin: 30px;
 `;
-const StyledImg2 = styled.img`
+const StyledImgSm = styled.img`
+  width: 35%;
+  margin: 20px;
+`;
+const StyledImgXs = styled.img`
   height: 30%;
   margin: 15px;
 `;
