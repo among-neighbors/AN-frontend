@@ -13,6 +13,10 @@ const ProfileHomeButton = styled.button`
   outline: none;
   border: none;
   cursor: pointer;
+  @media (max-width: 1023px) {
+    top: 10px;
+    left: 5px;
+  }
 `;
 
 interface ProfileHomeContainerProps {

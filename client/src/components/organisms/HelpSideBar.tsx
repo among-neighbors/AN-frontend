@@ -40,6 +40,25 @@ const HelpSideBar: React.FC<HelpSideBarProps> = ({
         <div className={'closeHelpSideBar'} onClick={closeHelpSideBar}>
           <SquareImg src={'../../../public/img/back.png'} length={'40px'} />
         </div>
+        {helpCallData.requests.length === 0 && helpCallData.accepts.length === 0 && (
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              color: '#666',
+              fontSize: '14px',
+              gap: '20px',
+              fontWeight: '600',
+            }}
+          >
+            <SquareImg src={'../../../public/img/helping.png'} length={'60px'} opacity={0.7} />
+            긴급 도움 요청/기록이 없습니다!
+          </Box>
+        )}
         <div className={'requests'}>
           {helpCallData.requests.map(({ targetHouse, pos }, index) => {
             if (profileData.houseName === targetHouse) {

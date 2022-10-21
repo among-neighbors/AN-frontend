@@ -70,7 +70,7 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
       const { writer, scope, category } = viewData;
       setBoardData({
         ...commonViewData,
-        writer: `${writer.lineName === '000' ? `` : `${writer.lineName}동 ${writer.houseName}호 `}${
+        writer: `${writer.lineName === '000' ? `` : `${writer.lineName} ${writer.houseName} `}${
           writer.name
         }`,
         scope,
@@ -82,7 +82,7 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
     const { writer } = viewData;
     setBoardData({
       ...commonViewData,
-      writer: `${writer.lineName}동 ${writer.houseName}호`,
+      writer: `${writer.lineName} ${writer.houseName}`,
     });
   }, [viewData]);
 
