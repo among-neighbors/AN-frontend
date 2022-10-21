@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '~/others/store';
 import styled from 'styled-components';
@@ -26,6 +26,12 @@ const NewProfileForm: React.FC<NewProfileFormProps> = ({
   setIsProfileHome,
   accountAccessToken,
 }) => {
+  const [isFile, setIsFile] = useState(false);
+
+  const fileUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsFile(e.target.value ? true : false);
+  };
+
   const handleSubmitNewProfile = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -35,21 +41,39 @@ const NewProfileForm: React.FC<NewProfileFormProps> = ({
       sex: data.get('sex') ?? '',
       pin: data.get('pin') ?? '',
       rePin: data.get('re-pin') ?? '',
+      img: data.get('img') ?? '',
     };
-    const { name, age, sex, pin, rePin } = joinData;
+    const { name, age, sex, pin, rePin, img } = joinData;
 
     const pinRegex = /\d{4}$/;
     if (!pinRegex.test(pin.toString())) return;
     if (pin !== rePin) return;
 
     try {
-      const body = {
-        name,
-        age: Number(age),
-        pin,
-        gender: sex,
-      };
-      await myAxios('post', 'api/v1/auth/profiles/new', body, true, accountAccessToken);
+      const body =
+        (img as File).size === 0
+          ? {
+              name,
+              age: Number(age),
+              pin,
+              gender: sex,
+            }
+          : {
+              name,
+              age: Number(age),
+              pin,
+              gender: sex,
+              img,
+            };
+
+      await myAxios(
+        'post',
+        'api/v1/auth/profiles/new',
+        body,
+        true,
+        accountAccessToken,
+        'multipart/form-data',
+      );
       setIsProfileHome(true);
     } catch (err) {
       console.log(err);
@@ -104,6 +128,19 @@ const NewProfileForm: React.FC<NewProfileFormProps> = ({
             <FormControlLabel value='FEMALE' control={<Radio />} label='여성' />
           </RadioGroup>
         </FormControl>
+        <label>사진 첨부</label>
+        <div className='filebox'>
+          <label htmlFor='file' className={isFile ? 'done' : ''}>{`${
+            isFile ? '프로필 사진 등록 완료' : '프로필 사진 추가하기'
+          }`}</label>
+          <input
+            type={'file'}
+            id='file'
+            accept={'image/*'}
+            name={'img'}
+            onChange={fileUpload}
+          ></input>
+        </div>
 
         <TextField
           margin='normal'
@@ -140,6 +177,33 @@ const NewProfileFormContainer = styled.form`
   padding: 20px 20px;
   background: #fff;
   ${shadowCSSForStyledComponent}
+  & > label {
+    display: none;
+  }
+  & .filebox label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
+    color: #999;
+    cursor: pointer;
+    background: #ffffff;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
+    margin: 5px 0;
+  }
+
+  & .filebox input[type='file'] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
 `;
 
 const mapStateToProps = (state: RootState) => {

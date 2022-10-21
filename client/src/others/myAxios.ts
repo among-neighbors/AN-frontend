@@ -8,6 +8,7 @@ interface myAxiosFunc {
     body?: object | null,
     withCredentials?: boolean,
     token?: string | undefined,
+    contentType?: string,
   ): Promise<any>;
 }
 
@@ -24,9 +25,10 @@ const myAxios: myAxiosFunc = async (
   body = null,
   withCredentials = false,
   token = undefined,
+  contentType = 'application/json',
 ) => {
   const option: myAxiosOption = {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': contentType },
     withCredentials,
   };
   if (token) option.headers['Authorization'] = `Bearer ${token}`;

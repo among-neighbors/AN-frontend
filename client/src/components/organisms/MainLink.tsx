@@ -25,8 +25,27 @@ const MainLink: React.FC<MainLinkProps> = ({ buttonText, src, nav }) => {
           height: '100%',
         }}
       >
-        <StyledImg src={src} />
-        <Button variant='outlined' sx={{ position: 'absolute' }}>
+        <StyledImgMd src={src} />
+        <Button variant='outlined' sx={{ borderRadius: '20px' }}>
+          {buttonText}
+        </Button>
+      </StyledMainLink>
+      <StyledMainLink
+        onClick={() => navigate(`/${nav}`)}
+        sx={{
+          display: {
+            xs: 'none',
+            sm: 'flex',
+            md: 'none',
+          },
+
+          width: '100%',
+          height: 'calc(100% / 1.5)',
+        }}
+      >
+        <StyledImgSm src={src} width='20%' />
+
+        <Button variant='outlined' sx={{ borderRadius: '20px', fontSize: '10px' }}>
           {buttonText}
         </Button>
       </StyledMainLink>
@@ -35,15 +54,16 @@ const MainLink: React.FC<MainLinkProps> = ({ buttonText, src, nav }) => {
         sx={{
           display: {
             xs: 'flex',
-            sm: 'flex',
+            sm: 'none',
             md: 'none',
           },
-          width: '100%',
+          width: '90%',
           height: 'calc(100% / 3)',
         }}
       >
-        <StyledImg src={src} />
-        <Button variant='outlined' sx={{ position: 'absolute' }}>
+        <StyledImgXs src={src} />
+
+        <Button variant='outlined' sx={{ borderRadius: '20px', fontSize: '8px' }}>
           {buttonText}
         </Button>
       </StyledMainLink>
@@ -51,20 +71,32 @@ const MainLink: React.FC<MainLinkProps> = ({ buttonText, src, nav }) => {
   );
 };
 
-const StyledImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.2;
+const StyledImgMd = styled.img`
+  width: 35%;
+  margin: 30px;
+`;
+const StyledImgSm = styled.img`
+  width: 35%;
+  margin: 20px;
+`;
+const StyledImgXs = styled.img`
+  height: 30%;
+  margin: 15px;
 `;
 
 const StyledMainLink = styled(Box)`
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
   align-items: center;
   justify-content: center;
-  background: #111;
+  background-color: white;
+  border-radius: 10px;
+  margin: 10px;
+  opacity: 0.9;
   transition: 0.5s;
+  flex-direction: column;
   &:hover {
     background: #999;
+
     cursor: pointer;
     & > button {
       background: #ec8034;

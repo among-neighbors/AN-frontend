@@ -23,6 +23,7 @@ interface ProfileData {
   id: number;
   name: string;
   colorIndex: number;
+  imgUrl: string | null;
 }
 
 const ProfileHome: React.FC<ProfileHomeProps> = ({ accountAccessToken }) => {
@@ -83,14 +84,16 @@ const Profiles: React.FC<ProfilesProps> = ({
     id: 0,
     name: '',
     colorIndex: 0,
+    imgUrl: null,
   });
 
-  const selectProfile = ({ id, name, colorIndex }: ProfileData) => {
+  const selectProfile = ({ id, name, colorIndex, imgUrl }: ProfileData) => {
     setIsSelectedProfile(true);
     setSelectedProfileData({
       id,
       name,
       colorIndex,
+      imgUrl,
     });
   };
 
@@ -100,6 +103,7 @@ const Profiles: React.FC<ProfilesProps> = ({
       id: 0,
       name: '',
       colorIndex: 0,
+      imgUrl: null,
     });
   };
 
@@ -111,7 +115,8 @@ const Profiles: React.FC<ProfilesProps> = ({
       pin: data.get('pin'),
     };
     const res = await myAxios('post', 'api/v1/auth/profiles/login', body, true, accountAccessToken);
-    handleRefreshProfileAccessToken(res.data.response.accessToken);
+    const profileToken = res.data.response.accessToken;
+    handleRefreshProfileAccessToken(profileToken);
   };
 
   return (
@@ -122,8 +127,17 @@ const Profiles: React.FC<ProfilesProps> = ({
             <SquareImg src='../../../public/img/back.png' length='60px' />
           </ProfileHomeButton>
           <SelectedProfileContainer onSubmit={handleSubmitProfileLogin}>
-            <SelectedProfile index={selectedProfileData.colorIndex}>
-              {selectedProfileData.name}
+            <SelectedProfile
+              index={selectedProfileData.imgUrl ? 0 : selectedProfileData.colorIndex}
+            >
+              {selectedProfileData.imgUrl ? (
+                <div className={'profileImg'}>
+                  <p>{selectedProfileData.name}</p>
+                  <SquareImg src={selectedProfileData.imgUrl} length='100%' opacity={0.3} />
+                </div>
+              ) : (
+                selectedProfileData.name
+              )}
             </SelectedProfile>
             <TextField
               margin='normal'
@@ -156,14 +170,21 @@ const Profiles: React.FC<ProfilesProps> = ({
         </>
       ) : (
         <ProfileListContainer>
-          {profileList?.map(({ id, name }, index) => {
+          {profileList?.map(({ id, name, imgUrl }, index) => {
             return (
               <Profile
                 key={index}
-                index={index + 1}
-                onClick={() => selectProfile({ id, name, colorIndex: index + 1 })}
+                index={imgUrl ? 0 : index + 1}
+                onClick={() => selectProfile({ id, name, colorIndex: index + 1, imgUrl })}
               >
-                {name}
+                {imgUrl ? (
+                  <div className={'profileImg'}>
+                    <p>{name}</p>
+                    <SquareImg src={imgUrl} length='100%' opacity={0.3} />
+                  </div>
+                ) : (
+                  name
+                )}
               </Profile>
             );
           })}

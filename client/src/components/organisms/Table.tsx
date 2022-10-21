@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { TableRowForMobile } from '../molecules/TableRow';
 import { Obj, ColumnId, ProcessedTypePostDataArray } from '~/others/integrateInterface';
 import { Box } from '@mui/system';
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { parse } from 'query-string';
 
@@ -55,14 +55,24 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
       }}
     >
       <TableContainer>
-        <Table stickyHeader aria-label='sticky table'>
+        <Table
+          stickyHeader
+          aria-label='sticky table'
+          sx={{ borderTop: '4px solid #333', borderCollapse: 'collapse' }}
+        >
           <TableHead>
             <TableRow sx={{ display: { xs: 'none', sm: 'none', md: 'table-row' } }}>
               {columns(type).map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth, whiteSpace: 'nowrap' }}
+                  sx={{
+                    minWidth: column.minWidth,
+                    whiteSpace: 'nowrap',
+                    color: '#4f4f4f',
+                    fontSize: '14px',
+                    fontWeight: '700',
+                  }}
                 >
                   {column.label}
                 </TableCell>
@@ -76,10 +86,14 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
                   <TableRow
                     component={Link}
                     to={`${row.id}`}
-                    style={{ textDecoration: 'none' }}
                     hover
                     tabIndex={-1}
-                    sx={{ display: { xs: 'none', sm: 'none', md: 'table-row' } }}
+                    sx={{
+                      display: { xs: 'none', sm: 'none', md: 'table-row' },
+                      textDecoration: 'none',
+                      borderTop: '2px solid #e0e0e0',
+                      borderBottom: '2px solid #e0e0e0',
+                    }}
                   >
                     {columns(type).map((column) => {
                       const value = row[column.id];
@@ -112,12 +126,36 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
           </TableBody>
         </Table>
       </TableContainer>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'right' }}>
-        <Typography>{page} page</Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+        }}
+      >
+        <Typography
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            left: 'calc(50% + 5px)',
+            background: '#d9d9d9',
+            width: '30px',
+            height: '30px',
+            borderRadius: '100% 100%',
+          }}
+        >
+          {page}
+        </Typography>
         <TablePagination
           sx={{
-            '& div > p': {
+            '& p': {
               display: 'none',
+            },
+            '& button': {
+              margin: '0 20px',
             },
           }}
           rowsPerPageOptions={[10]}
@@ -126,10 +164,23 @@ const BoardTable: React.FC<TableProps> = ({ type, rows, isFirstPage, isLastPage 
           rowsPerPage={10}
           page={isFirstPage ? 0 : 1}
           onPageChange={handleChangePage}
-        />
+        ></TablePagination>
+        <Button
+          component={Link}
+          to={`/${type}/writing`}
+          variant='text'
+          sx={{ position: 'absolute', right: '20px' }}
+        >
+          {buttonTextByType[type]}
+        </Button>
       </Box>
     </Paper>
   );
+};
+
+const buttonTextByType: Obj<string> = {
+  complaint: '민원 작성',
+  community: '글쓰기',
 };
 
 interface TypeInfoData {
@@ -141,7 +192,7 @@ interface TypeInfoData {
 
 const dataOfTypes: Obj<TypeInfoData> = {
   notice: {
-    labels: ['공지 ID', '제목', '공지 유형', '작성자', '등록일'],
+    labels: ['번호', '제목', '유형', '작성자', '등록일'],
     ids: ['id', 'title', 'scope', 'writer', 'date'],
     minWidths: [80, 300, 90, 110, 150],
     formats: [
@@ -154,7 +205,7 @@ const dataOfTypes: Obj<TypeInfoData> = {
     ],
   },
   community: {
-    labels: ['게시글 ID', '제목', '게시글 유형', '카테고리', '작성자', '등록일'],
+    labels: ['번호', '제목', '유형', '카테고리', '작성자', '등록일'],
     ids: ['id', 'title', 'scope', 'category', 'writer', 'date'],
     minWidths: [80, 300, 90, 100, 110, 150],
     formats: [
@@ -181,7 +232,7 @@ const dataOfTypes: Obj<TypeInfoData> = {
     ],
   },
   complaint: {
-    labels: ['민원 ID', '제목', '작성자', '등록일'],
+    labels: ['번호', '제목', '작성자', '등록일'],
     ids: ['id', 'title', 'writer', 'date'],
     minWidths: [80, 300, 110, 150],
     formats: [],
@@ -195,7 +246,7 @@ const columns = (type: string): Column[] => {
       id: data.ids[index],
       label: label,
       minWidth: data.minWidths[index],
-      align: label === '제목' ? undefined : 'center',
+      align: 'center',
       format: data.formats[index],
     };
   });

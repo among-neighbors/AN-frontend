@@ -118,26 +118,25 @@ const Comment: React.FC<CommentProps> = ({ type, accessToken, boardId, profileDa
       />
       <Table>
         <TableBody>
-          {comments &&
-            comments.map((comment, index) => {
-              return (
-                <TableRow
-                  key={index}
-                  sx={{ display: 'flex', justifyContent: 'center', position: 'relative' }}
-                >
-                  <TableRowForComment commentData={comment} />
-                  {profileData.id === comment.writer.id && (
-                    <Button
-                      onClick={() => handleDeleteComment(comment.id)}
-                      variant='text'
-                      sx={{ color: 'red', position: 'absolute', right: 0, top: '20px' }}
-                    >
-                      X
-                    </Button>
-                  )}
-                </TableRow>
-              );
-            })}
+          {comments?.map((comment, index) => {
+            return (
+              <TableRow
+                key={index}
+                sx={{ display: 'flex', justifyContent: 'center', position: 'relative' }}
+              >
+                <TableRowForComment commentData={comment} />
+                {profileData.id === comment.writer.id && (
+                  <Button
+                    onClick={() => handleDeleteComment(comment.id)}
+                    variant='text'
+                    sx={{ color: 'red', position: 'absolute', right: 0, top: '20px' }}
+                  >
+                    X
+                  </Button>
+                )}
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </CommentContainer>

@@ -7,7 +7,7 @@ import { clickedStyleOfTableNavButton, nonClickedStyleOfTableNavButton } from '.
 import { Obj } from '~/others/integrateInterface';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { parse } from 'query-string';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface TableNavProps {
   type: string;
@@ -27,7 +27,16 @@ const TableNav: React.FC<TableNavProps> = ({ type, tableNavReducer, isPageMove =
   };
 
   return (
-    <Box sx={{ display: 'flex', margin: '10px 0 25px 0', gap: '1px' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        margin: '10px 0 25px 0',
+        gap: '1px',
+        borderRadius: '20% / 100%',
+        border: '1px solid #EC8034',
+        overflow: 'hidden',
+      }}
+    >
       {tableListByType[type].map((kind, index) => {
         return (
           <Button
@@ -52,7 +61,6 @@ const TableNav: React.FC<TableNavProps> = ({ type, tableNavReducer, isPageMove =
           </Button>
         );
       })}
-      {type === 'community' && <Category type={type} />}
     </Box>
   );
 };
@@ -61,8 +69,9 @@ interface CategoryProps {
   type: string;
 }
 
-const Category: React.FC<CategoryProps> = ({ type }) => {
+export const Category: React.FC<CategoryProps> = ({ type }) => {
   const [anchorElCategory, setAnchorElCategory] = useState<null | HTMLElement>(null);
+  const [category, setCategory] = useState<string>('카테고리');
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -84,13 +93,27 @@ const Category: React.FC<CategoryProps> = ({ type }) => {
   const navigateTo = (category: string) => {
     const search = handledQuery(category);
     navigate({ pathname: `/${type}`, search });
+    setCategory(MenuItemsByCategory[category]);
     handleCloseCategoryMenu();
   };
 
+  useEffect(() => {
+    const queryObj = Object(parse(location.search));
+    if (queryObj['category']) setCategory(MenuItemsByCategory[queryObj['category']]);
+  }, []);
+
   return (
     <>
-      <Button sx={nonClickedStyleOfTableNavButton} onClick={handleOpenCategoryMenu}>
-        카테고리
+      <Button
+        sx={{
+          background: 'rgba(236, 128, 52, 0.11)',
+          borderRadius: '50% / 100%',
+          padding: '0 15px',
+          width: '90px',
+        }}
+        onClick={handleOpenCategoryMenu}
+      >
+        {category}
       </Button>
       <Menu
         open={Boolean(anchorElCategory)}
@@ -99,8 +122,12 @@ const Category: React.FC<CategoryProps> = ({ type }) => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        {Object.entries(MenuItemsByCategory).map(([category, name]) => {
-          return <MenuItem onClick={() => navigateTo(category)}>{name}</MenuItem>;
+        {Object.entries(MenuItemsByCategory).map(([category, name], index) => {
+          return (
+            <MenuItem onClick={() => navigateTo(category)} key={index}>
+              {name}
+            </MenuItem>
+          );
         })}
       </Menu>
     </>
@@ -108,8 +135,8 @@ const Category: React.FC<CategoryProps> = ({ type }) => {
 };
 
 const tableListByType: Obj<string[]> = {
-  notice: ['통합 공지', '라인 공지'],
-  community: ['통합 게시글', '라인 게시글'],
+  notice: ['통합 공지', '단지 공지'],
+  community: ['통합 게시글', '단지 게시글'],
 };
 
 const queryByType: Obj<string[]> = {

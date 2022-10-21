@@ -13,6 +13,10 @@ const ProfileHomeButton = styled.button`
   outline: none;
   border: none;
   cursor: pointer;
+  @media (max-width: 1023px) {
+    top: 10px;
+    left: 5px;
+  }
 `;
 
 interface ProfileHomeContainerProps {
@@ -65,6 +69,10 @@ const ProfileListContainer = styled.div`
   width: 100%;
   gap: 40px;
   padding: 40px;
+  @media (max-width: 500px) {
+    gap: 10px;
+    padding: 20px;
+  }
 `;
 
 const ProfileLoginButton = styled(Button)``;
@@ -81,21 +89,36 @@ const Profile = styled.div<ProfileProps>`
   height: 150px;
   background: #fff;
   font-size: 30px;
-  padding: 30px;
+  overflow: hidden;
   color: #fff;
   background: ${(props) => ColorsByProfileIndex[props.index ?? 0]};
   cursor: pointer;
   text-align: center;
   ${shadowCSSForStyledComponent}
+
+  & .profileImg {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    & > p {
+      position: absolute;
+      z-index: 1;
+      color: #fff;
+    }
+  }
+
   &:hover {
     transform: translate(4px, -4px);
-    @media (max-width: 500px) {
-      transform: scale(0.7);
-    }
   }
   transition: 0.3s;
   @media (max-width: 500px) {
-    transform: scale(0.7);
+    width: calc(50% - 10px);
+    height: 100px;
+    font-size: 14px;
+    white-space: nowrap;
   }
 `;
 
@@ -105,12 +128,8 @@ const SelectedProfile = styled(Profile)`
   width: 250px;
   height: 250px;
   font-size: 50px;
-  padding: 50px;
   &:hover {
     transform: none;
-    @media (max-width: 500px) {
-      transform: scale(0.7);
-    }
   }
   cursor: inherit;
 `;

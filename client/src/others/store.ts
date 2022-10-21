@@ -18,6 +18,9 @@ const ACTION_TO_PUT_PROFILE = 'actionToPutProfile';
 const ACTION_TO_UPDATE_HELP_CALL = 'actionToUpdateHelpCall';
 const ACTION_TO_CLOSE_HELP_CALL_BOX = 'actionToCloseHelpCallBox';
 
+const ACTION_TO_OPEN_MAP = 'actionToOpenMap';
+const ACTION_TO_CLOSE_MAP = 'actionToCloseMap';
+
 interface TableNavState extends Obj<number> {
   notice: number;
   community: number;
@@ -35,6 +38,7 @@ interface RootState {
   readyForRequestAPIReducer: boolean;
   profileReducer: ProfileState;
   helpCallReducer: HelpCallState;
+  mapReducer: MapState;
 }
 
 interface ProfileState {
@@ -42,12 +46,52 @@ interface ProfileState {
   name: string;
   lineName: string;
   houseName: string;
+  imgUrl: string;
 }
 
 interface HelpCallState {
-  requests: { targetHouse: string }[];
-  accepts: { targetHouse: string; acceptHouse: string }[];
+  requests: { targetHouse: string; pos: Pos }[];
+  accepts: { targetHouse: string; acceptHouse: string; pos: Pos }[];
 }
+
+interface Pos {
+  lat: number;
+  lng: number;
+}
+
+interface MapState {
+  isOpen: boolean;
+  pos?: Pos;
+}
+
+const mapReducer = (
+  state: MapState = {
+    isOpen: false,
+  },
+  action: {
+    type: string;
+    pos: {
+      lat: string;
+      lng: string;
+    };
+  },
+) => {
+  const { type, pos } = action;
+
+  switch (type) {
+    case ACTION_TO_OPEN_MAP:
+      return {
+        isOpen: true,
+        pos,
+      };
+    case ACTION_TO_CLOSE_MAP:
+      return {
+        isOpen: false,
+      };
+    default:
+      return state;
+  }
+};
 
 const helpCallReducer = (
   state: HelpCallState = {
@@ -58,10 +102,11 @@ const helpCallReducer = (
     type: string;
     acceptHouse: string;
     targetHouse: string;
+    pos: Pos;
   },
 ) => {
   const tempState = { ...state };
-  const { type, acceptHouse, targetHouse } = action;
+  const { type, acceptHouse, targetHouse, pos } = action;
   switch (type) {
     case ACTION_TO_UPDATE_HELP_CALL:
       if (acceptHouse) {
@@ -71,6 +116,7 @@ const helpCallReducer = (
         tempState.accepts.push({
           acceptHouse,
           targetHouse,
+          pos,
         });
       } else {
         tempState.requests = state.requests.filter(
@@ -78,6 +124,7 @@ const helpCallReducer = (
         );
         tempState.requests.push({
           targetHouse,
+          pos,
         });
       }
       return tempState;
@@ -97,6 +144,7 @@ const profileReducer = (
     name: '',
     lineName: '',
     houseName: '',
+    imgUrl: '',
   },
   action: {
     type: string;
@@ -189,9 +237,23 @@ const rootReducer = combineReducers({
   readyForRequestAPIReducer,
   profileReducer,
   helpCallReducer,
+  mapReducer,
 });
 
 const store = createStore(rootReducer);
+
+const openMap = (pos: Pos) => {
+  store.dispatch({
+    type: ACTION_TO_OPEN_MAP,
+    pos,
+  });
+};
+
+const closeMap = () => {
+  store.dispatch({
+    type: ACTION_TO_CLOSE_MAP,
+  });
+};
 
 const closeHelpCallBox = (targetHouse: string) => {
   store.dispatch({
@@ -252,11 +314,12 @@ const handlePutProfile = (profileData: ProfileState) => {
   });
 };
 
-const updateHelpCallData = (targetHouse: string, acceptHouse?: string) => {
+const updateHelpCallData = (targetHouse: string, pos: Pos, acceptHouse?: string) => {
   store.dispatch({
     type: ACTION_TO_UPDATE_HELP_CALL,
     targetHouse,
     acceptHouse,
+    pos,
   });
 };
 
@@ -274,8 +337,12 @@ export {
   helpCallReducer,
   updateHelpCallData,
   closeHelpCallBox,
+  openMap,
+  closeMap,
   HelpCallState,
   RootState,
   accessTokenState,
   ProfileState,
+  MapState,
+  Pos,
 };

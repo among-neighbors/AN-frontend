@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { accessTokenState, ProfileState, RootState, updateHelpCallData } from '~/others/store';
+import { accessTokenState, Pos, ProfileState, RootState, updateHelpCallData } from '~/others/store';
 import { Stomp } from '@stomp/stompjs';
 import { connect } from 'react-redux';
 
@@ -16,12 +16,12 @@ const HelpCallConnectSocket: React.FC<HelpCallConnectSocket> = ({ accountToken, 
   const { accountAccessToken } = accountToken;
   const { lineName } = profileData;
 
-  const handleRequest = (targetHouse: string) => {
-    updateHelpCallData(targetHouse);
+  const handleRequest = (targetHouse: string, pos: Pos) => {
+    updateHelpCallData(targetHouse, pos);
   };
 
-  const handleAccept = (targetHouse: string, acceptHouse: string) => {
-    updateHelpCallData(targetHouse, acceptHouse);
+  const handleAccept = (targetHouse: string, acceptHouse: string, pos: Pos) => {
+    updateHelpCallData(targetHouse, pos, acceptHouse);
   };
 
   useEffect(() => {
@@ -30,13 +30,19 @@ const HelpCallConnectSocket: React.FC<HelpCallConnectSocket> = ({ accountToken, 
       client.subscribe('/user/queue/error', () => {});
 
       client.subscribe(`/sub/line/${profileData.lineName}`, (message) => {
-        if (JSON.parse(message.body).house) {
-          handleRequest(JSON.parse(message.body).house);
+        const { target_house, accept_house, house, lat, lng } = JSON.parse(message.body);
+        if (house) {
+          handleRequest(house, {
+            lat,
+            lng,
+          });
         }
 
-        if (JSON.parse(message.body).target_house) {
-          const { target_house, accept_house } = JSON.parse(message.body);
-          handleAccept(target_house, accept_house);
+        if (target_house) {
+          handleAccept(target_house, accept_house, {
+            lat,
+            lng,
+          });
         }
       });
     });

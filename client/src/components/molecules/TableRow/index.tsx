@@ -51,7 +51,7 @@ const TableRowForComment: React.FC<TableRowForCommentProps> = ({ commentData }) 
           return <Typography key={index}>{str}</Typography>;
         })}
       </Box>
-      <p>{`${lineName === '000' ? '' : `${lineName}동 ${houseName}호`}  ${name} | ${handledDate(
+      <p>{`${lineName === '000' ? '' : `${lineName} ${houseName}`}  ${name} | ${handledDate(
         createdDate,
       )}`}</p>
     </StyledTableRowForComment>
