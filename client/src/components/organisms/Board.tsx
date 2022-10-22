@@ -93,10 +93,11 @@ const Board: React.FC<BoardProps> = ({ boardData, type, writerId, accessToken })
       <Box
         className='textBox'
         sx={{
+          position: 'relative',
           border: 'solid #d9d9d9',
           minHeight: '350px',
           borderWidth: '1.5px 0',
-          padding: '30px 10px 50px 10px',
+          padding: '30px 10px 130px 10px',
           marginBottom: '5px',
         }}
       >
