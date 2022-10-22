@@ -246,7 +246,8 @@ const Header: React.FC<HeaderProps> = ({
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
-                  color: page.link === location.pathname ? '#EC8034' : '#828282',
+                  color:
+                    page.link === `/${location.pathname.split('/')[1]}` ? '#EC8034' : '#828282',
                   display: 'block',
                   fontWeight: 700,
                   fontSize: '16px',

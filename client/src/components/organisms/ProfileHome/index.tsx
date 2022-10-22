@@ -10,10 +10,12 @@ import {
   NewProfileButton,
   SelectedProfile,
 } from './styled';
-import { handleRefreshProfileAccessToken } from '~/others/store';
+import { handleRefreshProfileAccessToken, makeNotification } from '~/others/store';
 import SquareImg from '../../atoms/Img';
 import NewProfileForm from '../NewProfileForm';
 import myAxios from '~/others/myAxios';
+import { AxiosError } from 'axios';
+import { CustomAxiosResponse } from '~/others/integrateInterface';
 
 interface ProfileHomeProps {
   accountAccessToken: string;
@@ -114,9 +116,20 @@ const Profiles: React.FC<ProfilesProps> = ({
       profileId: selectedProfileData.id,
       pin: data.get('pin'),
     };
-    const res = await myAxios('post', 'api/v1/auth/profiles/login', body, true, accountAccessToken);
-    const profileToken = res.data.response.accessToken;
-    handleRefreshProfileAccessToken(profileToken);
+    try {
+      const res = await myAxios(
+        'post',
+        'api/v1/auth/profiles/login',
+        body,
+        true,
+        accountAccessToken,
+      );
+      const profileToken = res.data.response.accessToken;
+      handleRefreshProfileAccessToken(profileToken);
+    } catch (error) {
+      const err = error as AxiosError;
+      makeNotification((err.response as CustomAxiosResponse).data.message);
+    }
   };
 
   return (

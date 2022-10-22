@@ -12,6 +12,7 @@ import ViewPage from './pages/ViewPage';
 import WritingPage from './pages/WritingPage';
 import { Navigate } from 'react-router-dom';
 import Checker from './components/organisms/Checker';
+import Notification from './components/organisms/Notification';
 
 interface RouterProps {
   state: RootState;
@@ -21,6 +22,7 @@ const Router = ({ state }: RouterProps) => {
   return (
     <>
       <BrowserRouter basename='/user'>
+        <Notification />
         <ThemeProvider theme={theme(false)}>
           <Checker />
           <Header />
