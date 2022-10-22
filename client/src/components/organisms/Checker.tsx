@@ -42,6 +42,7 @@ const Checker: React.FC<CheckerProps> = ({ accessTokenState }) => {
       handleRefreshProfileAccessToken(res.data.response.accessToken);
     } catch (err) {
       console.log(err);
+      console.log(err);
     } finally {
       setProfileKey(true);
     }
