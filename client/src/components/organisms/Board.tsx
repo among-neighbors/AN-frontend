@@ -137,6 +137,7 @@ const Board: React.FC<BoardProps> = ({ boardData, type, writerId, accessToken })
                 background: '#f6be9a73',
               },
               '& p': {
+                fontWeight: '700',
                 fontSize: '14px',
               },
             }}
@@ -169,6 +170,7 @@ const Board: React.FC<BoardProps> = ({ boardData, type, writerId, accessToken })
                 border: '2px solid #ccc',
               },
               '& p': {
+                fontWeight: '700',
                 fontSize: '14px',
               },
             }}
