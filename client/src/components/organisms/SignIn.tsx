@@ -10,8 +10,10 @@ import Container from '@mui/material/Container';
 import SquareImg from '../atoms/Img';
 import { shadowCssForMUI } from '~/others/cssLibrary';
 import { useNavigate } from 'react-router';
-import { handleRefreshAccountAccessToken } from '~/others/store';
+import { handleRefreshAccountAccessToken, makeNotification } from '~/others/store';
 import myAxios from '~/others/myAxios';
+import { AxiosError } from 'axios';
+import { CustomAxiosResponse } from '~/others/integrateInterface';
 
 interface SignInProps {
   setIsSignUp: Dispatch<SetStateAction<boolean>>;
@@ -31,8 +33,9 @@ const SignIn: React.FC<SignInProps> = ({ setIsSignUp }) => {
 
       handleRefreshAccountAccessToken(res.data.response.accessToken);
       navigate('/');
-    } catch (err) {
-      alert(err);
+    } catch (error) {
+      const err = error as AxiosError;
+      makeNotification((err.response as CustomAxiosResponse).data.message);
     }
   };
 

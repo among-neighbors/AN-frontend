@@ -1,6 +1,5 @@
-import { connect } from 'react-redux';
 import { Button, Menu, MenuItem } from '@mui/material';
-import { handleTableNav, RootState, TableNavState } from '~/others/store';
+import { handleTableNav } from '~/others/store';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/system';
 import { clickedStyleOfTableNavButton, nonClickedStyleOfTableNavButton } from './styled';
@@ -11,11 +10,10 @@ import React, { useEffect, useState } from 'react';
 
 interface TableNavProps {
   type: string;
-  tableNavReducer: TableNavState;
   isPageMove?: boolean;
 }
 
-const TableNav: React.FC<TableNavProps> = ({ type, tableNavReducer, isPageMove = true }) => {
+const TableNav: React.FC<TableNavProps> = ({ type, isPageMove = true }) => {
   if (!tableListByType[type]) return <></>;
 
   const location = useLocation();
@@ -50,7 +48,7 @@ const TableNav: React.FC<TableNavProps> = ({ type, tableNavReducer, isPageMove =
                 : `/${type}?${handledQuery(index)}`
             }
             sx={
-              tableNavReducer[type] === index
+              (Object(parse(location.search)).scope ?? 'ALL') === queryByType[type][index]
                 ? clickedStyleOfTableNavButton
                 : nonClickedStyleOfTableNavButton
             }
@@ -152,10 +150,4 @@ const MenuItemsByCategory: Obj<string> = {
   SELLING: '팝니다',
 };
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    tableNavReducer: state.tableNavReducer,
-  };
-};
-
-export default connect(mapStateToProps)(TableNav);
+export default TableNav;

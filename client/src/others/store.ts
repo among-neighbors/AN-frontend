@@ -21,6 +21,8 @@ const ACTION_TO_CLOSE_HELP_CALL_BOX = 'actionToCloseHelpCallBox';
 const ACTION_TO_OPEN_MAP = 'actionToOpenMap';
 const ACTION_TO_CLOSE_MAP = 'actionToCloseMap';
 
+const MAKE_NOTIFICATION = 'makeNotification';
+
 interface TableNavState extends Obj<number> {
   notice: number;
   community: number;
@@ -39,6 +41,7 @@ interface RootState {
   profileReducer: ProfileState;
   helpCallReducer: HelpCallState;
   mapReducer: MapState;
+  notificationReducer: NotificationState;
 }
 
 interface ProfileState {
@@ -63,6 +66,26 @@ interface MapState {
   isOpen: boolean;
   pos?: Pos;
 }
+
+interface NotificationState {
+  message: string;
+  index: number;
+}
+
+const notificationReducer = (
+  state = {
+    message: '',
+    index: 0,
+  },
+  action: {
+    type: string;
+    message: string;
+  },
+) => {
+  const { type, message } = action;
+  if (type === MAKE_NOTIFICATION) return { message, index: state.index + 1 };
+  return state;
+};
 
 const mapReducer = (
   state: MapState = {
@@ -238,6 +261,7 @@ const rootReducer = combineReducers({
   profileReducer,
   helpCallReducer,
   mapReducer,
+  notificationReducer,
 });
 
 const store = createStore(rootReducer);
@@ -323,6 +347,13 @@ const updateHelpCallData = (targetHouse: string, pos: Pos, acceptHouse?: string)
   });
 };
 
+const makeNotification = (message: string) => {
+  store.dispatch({
+    type: MAKE_NOTIFICATION,
+    message,
+  });
+};
+
 export {
   store,
   TableNavState,
@@ -339,10 +370,12 @@ export {
   closeHelpCallBox,
   openMap,
   closeMap,
+  makeNotification,
   HelpCallState,
   RootState,
   accessTokenState,
   ProfileState,
   MapState,
+  NotificationState,
   Pos,
 };

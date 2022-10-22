@@ -90,7 +90,9 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <PageHeader type={type} />
       {type === 'community' || type === 'notice' ? <TableNav type={type} /> : <></>}
-      {boardData && writerId && <Board type={type} boardData={boardData} writerId={writerId} />}
+      {boardData && writerId && (
+        <Board type={type} boardData={boardData} writerId={writerId} accessToken={accessToken} />
+      )}
       {boardData && (type === 'community' || type === 'complaint') ? (
         <Comment type={type} boardId={boardData.id} accessToken={accessToken} />
       ) : (
