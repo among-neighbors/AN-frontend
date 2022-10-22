@@ -1,20 +1,58 @@
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { useEffect, useState } from 'react';
 import {
   isProcessedCommunityPostData,
   isProcessedNoticePostData,
   ProcessedTypePostData,
 } from '~/others/integrateInterface';
 import { stringByScope, stringByCategory, handledDate } from '~/others/integrateVariable';
+import { ReactComponent as Heart } from '../../../public/img/heart.svg';
+import { ReactComponent as EmptyHeart } from '../../../public/img/heartEmpty.svg';
 import BoardNav from '../molecules/BoardNav';
+import myAxios from '~/others/myAxios';
+import { accessTokenState } from '~/others/store';
 
 interface BoardProps {
   boardData: ProcessedTypePostData;
   type: string;
   writerId: number;
+  accessToken: accessTokenState;
 }
 
-const Board: React.FC<BoardProps> = ({ boardData, type, writerId }) => {
+const Board: React.FC<BoardProps> = ({ boardData, type, writerId, accessToken }) => {
+  const [likeData, setLikeData] = useState({
+    count: 0,
+    didILiked: false,
+  });
+  const getExpression = async () => {
+    const res = await myAxios(
+      'get',
+      `api/v1/expressions/${boardData.id}`,
+      undefined,
+      undefined,
+      accessToken.profileAccessToken,
+    );
+    setLikeData(res.data.response);
+  };
+
+  const sendExpression = async () => {
+    const res = await myAxios(
+      'post',
+      `api/v1/expressions`,
+      {
+        communityId: boardData.id,
+      },
+      undefined,
+      accessToken.profileAccessToken,
+    );
+    getExpression();
+  };
+
+  useEffect(() => {
+    getExpression();
+  }, []);
+
   return (
     <Box sx={{ maxWidth: '1200px', width: '100%' }}>
       <Box
@@ -76,6 +114,70 @@ const Board: React.FC<BoardProps> = ({ boardData, type, writerId }) => {
             </Typography>
           );
         })}
+        {likeData.didILiked ? (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              position: 'absolute',
+              bottom: '20px',
+              left: 'calc(50% - 30px)',
+              width: '80px',
+              height: '80px',
+              borderRadius: '6px',
+              border: '2px solid#f6be9a',
+              cursor: 'pointer',
+              padding: '11px',
+              '& svg': {
+                width: '30px',
+                height: '30px',
+              },
+              ':hover': {
+                background: '#f6be9a73',
+              },
+              '& p': {
+                fontSize: '14px',
+              },
+            }}
+            onClick={sendExpression}
+          >
+            <Heart />
+            <p>{likeData.count}</p>
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              position: 'absolute',
+              bottom: '20px',
+              left: 'calc(50% - 30px)',
+              width: '80px',
+              height: '80px',
+              borderRadius: '6px',
+              border: '2px solid #ddd',
+              cursor: 'pointer',
+              padding: '11px',
+              '& svg': {
+                width: '30px',
+                height: '30px',
+              },
+              ':hover': {
+                background: '#eee',
+                border: '2px solid #ccc',
+              },
+              '& p': {
+                fontSize: '14px',
+              },
+            }}
+            onClick={sendExpression}
+          >
+            <EmptyHeart />
+            <p>{likeData.count}</p>
+          </Box>
+        )}
       </Box>
       {isProcessedCommunityPostData(boardData) || isProcessedNoticePostData(boardData) ? (
         <BoardNav type={type} boardId={boardData.id} writerId={writerId} />
