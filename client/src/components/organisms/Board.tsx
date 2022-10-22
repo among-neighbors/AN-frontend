@@ -37,7 +37,7 @@ const Board: React.FC<BoardProps> = ({ boardData, type, writerId, accessToken })
   };
 
   const sendExpression = async () => {
-    const res = await myAxios(
+    await myAxios(
       'post',
       `api/v1/expressions`,
       {
