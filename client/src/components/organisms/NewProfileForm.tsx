@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import React, { useState, ChangeEvent } from 'react';
 import { connect } from 'react-redux';
-import { RootState } from '~/others/store';
+import { makeNotification, RootState } from '~/others/store';
 import styled from 'styled-components';
 import { shadowCSSForStyledComponent } from '~/others/cssLibrary';
 import SquareImg from '../atoms/Img';
@@ -46,8 +46,14 @@ const NewProfileForm: React.FC<NewProfileFormProps> = ({
     const { name, age, sex, pin, rePin, img } = joinData;
 
     const pinRegex = /\d{4}$/;
-    if (!pinRegex.test(pin.toString())) return;
-    if (pin !== rePin) return;
+    if (!pinRegex.test(pin.toString())) {
+      makeNotification('핀은 4자리여야합니다.');
+      return;
+    }
+    if (pin !== rePin) {
+      makeNotification('핀이 일치하지 않습니다.');
+      return;
+    }
 
     try {
       const body =
