@@ -1,8 +1,16 @@
 # OSS Notice | AN-frontend #
 
-Copyright (c) 2022 KNUD4. All rights reserved.
+This application is Copyright © KNUD4. All rights reserved.
 
 The following sets forth attribution notices for third party software that may be contained in this application.
+
+ **@svgr/webpack**
+
+https://github.com/gregberge/svgr
+
+Copyright 2017 Smooth Code
+
+MIT License
 
  **axios**
 
@@ -132,6 +140,14 @@ Copyright React Training 2016-2018
 
 MIT License
 
+ **react-kakao-maps-sdk**
+
+https://github.com/JaeSeoKim/react-kakao-maps-sdk
+
+Copyright jaeseokim
+
+MIT License
+
  **Redux**
 
 https://github.com/reduxjs/redux
@@ -176,7 +192,7 @@ BSD 2-Clause "Simplified" License
 
 https://github.com/Hermanya/use-interval
 
-Copyright hermanya
+Copyright Herman <hermanstarikov@gmail.com> (https://hermanya.github.io)
 
 MIT License
 
@@ -196,10 +212,19 @@ Copyright arnoson
 
 MIT License
 
+ **vite-plugin-svgr**
+
+https://github.com/pd4d10/vite-plugin-svgr
+
+Copyright pd4d10
+
+MIT License
+
  **vite-tsconfig-paths**
 
 https://github.com/aleclarson/vite-tsconfig-paths
 
-Copyright aleclarson
+Copyright Alec Larson
 
 MIT License
+
