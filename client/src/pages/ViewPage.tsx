@@ -12,9 +12,10 @@ import {
   DeliverdTypePostData,
   ProcessedTypePostData,
 } from '~/others/integrateInterface';
-import { APIbyType } from '~/others/integrateVariable';
+import { APIbyType, MANAGER_HOUSENAME } from '~/others/integrateVariable';
 import { connect } from 'react-redux';
 import { accessTokenState, RootState } from '~/others/store';
+import Footer from '~/components/organisms/Footer';
 
 interface ViewPageProps {
   type: string;
@@ -41,9 +42,7 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
 
   useEffect(() => {
     if (!isReadyForRequestAPI) return;
-    const [pre, type, id] = location.pathname.split('/');
-    pre;
-    type;
+    const id = location.pathname.split('/')[2];
     getViewData(id);
   }, [isReadyForRequestAPI]);
 
@@ -70,9 +69,9 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
       const { writer, scope, category } = viewData;
       setBoardData({
         ...commonViewData,
-        writer: `${writer.lineName === '000' ? `` : `${writer.lineName} ${writer.houseName} `}${
-          writer.name
-        }`,
+        writer: `${
+          writer.houseName === MANAGER_HOUSENAME ? `` : `${writer.lineName} ${writer.houseName} `
+        }${writer.name}`,
         scope,
         category,
       });
@@ -89,15 +88,14 @@ const ViewPage = ({ type, accessToken, isReadyForRequestAPI }: ViewPageProps) =>
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <PageHeader type={type} />
-      {type === 'community' || type === 'notice' ? <TableNav type={type} /> : <></>}
+      {(type === 'community' || type === 'notice') && <TableNav type={type} />}
       {boardData && writerId && (
         <Board type={type} boardData={boardData} writerId={writerId} accessToken={accessToken} />
       )}
-      {boardData && (type === 'community' || type === 'complaint') ? (
+      {boardData && (type === 'community' || type === 'complaint') && (
         <Comment type={type} boardId={boardData.id} accessToken={accessToken} />
-      ) : (
-        <></>
       )}
+      <Footer />
     </Box>
   );
 };

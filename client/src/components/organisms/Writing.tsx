@@ -134,7 +134,7 @@ const Writing: React.FC<WritingProps> = ({
               defaultValue='ALL'
             >
               <FormControlLabel value='ALL' control={<Radio />} label='전체' />
-              <FormControlLabel value='LINE' control={<Radio />} label='라인' />
+              <FormControlLabel value='LINE' control={<Radio />} label='단지' />
             </RadioGroup>
           </FormControl>
           <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>

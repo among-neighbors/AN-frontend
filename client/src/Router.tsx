@@ -13,6 +13,7 @@ import WritingPage from './pages/WritingPage';
 import { Navigate } from 'react-router-dom';
 import Checker from './components/organisms/Checker';
 import Notification from './components/organisms/Notification';
+import MyMap from './components/organisms/MyMap';
 
 interface RouterProps {
   state: RootState;
@@ -26,6 +27,7 @@ const Router = ({ state }: RouterProps) => {
         <ThemeProvider theme={theme(false)}>
           <Checker />
           <Header />
+          <MyMap />
         </ThemeProvider>
         <ThemeProvider theme={theme(state.helpSideBarReducer)}>
           <Routes>

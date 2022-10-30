@@ -27,7 +27,7 @@ const CommentForm: React.FC<CommentFormProps> = ({ type, accessToken, boardId, g
       boardId,
       text: comment,
     };
-    // const res =
+
     await myAxios(
       'post',
       `${commentAPIbyType[type]}`,

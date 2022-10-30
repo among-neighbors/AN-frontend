@@ -1,5 +1,6 @@
 import { Box } from '@mui/system';
 import TableNav from '~/components/molecules/TableNav';
+import Footer from '~/components/organisms/Footer';
 import PageHeader from '~/components/organisms/PageHeader';
 import Writing from '~/components/organisms/Writing';
 
@@ -13,6 +14,7 @@ const WritingPage = ({ type }: WritingPageProps) => {
       <PageHeader type={type} />
       {type === 'community' ? <TableNav type={type} /> : <></>}
       <Writing type={type} />
+      <Footer />
     </Box>
   );
 };
