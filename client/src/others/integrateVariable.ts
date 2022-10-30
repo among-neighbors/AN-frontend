@@ -8,7 +8,7 @@ const APIbyType: Obj<string> = {
 
 const stringByScope: Obj<string> = {
   ALL: '전체',
-  LINE: '라인',
+  LINE: '단지',
 };
 
 const stringByCategory: Obj<string> = {
@@ -35,4 +35,13 @@ const ColorsByProfileIndex = [
   '#D98D62',
 ];
 
-export { APIbyType, stringByScope, handledDate, stringByCategory, ColorsByProfileIndex };
+const MANAGER_HOUSENAME = '000';
+
+export {
+  APIbyType,
+  stringByScope,
+  handledDate,
+  stringByCategory,
+  ColorsByProfileIndex,
+  MANAGER_HOUSENAME,
+};

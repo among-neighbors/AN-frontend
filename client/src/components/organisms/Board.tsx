@@ -50,7 +50,7 @@ const Board: React.FC<BoardProps> = ({ boardData, type, writerId, accessToken })
   };
 
   useEffect(() => {
-    getExpression();
+    if (type === 'community') getExpression();
   }, []);
 
   return (
@@ -115,71 +115,75 @@ const Board: React.FC<BoardProps> = ({ boardData, type, writerId, accessToken })
             </Typography>
           );
         })}
-        {likeData.didILiked ? (
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              position: 'absolute',
-              bottom: '20px',
-              left: 'calc(50% - 30px)',
-              width: '80px',
-              height: '80px',
-              borderRadius: '6px',
-              border: '2px solid#f6be9a',
-              cursor: 'pointer',
-              padding: '11px',
-              '& svg': {
-                width: '30px',
-                height: '30px',
-              },
-              ':hover': {
-                background: '#f6be9a73',
-              },
-              '& p': {
-                fontWeight: '700',
-                fontSize: '14px',
-              },
-            }}
-            onClick={sendExpression}
-          >
-            <Heart />
-            <p>{likeData.count}</p>
-          </Box>
+        {type === 'community' ? (
+          likeData.didILiked ? (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                position: 'absolute',
+                bottom: '20px',
+                left: 'calc(50% - 30px)',
+                width: '80px',
+                height: '80px',
+                borderRadius: '6px',
+                border: '2px solid#f6be9a',
+                cursor: 'pointer',
+                padding: '11px',
+                '& svg': {
+                  width: '30px',
+                  height: '30px',
+                },
+                ':hover': {
+                  background: '#f6be9a73',
+                },
+                '& p': {
+                  fontWeight: '700',
+                  fontSize: '14px',
+                },
+              }}
+              onClick={sendExpression}
+            >
+              <Heart />
+              <p>{likeData.count}</p>
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                position: 'absolute',
+                bottom: '20px',
+                left: 'calc(50% - 30px)',
+                width: '80px',
+                height: '80px',
+                borderRadius: '6px',
+                border: '2px solid #ddd',
+                cursor: 'pointer',
+                padding: '11px',
+                '& svg': {
+                  width: '30px',
+                  height: '30px',
+                },
+                ':hover': {
+                  background: '#eee',
+                  border: '2px solid #ccc',
+                },
+                '& p': {
+                  fontWeight: '700',
+                  fontSize: '14px',
+                },
+              }}
+              onClick={sendExpression}
+            >
+              <EmptyHeart />
+              <p>{likeData.count}</p>
+            </Box>
+          )
         ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              position: 'absolute',
-              bottom: '20px',
-              left: 'calc(50% - 30px)',
-              width: '80px',
-              height: '80px',
-              borderRadius: '6px',
-              border: '2px solid #ddd',
-              cursor: 'pointer',
-              padding: '11px',
-              '& svg': {
-                width: '30px',
-                height: '30px',
-              },
-              ':hover': {
-                background: '#eee',
-                border: '2px solid #ccc',
-              },
-              '& p': {
-                fontWeight: '700',
-                fontSize: '14px',
-              },
-            }}
-            onClick={sendExpression}
-          >
-            <EmptyHeart />
-            <p>{likeData.count}</p>
-          </Box>
+          <></>
         )}
       </Box>
       {isProcessedCommunityPostData(boardData) || isProcessedNoticePostData(boardData) ? (
