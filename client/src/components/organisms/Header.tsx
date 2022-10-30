@@ -85,6 +85,7 @@ const Header: React.FC<HeaderProps> = ({
     await myAxios('get', `api/v1/auth/accounts/logout`, null, true, accountAccessToken);
     handleRefreshAccountAccessToken('');
     handleRefreshProfileAccessToken('');
+    navigate(0);
   };
 
   const handleChangeProfile = async () => {

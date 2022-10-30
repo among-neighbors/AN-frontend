@@ -26,9 +26,9 @@ const HelpCallConnectSocket: React.FC<HelpCallConnectSocket> = ({ accountToken, 
 
   useEffect(() => {
     if (lineName === '') return;
+
     client.connect({ Authorization: accountAccessToken }, () => {
       client.subscribe('/user/queue/error', () => {});
-
       client.subscribe(`/sub/line/${profileData.lineName}`, (message) => {
         const { target_house, accept_house, house, lat, lng } = JSON.parse(message.body);
         if (house) {
