@@ -19,8 +19,6 @@ interface SignUpProps {
 
 interface SignUpFormBaseData {
   email: string;
-  // lineName: string;
-  // houseName: string;
 }
 
 const SignUp: React.FC<SignUpProps> = ({ setIsSignUp }) => {

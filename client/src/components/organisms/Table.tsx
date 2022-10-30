@@ -200,7 +200,7 @@ const dataOfTypes: Obj<TypeInfoData> = {
       undefined,
       (value: string) => {
         if (value === 'ALL') return '전체';
-        return '라인';
+        return '단지';
       },
     ],
   },
@@ -213,7 +213,7 @@ const dataOfTypes: Obj<TypeInfoData> = {
       undefined,
       (value: string) => {
         if (value === 'ALL') return '전체';
-        return '라인';
+        return '단지';
       },
       (value: string) => {
         switch (value) {

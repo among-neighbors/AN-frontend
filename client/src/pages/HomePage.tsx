@@ -4,27 +4,24 @@ import notice from '../../public/img/noticeIcon.svg';
 import community from '../../public/img/communityIcon.svg';
 import complaint from '../../public/img/complaintIcon.svg';
 import { Box, Typography } from '@mui/material';
-import MyMap from '~/components/organisms/MyMap';
 
-//이미지와 텍스트를 감싸고 있는 요소
 const StyledContainer = styled.div`
   position: relative;
   height: 80%;
 `;
-// 텍스트를 감싸고 있는 요소
+
 const StyledContainerText = styled.div`
   text-align: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  justify-contents: center;
+  justify-content: center;
   width: 100%;
   height: 90%;
   position: absolute;
   top: 0;
   color: black;
   font-weight: bold;
-  font-family: BlinkMacSystemFont;
 `;
 
 const StyledContainerBtn = styled.div`
@@ -42,7 +39,6 @@ const StyledContainerBtn = styled.div`
   color: black;
   margin: 5% 0 0 0;
   position: absolute;
-  font-family: BlinkMacSystemFont;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
@@ -68,7 +64,6 @@ const StyledContainerBtn2 = styled.div`
   color: black;
   margin: 5% 0 0 0;
   position: absolute;
-  font-family: BlinkMacSystemFont;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
@@ -95,7 +90,6 @@ const StyledContainerBtn3 = styled.div`
   color: black;
   margin: 5% 0 0 0;
   position: absolute;
-  font-family: BlinkMacSystemFont;
   top: 55%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
@@ -111,10 +105,8 @@ const StyledImage = styled.img`
 const HomePage = () => {
   return (
     <StyledHome>
-      <MyMap />
       <StyledContainer>
         <StyledImage src='../../public/img/homeMain.svg' />
-
         <StyledContainerText>
           <Typography
             sx={{ display: { xs: 'none', md: 'block' }, fontSize: '30px', fontWeight: 700 }}
