@@ -12,7 +12,7 @@
 
 <br>
 
-## 2. 온프레미스 환경 구축 방법
+## 2. 환경 구축 방법
 
 ### 사전 요구사항 (권장 버전)
 git (1.8.3.1)<br/>
@@ -196,7 +196,12 @@ server {
 
 <br>
 
-## 4. Open Source
+## 4. 관련 저장소
++ [AN-frontend-manager](https://github.com/among-neighbors/AN-frontend-manager)
++ [AN-frontend-builtin](https://github.com/among-neighbors/AN-frontend-builtin)
++ [AN-backend](https://github.com/among-neighbors/AN-backend)
+
+## 5. 오픈소스
 
 [APACHE License](LICENSE)
 
