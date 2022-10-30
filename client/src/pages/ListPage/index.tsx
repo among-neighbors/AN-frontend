@@ -18,6 +18,7 @@ import {
 } from '~/others/integrateInterface';
 import { ListPageProps } from './interface';
 import { APIbyType, handledDate } from '~/others/integrateVariable';
+import Footer from '~/components/organisms/Footer';
 
 const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPageProps) => {
   const location = useLocation();
@@ -74,6 +75,7 @@ const ListPage = ({ type, accountAccessToken, isReadyForRequestAPI }: ListPagePr
         </Box>
       )}
       <BoardTable type={type} rows={rows} isFirstPage={isFirstPage} isLastPage={isLastPage} />
+      <Footer />
     </Box>
   );
 };
@@ -111,7 +113,7 @@ const handleList = (list: DeliverdTypePostDataArray): ProcessedTypePostDataArray
       title,
       content,
       date: handledDate(createdDate),
-      writer: `${writer.lineName}동 ${writer.houseName}호`,
+      writer: `${writer.lineName} ${writer.houseName}`,
     };
   });
 };
