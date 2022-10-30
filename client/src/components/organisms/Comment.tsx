@@ -40,35 +40,39 @@ const CommentForm: React.FC<CommentFormProps> = ({ type, accessToken, boardId, g
   };
 
   return (
-    <Box
-      component='form'
-      onSubmit={handlePostComment}
-      action='#'
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 20px',
-        marginBottom: '30px',
-        '& .MuiTextField-root': {
-          m: 1,
-          width: 'calc(100% - 130px)',
-        },
-      }}
-      autoComplete='off'
-    >
-      <TextField
-        label='댓글 입력'
-        name='comment'
-        multiline
-        maxRows={4}
-        variant='standard'
-        required
-      />
-      <Button sx={{ whiteSpace: 'nowrap', height: '40px' }} type='submit' variant='outlined'>
-        댓글 달기
-      </Button>
-    </Box>
+    <>
+      {type !== 'complaint' && (
+        <Box
+          component='form'
+          onSubmit={handlePostComment}
+          action='#'
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '0 20px',
+            marginBottom: '30px',
+            '& .MuiTextField-root': {
+              m: 1,
+              width: 'calc(100% - 130px)',
+            },
+          }}
+          autoComplete='off'
+        >
+          <TextField
+            label='댓글 입력'
+            name='comment'
+            multiline
+            maxRows={4}
+            variant='standard'
+            required
+          />
+          <Button sx={{ whiteSpace: 'nowrap', height: '40px' }} type='submit' variant='outlined'>
+            댓글 달기
+          </Button>
+        </Box>
+      )}
+    </>
   );
 };
 
